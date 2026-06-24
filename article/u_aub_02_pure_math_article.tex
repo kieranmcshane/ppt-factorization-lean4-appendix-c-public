@@ -1,0 +1,633 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\cyc}{cyc}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Card}{Card}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sym}{\mathfrak S}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\g}{\gamma}
+\newcommand{\p}{\pi}
+\newcommand{\defp}{\delta_{+}}
+\newcommand{\defm}{\delta_{-}}
+\newcommand{\Def}{\Delta}
+\newcommand{\Env}{\mathcal E}
+\newcommand{\LT}{\mathcal L}
+\newcommand{\NC}{\mathrm{NC}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title{A Bidefect Counting Reduction for Aubrun's Partial-Transpose Moment Bound}
+\author{Kieran McShane}
+\date{June 7, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We isolate a pure combinatorial reduction underlying Aubrun's moment method
+for partial transposes of random induced states.  The reduction replaces a
+single total-defect count by a two-parameter count indexed by the two oriented
+Cayley defects of a Wick permutation.  This bidefect form is the one compatible
+with the shifted scalar bases appearing in the analytic estimate.
+
+The main result of this draft is conditional and deliberately explicit: the
+bidefect envelope follows from two large-gap Biane adjacent-link inputs, one
+nested predecessor-skip collision input, and one Chapuy-type genus recurrence.
+The finite gap-three Biane branches and the direct predecessor-skip branch are
+separated from these four inputs and accounted for by elementary
+incidence-tree reductions.  A new branch-normalized lemma records the
+canonical first/last return interval in every genuinely nested predecessor
+skip, and the current reduction exposes the nested collision input through
+this return interval.  The remaining four inputs are stated in mathematical
+form rather than hidden in notation.
+\end{abstract}
+
+\tableofcontents
+
+\section{Purpose and Scope}
+
+Aubrun's proof of the partial-transpose moment estimate is a moment-counting
+argument over Wick permutations.  The analytic side assigns to each permutation
+\(\p\) a power of the matrix dimension and the environment dimension; the
+combinatorial side must show that the number of permutations with a given loss
+of rank is not too large.  A tempting formulation counts only the total loss.
+That formulation is not stable enough for the final scalar estimate, because
+the two losses are paid by two different shifted bases.
+
+This article develops the corrected two-parameter formulation.  It is written
+as an ordinary mathematical draft.  The formalization status is recorded only
+in Appendix~\ref{sec:sync}; the main body is meant to be read without Lean.
+
+\begin{remark}[Honesty of the present version]
+The unconditional U-AUB-02 theorem is not closed in the formal development at
+the time of this draft.  The theorem below is therefore a reduction theorem:
+it says exactly which four combinatorial inputs remain.  It is nevertheless a
+usable article skeleton, because those inputs are now localized and no longer
+confused with rank-budget bookkeeping or finite checked branches.
+\end{remark}
+
+\section{Permutations, Defects, and the Bidefect Envelope}
+
+Fix \(m\geq 0\), put \(n=m+1\), and let
+\[
+  \g=(0\,1\,\cdots\,m)\in\Sym_n
+\]
+be the long cycle.  For a permutation \(\sigma\), write \(\cyc(\sigma)\) for
+the number of cycles, including fixed points.  The Cayley length is
+\[
+  |\sigma|=n-\cyc(\sigma).
+\]
+
+In the partial-transpose Wick expansion, the surviving index identifications
+can be encoded by a permutation \(\p\in\Sym_n\).  This is the only meaning of
+``Wick permutation'' in this article.  The sample index contributes
+\(2\cyc(\p)\) in the balanced \(s\sim \lambda d^2\) regime, while the two
+matrix-index directions contribute \(\cyc(\g\p)\) and \(\cyc(\p\g^{-1})\).
+This is the source of the weighted rank in Section~3.
+
+\begin{definition}[Oriented defects]
+For \(\p\in\Sym_n\), define the two oriented defects
+\[
+  \defp(\p) = n+1-\cyc(\p)-\cyc(\g\p),
+  \qquad
+  \defm(\p) = n+1-\cyc(\p)-\cyc(\p\g^{-1}).
+\]
+The bidefect class and its cardinality are
+\[
+  \mathcal B_m(a,b)
+  =
+  \{\p\in\Sym_n:\defp(\p)=a,\ \defm(\p)=b\},
+  \qquad
+  N_m(a,b)=|\mathcal B_m(a,b)|.
+\]
+\end{definition}
+
+The inequalities
+\[
+  \cyc(\p)+\cyc(\g\p)\leq n+1,
+  \qquad
+  \cyc(\p)+\cyc(\p\g^{-1})\leq n+1
+\]
+are just the Cayley triangle inequality written in cycle-count form.  Hence
+\(\defp\) and \(\defm\) are non-negative integers.
+
+\begin{definition}[Aubrun bidefect envelope]
+Let \(P(Q)\) be the polynomial scalar envelope used in the Wick estimate.  In
+the formal development it is denoted \(P(Q)\) with
+\[
+  Q=2(m+1).
+\]
+Define
+\[
+  \Env_m(a,b)
+  =
+  2^{2(m+1)}
+  \binom{m+3}{a}
+  \binom{m+1}{b}
+  P(2(m+1))^{a+b}.
+\]
+The bidefect count target is
+\[
+  N_m(a,b)\leq \Env_m(a,b)
+\]
+for
+\[
+  0\leq a\leq m+3,\qquad 0\leq b\leq m+1.
+\]
+\end{definition}
+
+\begin{remark}
+The ranges are part of the theorem.  One can state an all-\((a,b)\) version
+only after proving that the out-of-range classes are empty or harmless.  The
+current reduction deliberately avoids that extra claim.
+\end{remark}
+
+\section{Why the Count Must be Bidefect}
+
+The Wick weight contains three cycle-count contributions: one from the sample
+index and two from the left and right matrix indices.  In the balanced regime
+the weighted rank has the form
+\[
+  R(\p)=2\cyc(\p)+\cyc(\g\p)+\cyc(\p\g^{-1}).
+\]
+The rank budget is
+\[
+  R(\p)+\defp(\p)+\defm(\p)=2n+2.
+\]
+Equivalently, if the total defect is
+\[
+  \Def(\p)=2n+2-R(\p),
+\]
+then
+\[
+  \Def(\p)=\defp(\p)+\defm(\p).
+\]
+
+The identity explains both the success and the failure of the old route.  A
+single-defect count sees the correct rank loss, but it forgets which side of
+the scalar estimate pays that loss.  The bidefect envelope keeps the two
+losses separate until the final scalar absorption.
+
+\begin{proposition}[Shifted-base absorption, interface form]
+Assume the bidefect count target
+\[
+  N_m(a,b)\leq \Env_m(a,b)
+\]
+for all \(a,b\) in the stated ranges.  Then the corresponding double sum over
+Wick permutations is bounded by the shifted scalar bases used in Aubrun's
+moment estimate, rather than by a common maximum base.
+\end{proposition}
+
+\begin{proof}
+After grouping permutations by \((a,b)\), the count contributes the two
+binomial factors
+\[
+  \binom{m+3}{a},\qquad \binom{m+1}{b}.
+\]
+The analytic summand has the schematic form
+\[
+  A^{m+3-a} B^{m+1-b} Q^{a+b},
+\]
+where \(A\) and \(B\) are the two scalar bases associated with the two matrix
+directions and \(Q=P(2(m+1))\) is the polynomial loss budget.  Thus the
+\(a\)-sum is bounded by
+\[
+  \sum_a \binom{m+3}{a} A^{m+3-a}Q^a=(A+Q)^{m+3},
+\]
+and the \(b\)-sum is bounded by
+\[
+  \sum_b \binom{m+1}{b} B^{m+1-b}Q^b=(B+Q)^{m+1}.
+\]
+The important point is that the exponent \(a\) is absorbed on the left side
+and \(b\) on the right side; replacing them by \(a+b\) before the scalar step
+loses the shifted-base structure needed for the final estimate.
+\end{proof}
+
+\section{The One-Sided Genus Route}
+
+The bidefect estimate is supplied from the plus side.  A bidefect class embeds
+in its plus-defect class:
+\[
+  \mathcal B_m(a,b)\subseteq \{\p:\defp(\p)=a\}.
+\]
+Thus the bidefect problem is reduced to a one-sided count for \(\defp\), with
+the missing \(b\)-dependence restored by the binomial scalar envelope.
+
+\begin{definition}[Left-tight permutations]
+A permutation \(\p\in\Sym_n\) is left-tight if
+\[
+  \cyc(\p)+\cyc(\g\p)=n+1.
+\]
+Equivalently, \(\defp(\p)=0\).
+\end{definition}
+
+\begin{proposition}[Genus-zero base]
+The zero plus-defect class is the class of left-tight permutations.  Therefore
+the genus-zero count is bounded once left-tight permutations inject into
+noncrossing partitions:
+\[
+  \#\{\p:\defp(\p)=0\}
+  \leq |\NC(n)|
+  \leq 4^n.
+\]
+\end{proposition}
+
+\begin{proof}
+The first statement is the definition of \(\defp\).  The second follows if the
+cycle partition of a left-tight permutation is noncrossing and determines the
+permutation.  The number of noncrossing partitions on \(n\) points is the
+\(n\)-th Catalan number, and the elementary bound \(C_n\leq 4^n\) gives the
+displayed estimate.
+\end{proof}
+
+For positive plus-defect the intended interpretation is via unicellular maps:
+\[
+  \defp(\p)=2g(\p).
+\]
+The map model is the standard two-permutation encoding of a one-face map: the
+long cycle records the face order and the permutation \(\p\) records the
+vertex identifications.  Euler's formula then converts the cycle-count defect
+into twice the genus.  The present article does not prove the full map-model
+equivalence; it isolates it as part of the Chapuy input below.
+The target recurrence is a Chapuy slicing estimate of the form
+\[
+  N_{m,g}\leq (2n)^3 N_{m,g-1},
+  \qquad n=m+1,
+\]
+where
+\[
+  N_{m,g}=\#\{\p:\defp(\p)=2g\}.
+\]
+Together with the genus-zero base, this gives
+\[
+  N_{m,g}\leq 4^n(2n)^{3g}.
+\]
+This is the enumerative heart of the remaining U-AUB-02 proof.
+
+\section{The Biane Contour Mechanism}
+
+The genus-zero injection depends on recovering a left-tight permutation from
+its cycle partition.  This recovery is obstructed by predecessor skips.  The
+proof route uses Biane's noncrossing geometry: from a skip one extracts a long
+interval whose contour has a repeated class; path uniqueness in the associated
+incidence tree then forces a contradiction.
+
+Let
+\[
+  S_\p=\text{cycle partition of }\g\p,\qquad
+  T_\p=\text{cycle partition of }\p.
+\]
+The incidence graph has left vertices the \(S_\p\)-classes, right vertices the
+\(T_\p\)-classes, and an edge for each point of \(\{0,\ldots,m\}\).  In the
+left-tight noncrossing case this incidence graph is a tree.  Hence two simple
+paths with the same endpoints must coincide.
+
+\begin{definition}[Contour over an interval]
+For an interval \([a,c]\subseteq\{0,\ldots,m\}\), the Biane contour is the
+alternating path in the incidence graph obtained by following the cyclic
+successor steps
+\[
+  a\to a+1\to \cdots\to c.
+\]
+At each step the path crosses from an \(S_\p\)-class to a \(T_\p\)-class and
+back.  A repeated contour class means that two distinct points of the interval
+give the same left vertex \(S_\p\), or two distinct interior points give the
+same right vertex \(T_\p\).  In the incidence tree, such a repeat is the
+combinatorial event used to manufacture a second simple path.
+\end{definition}
+
+\begin{definition}[Predecessor skip]
+A non-fixed point \(x\) is a predecessor skip if the cyclic predecessor
+relation expected from the ordered cycle partition fails at \(x\).  Concretely
+there are two shapes.
+\begin{enumerate}[label=(\roman*)]
+\item Nonwrapping: \(\p x<x\), and the \(\p\)-cycle of \(x\) contains a point
+strictly between \(\p x\) and \(x\).
+\item Wrapping: \(\p x\not <x\), and the \(\p\)-cycle of \(x\) contains a point
+strictly below \(x\) or strictly above \(\p x\).
+\end{enumerate}
+\end{definition}
+
+The direct-hit case is already elementary: if \(x\) and \(\g(\p x)\) lie in
+the same \(\p\)-cycle, then one immediately obtains two distinct points lying
+simultaneously in one \(T_\p\)-class and one \(S_\p\)-class.  This contradicts
+the tree transversality of a left-tight noncrossing permutation.
+
+The remaining case is the genuinely nested case:
+\[
+  x\not\sim_\p \g(\p x).
+\]
+The following lemma records the normalized interval data now available in all
+three skip shapes.
+
+\begin{lemma}[Branch-normalized nested return interval]
+Let \(\p\) be left-tight and let \(x\) be a non-fixed predecessor skip.  Assume
+the direct-hit case is excluded:
+\[
+  x\not\sim_\p \g(\p x).
+\]
+Then there exist \(a<c\) such that
+\[
+  c-a>1,\qquad a\sim_\p c,
+\]
+and the Biane contour over \([a,c]\) has a repeated \(S_\p\)-class or a
+repeated \(T_\p\)-class.  Moreover the interval is canonical in its branch:
+\begin{enumerate}[label=(\roman*)]
+\item in the nonwrapping branch, \(a=\p x\), and \(c\) is the first same-\(\p\)
+return after \(\p x\);
+\item in the wrap-below branch, \(c=\p x\), and \(a\) is the last same-\(\p\)
+return below \(x\);
+\item in the wrap-above branch, \(a=x\), and \(c\) is the first same-\(\p\)
+return above \(\p x\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+In the nonwrapping branch, take the least same-cycle point \(c\) satisfying
+\[
+  \p x<c<x.
+\]
+If \(c=\p x+1\), then \(c=\g(\p x)\), contradicting the excluded direct-hit
+case.  Hence \(c-\p x>1\).  Left-tightness then applies to the interval
+\([\p x,c]\) and gives the repeated-contour obstruction.
+
+In the wrap-below branch, nonfixedness and \(\p x\not<x\) imply
+\[
+  x<\p x.
+\]
+Take the largest same-cycle point \(a<x\).  Then \(\p x-a>1\), and the
+interval \([a,\p x]\) carries the same repeated-contour obstruction.
+
+In the wrap-above branch, take the least same-cycle point \(c>\p x\).  As in
+the nonwrapping case, the direct-hit exclusion rules out \(c=\p x+1\).  Since
+\(x<\p x<c\), the interval \([x,c]\) has length \(>1\), and left-tightness
+again supplies the repeated-contour obstruction.
+\end{proof}
+
+\section{Finite Gap-Three Biane Reductions}
+
+The adjacent-link theorem is the local Biane statement used in the count.  In
+one orientation, it has the following form.  Suppose
+\[
+  a<b<c<d,\qquad a\sim_\p c,\qquad b\sim_\p d,
+  \qquad a\not\sim_\p b.
+\]
+The desired left adjacent link is
+\[
+  a\sim_{S_\p} b.
+\]
+The gap-two case is already settled.  The gap-three cases split into small
+finite contour branches.  The current reduction discharges these finite
+branches by incidence-tree uniqueness.
+
+The branch accounting used in the reduction is as follows.  Here \(S(u,v)\)
+means \(u\sim_{S_\p}v\), and \(T(u,v)\) means \(u\sim_\p v\).
+
+\begin{center}
+\begin{tabular}{L{0.28\linewidth}L{0.36\linewidth}L{0.25\linewidth}}
+\hline
+Slice & Branches exposed by the contour repeat & Status in the reduction\\
+\hline
+\(c-a=3,\ b=a+1\)
+&
+\(S(a,a+2)\) with \(\neg T(a,a+2)\);
+\(S(b,c)\);
+fixed \(a+2\);
+\(T(b,a+2)\)
+&
+contradicted or routed by tree uniqueness and the right frontier\\
+\(c-a=3,\ b=a+2\)
+&
+fixed \(a+1\);
+\(S(a+1,c)\);
+\(T(a+1,b)\);
+adjacent \(S(a+1,b)\)
+&
+absorbed by path uniqueness and adjacent-repeat normalization\\
+\(d-b=3,\ c=b+2\)
+&
+\(S(b,c)\), \(S(b+1,c)\), \(S(b+1,d)\),
+\(T(b,b+1)\), \(T(b,c)\), \(T(b+1,c)\)
+&
+absorbed by the right special-slice reductions\\
+\hline
+\end{tabular}
+\end{center}
+
+For example, in the slice
+\[
+  c-a=3,\qquad b=a+1,
+\]
+the remaining branch
+\[
+  a\not\sim_\p a+2,\qquad a\sim_{S_\p} a+2
+\]
+is contradictory.  The repeat \(a\sim_{S_\p} a+2\) copies one contour step
+into a path whose endpoints are already connected by the direct path coming
+from \(a\sim_\p c\).  Tree uniqueness forces \(a\sim_\p a+2\), contradiction.
+
+In the other left gap-three slice,
+\[
+  c-a=3,\qquad b=a+2,
+\]
+the fixed branch at \(a+1\) and the branch \(a+1\sim_{S_\p}c\) are similarly
+absorbed by comparing two simple incidence paths.  The checked right special
+slice
+\[
+  d-b=3,\qquad c=b+2
+\]
+is handled by the same principle, with left and right contour roles shifted.
+
+\section{The Conditional Bidefect Theorem}
+
+We now state the current reduction in journal-readable form.  The hypotheses
+are exactly the remaining theorem-strength leaves.
+
+\begin{hypothesis}[Large-gap left adjacent links]
+For every left-tight \(\p\) and every crossing quadruple \(a<b<c<d\) with
+\[
+  a\sim_\p c,\qquad b\sim_\p d,\qquad a\not\sim_\p b,
+\]
+if
+\[
+  2<c-a,\qquad c-a\neq 3,
+\]
+then the left adjacent link holds:
+\[
+  a\sim_{S_\p} b.
+\]
+\end{hypothesis}
+
+\begin{hypothesis}[Large-gap right adjacent links]
+Under the same crossing assumptions, if
+\[
+  2<d-b
+\]
+and the special checked slice
+\[
+  d-b=3,\qquad c=b+2
+\]
+does not occur, then the right adjacent link holds:
+\[
+  c\sim_{S_\p} d.
+\]
+\end{hypothesis}
+
+\begin{hypothesis}[Return-normalized nested skip collision]
+Let \(\p\) be left-tight and assume its cycle partition is noncrossing.  If
+\(x\) is a non-fixed predecessor skip and
+\[
+  x\not\sim_\p \g(\p x),
+\]
+then the branch-normalized return interval supplied by the preceding lemma
+forces two distinct points \(y,z\) such that
+\[
+  y\sim_\p z
+  \qquad\text{and}\qquad
+  y\sim_{S_\p}z.
+\]
+\end{hypothesis}
+
+\begin{hypothesis}[Chapuy slicing bound]
+The plus-defect classes admit the unicellular-map genus interpretation
+\(\defp=2g\), and the corresponding one-sided genus slices satisfy
+\[
+  N_{m,g}\leq (2(m+1))^3N_{m,g-1}
+\]
+for all \(g\geq 1\), with the genus-zero base bounded by \(4^{m+1}\).
+\end{hypothesis}
+
+\begin{theorem}[Conditional bidefect Aubrun bound]
+Assume the four hypotheses above.  Then for every \(m\geq 0\) and every
+\[
+  0\leq a\leq m+3,\qquad 0\leq b\leq m+1,
+\]
+one has
+\[
+  N_m(a,b)\leq \Env_m(a,b).
+\]
+\end{theorem}
+
+\begin{proof}
+The rank budget and bidefect split reduce the analytic Wick sum to a
+two-parameter count over \((a,b)\).  The plus-defect class controls every
+bidefect class with the same \(a\), so it remains to prove the one-sided
+plus-defect bound.
+
+The genus-zero plus-defect slice is the left-tight class.  Noncrossing and
+predecessor reconstruction inject it into noncrossing partitions, giving the
+bound \(4^{m+1}\).  The predecessor reconstruction follows by contradiction:
+a non-fixed predecessor skip first gives either the direct collision, already
+closed, or the nested collision supplied by the third hypothesis.  In either
+case two distinct points lie in both a \(\p\)-cycle and an \(S_\p\)-cycle,
+contradicting left-tight transversality.
+
+The finite gap-three Biane branches used in this reconstruction are accounted
+for in the table of Section~5 and handled by incidence-tree path-uniqueness
+reductions.  The remaining large-gap adjacent links are exactly the first two
+hypotheses.
+
+The positive plus-defect slices are then bounded by the Chapuy recurrence.
+Iterating from the genus-zero base gives the required polynomial envelope in
+the plus defect.  Finally, the bidefect scalar absorption attaches the two
+binomial factors and pays the two defects by separate shifted bases.  This is
+precisely the envelope \(\Env_m(a,b)\).
+\end{proof}
+
+\section{What Remains for an Unconditional Article}
+
+The theorem is a clean reduction, not yet the final Aubrun count theorem.  To
+remove the word ``conditional'', one must prove the four hypotheses in
+Section~6.
+
+The first two are large-gap Biane adjacent-link theorems.  The finite
+gap-three slices are no longer the issue; the remaining cases require a
+uniform argument for long contour gaps.  The third is the nested skip
+collision theorem.  The branch-normalized return interval lemma reduces its
+bookkeeping: every branch now provides a canonical long interval with a
+repeated contour class, and the current formal reduction makes precisely this
+return interval theorem-facing.  The fourth is the Chapuy recurrence together
+with the exact conversion of plus-defect into unicellular genus.
+
+\appendix
+\section{Synchronization with the Formal Development}
+\label{sec:sync}
+
+This appendix is not part of the mathematical proof.  It records the current
+source of the statements used above.
+
+\begin{description}[font=\normalfont\bfseries]
+\item[Bidefect split]
+\path{wickPlusDefect_add_wickMinusDefect_eq_wickDefect}
+\item[Bidefect envelope]
+\path{aubrunBiDefectCountEnvelope} and
+\path{AubrunBiDefectCountBound}
+\item[Plus-defect to bidefect count]
+\path{wickBiDefectCount_le_biDefectEnvelope_of_plusDefectCount}
+\item[Genus-zero left-tight base]
+\path{wickPlusGenusCount_zero_le_four_pow_of_no_nonfixed_cyclicPredecessorSkip}
+\item[Direct predecessor-skip collision]
+\path{permCyclicPredecessorSkip_direct_commonCycle}
+\item[Branch-normalized nested interval]
+\path{leftTight_nonfixed_nested_cyclicPredecessorSkip_exists_returnContourIntervalRepeat}
+\item[Current conditional endpoint]
+\path{AubrunBiDefectCountBound_of_bianeAdjacentLinkHalves_left_gap_three_start_impossible_frontiers_nestedReturnContourIntervalCommonCycle_and_chapuy}
+\end{description}
+
+The current audit of the return-normalized endpoint reports only the
+standard foundational dependencies \(\texttt{propext}\),
+\(\texttt{Classical.choice}\), and \(\texttt{Quot.sound}\).  This is not a
+claim that U-AUB-02 is done; it is evidence that the nested collision leaf is
+now exposed through the checked branch-normalized return interval.
+
+\begin{thebibliography}{9}
+
+\bibitem{Aubrun}
+G. Aubrun,
+\emph{Partial transposition of random states and non-centered semicircular
+distributions},
+Random Matrices: Theory and Applications \textbf{1} (2012), no. 2, 1250001.
+
+\bibitem{Biane}
+P. Biane,
+\emph{Some properties of crossings and partitions},
+Discrete Mathematics \textbf{175} (1997), no. 1--3, 41--53.
+
+\bibitem{Chapuy}
+G. Chapuy,
+\emph{A new combinatorial identity for unicellular maps, via a direct
+bijective approach},
+Advances in Applied Mathematics \textbf{47} (2011), no. 4, 874--893.
+
+\bibitem{HarerZagier}
+J. Harer and D. Zagier,
+\emph{The Euler characteristic of the moduli space of curves},
+Inventiones Mathematicae \textbf{85} (1986), no. 3, 457--485.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,608 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Formalization workflow for U-AUB-02},
+  pdfauthor={Kieran McShane},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Formalization workflow for U-AUB-02}
+\author{Kieran McShane}
+\date{2026-06-07}
+
+\begin{document}
+\maketitle
+
+\section{Formalization workflow for
+U-AUB-02}\label{formalization-workflow-for-u-aub-02}
+
+\subsection{Source of truth}\label{source-of-truth}
+
+The Lean source remains the authority. Article prose, blueprint
+statements, and ticket reports must be generated from checked
+declarations, board entries, and axiom audits.
+
+Current main module:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PptFactorization.AppendixBAubrunGraduate}
+\end{Highlighting}
+\end{Shaded}
+
+Global status:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{U{-}AUB{-}02 is open.  The active endpoint is a checked conditional reduction,}
+\NormalTok{not a no{-}input Aubrun count theorem.}
+\end{Highlighting}
+\end{Shaded}
+
+Active theorem-facing endpoint:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_nestedStrictReturnIntervalOpenNonwrapOffCycleSmallerInternalOnly\_and\_chapuy}
+\end{Highlighting}
+\end{Shaded}
+
+This is the current reduction layer to track while U-AUB-02 remains
+open. It is sharper than the previous primitive-child frontier because
+the five strict smaller child primitive leaves are now supplied
+internally by the parent primitive residual input. The remaining smaller
+nonwrapping child leaf is the genuine internal-subinterval collision
+branch.
+
+Previous reduction layer:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_nestedStrictReturnIntervalOpenNonwrapOffCycleSmallerPrimitiveBranchCases\_and\_chapuy}
+\end{Highlighting}
+\end{Shaded}
+
+Delta: the previous layer still exposed internal \texttt{S}, start
+\texttt{S}, end \texttt{S}, fixed predecessor, adjacent \texttt{T}, and
+genuine shorter internal-subinterval as separate smaller child leaves.
+The active layer uses
+\texttt{leftTightStrictReturnIntervalPrimitiveResidual\_of\_strictChildPrimitive}
+to absorb the five primitive alternatives into the parent primitive
+leaf.
+
+Current theorem-facing surface:
+
+Every item in the following list is still an input to the active
+endpoint, not a discharged subgoal. All finite gap-three branches are
+omitted because they are now supplied inside the endpoint.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large{-}gap left Biane link, only for 2 \textless{} c{-}a and c{-}a != 3}
+\NormalTok{large{-}gap right Biane link, outside the checked d{-}b=3, c=b+2 slice}
+\NormalTok{five unchanged side{-}specific residual branch collision leaves}
+\NormalTok{one smaller nonwrapping child internal{-}subinterval collision leaf}
+\NormalTok{Chapuy/trisection recurrence}
+\end{Highlighting}
+\end{Shaded}
+
+Presentation rule: do not cite the active endpoint as ``the Aubrun
+theorem'' without the qualifier ``conditional reduction from the
+remaining theorem-facing leaves''. The name contains many checked
+components, including \texttt{chapuy}, but Chapuy is still a hypothesis
+of the endpoint, not an internal proof.
+
+The left-start slice \texttt{c-a=3,\ b=a+1} no longer appears on this
+surface. Its four former branches are discharged internally: one from
+the right frontier, two by forcing that right-frontier contradiction,
+and the residual \texttt{not\ pi(a,a+2)\ and\ S(a,a+2)} branch by tree
+uniqueness for the copied length-two contour path.
+
+\subsection{Scientific toolchain}\label{scientific-toolchain}
+
+The local proof workflow now has a single status command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{python3 tools/scientific\_tool\_status.py}
+\end{Highlighting}
+\end{Shaded}
+
+It checks Python, Lake, Graphviz, Pandoc, latexdiff, leanblueprint, the
+leanblueprint plasTeX runtime, Grok, optional narration availability,
+the reference-library bridge, and the blueprint source files. The
+command reports readiness only; it does not print secrets.
+
+Finite permutation exploration is handled by:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{python3 scripts/u\_aub\_02\_perm\_explorer.py {-}{-}max{-}n 7}
+\NormalTok{python3 scripts/aubrun\_branch\_sanity.py {-}{-}max{-}n 9 {-}{-}all}
+\end{Highlighting}
+\end{Shaded}
+
+These scripts are conjecture-finding and regression tooling only. Their
+outputs cannot close a Lean theorem-facing leaf.
+
+The proof-frontier picture is generated by:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{python3 tools/u\_aub\_02\_frontier\_graph.py}
+\end{Highlighting}
+\end{Shaded}
+
+It writes \texttt{build/u\_aub\_02\_frontier.\{dot,svg,png\}} and
+deliberately marks the four live leaves as open.
+
+The maintained artifact build is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tools/build\_formalization\_artifacts.sh}
+\end{Highlighting}
+\end{Shaded}
+
+This rebuilds the status graph, blueprint PDF/web output, blueprint
+declaration checks, and the Pandoc/LaTeX exposition PDFs. The script
+pins the leanblueprint plasTeX runtime; using the global
+\texttt{plastex} binary can silently omit the leanblueprint plugins.
+
+Zotero is available through:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tools/zotero\_project\_refs.sh status}
+\NormalTok{tools/zotero\_project\_refs.sh search "Aubrun"}
+\NormalTok{tools/zotero\_project\_refs.sh export{-}all}
+\end{Highlighting}
+\end{Shaded}
+
+The reference bridge is optional. Bibliography writes or imports should
+still be treated as explicit project changes.
+
+Sage/GAP is optional. Use it for larger finite-combinatorics experiments
+if it is available:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{brew install {-}{-}cask sage}
+\end{Highlighting}
+\end{Shaded}
+
+Checked normalization machinery for the current gap-three surface:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_nestedReturnContourIntervalCommonCycle\_and\_chapuy}
+\NormalTok{AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_skipMinimalFrontierCommonCycle\_and\_chapuy}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_adjacent\_reduced\_fixed\_a2\_no\_pi\_a\_a2}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_adjacent\_target\_impossible}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_adjacent\_branch\_to\_target\_iff\_false}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_S\_b\_c\_false\_of\_global\_right\_frontier}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_fixed\_a2\_false\_of\_global\_right\_frontier}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_T\_b\_a2\_false\_of\_global\_right\_frontier}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_S\_a\_a2\_no\_pi\_false}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_right\_of\_gap\_three\_end\_adjacent\_of\_pi\_b\_c}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_right\_of\_gap\_three\_end\_adjacent\_of\_S\_b\_c}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_right\_of\_gap\_three\_end\_adjacent\_T\_b1\_c\_to\_S\_b1\_d\_of\_right\_rest}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_right\_of\_gap\_three\_end\_adjacent\_fixed\_b1\_to\_S\_b1\_d}
+\NormalTok{AppendixB.leftTight\_right\_gap\_three\_T\_b1\_c\_of\_S\_b1\_d\_of\_not\_S\_c\_d}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_right\_of\_gap\_three\_end\_adjacent\_of\_S\_b1\_d\_of\_left\_shift}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_right\_of\_gap\_three\_end\_adjacent\_reduced\_fixed\_b1\_no\_pi\_b\_b1\_no\_pi\_b\_c}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_end\_adjacent\_reduced}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_end\_adjacent\_of\_pi\_a\_a1}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_end\_adjacent\_reduced\_no\_pi\_a\_a1}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_end\_adjacent\_of\_pi\_a1\_b}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_end\_adjacent\_reduced\_no\_pi\_branches}
+\NormalTok{AppendixB.leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_end\_adjacent\_reduced\_fixed\_a1\_no\_pi\_branches}
+\end{Highlighting}
+\end{Shaded}
+
+These helpers justify branch rewrites inside the active endpoint. Their
+checked status is not an unconditional Aubrun count theorem.
+
+The checked right gap-three reducer consumes the branch \texttt{pi(b,c)}
+by transitivity with the crossing link \texttt{pi(a,c)}. The
+adjacent-repeat branch \texttt{S(b+1,c)} has been normalized to the
+fixed-point branch \texttt{pi(b+1)=b+1}, and the special branch
+\texttt{S(b,c)} is now closed by copying the contour step
+\texttt{c\ -\textgreater{}\ d} across \texttt{S(b)=S(c)} and comparing
+it with the direct \texttt{pi(b,d)} path. The branch \texttt{pi(b+1,c)}
+is now routed through the shifted crossing \texttt{(a,b,b+1,d)}: it
+gives \texttt{pi(a,b+1)}, the large-gap right input gives
+\texttt{S(b+1,d)}. The fixed branch \texttt{pi(b+1)=b+1} is routed
+through the same branch: fixedness gives \texttt{S(b+1,c)}, and denying
+\texttt{S(b+1,d)} creates a length-four incidence path from
+\texttt{S(b)} to \texttt{S(d)} that contradicts the direct length-two
+path from \texttt{pi(b,d)}. The last branch \texttt{S(b+1,d)} is now
+closed: if \texttt{S(c,d)} failed, incidence-path uniqueness forces
+\texttt{pi(b+1,c)}; then the shifted left link gives \texttt{S(a,b)},
+and the incidence-square obstruction contradicts the branch. The active
+endpoint signature therefore contains no \texttt{hRightS\_b\_c} or
+\texttt{hRightT\_b1\_c} or \texttt{hRightFixed\_b1} or
+\texttt{hRightS\_b1\_d} parameter. The left start-adjacent slice
+\texttt{c-a=3,\ b=a+1} is fully discharged at the active endpoint. The
+left-start \texttt{S(b,c)} usage in that now-discharged slice is
+supplied through the global right-frontier wrapper; this is distinct
+from the right gap-three special branch \texttt{S(b,c)} above, which is
+now discharged locally. The fixed \texttt{a+2} branch and the
+\texttt{pi(b,a+2)} branch both force the left-start \texttt{S(b,c)}
+contradiction. The residual \texttt{not\ pi(a,a+2)} and
+\texttt{S(a,a+2)} branch is closed by copying the contour step from
+\texttt{a+2} to \texttt{c} into a length-two incidence path from
+\texttt{S(a)} to \texttt{S(c)}; tree uniqueness compares it with the
+direct path from \texttt{pi(a,c)} and forces the forbidden link
+\texttt{pi(a,a+2)}. The left gap-three end-adjacent slice
+\texttt{c-a=3,\ b=a+2} is reduced to two finite branches. The branch
+\texttt{pi(a,a+1)} is absorbed by the shifted gap-two left theorem. The
+branch \texttt{pi(a+1,b)} is absorbed by the already visible
+start-adjacent branch on the shifted crossing \texttt{(a,a+1,c,d)}. The
+adjacent-repeat branch \texttt{S(a+1,b)} is normalized to the
+fixed-point branch \texttt{pi(a+1)=a+1}; the other theorem-facing
+end-adjacent branch left in that slice is \texttt{S(a+1,c)}.
+
+These branch counts are endpoint-local snapshots, not a progress
+percentage. Every finite-branch removal must still restate the non-local
+leaves separately: the large-gap Biane inputs, the nested non-direct
+return-interval collision theorem, and the Chapuy/trisection recurrence.
+A wrapper only counts as real progress when the named endpoint exposes
+strictly fewer branch hypotheses after the change.
+
+\subsection{Verification tiers}\label{verification-tiers}
+
+Use three tiers, in this order:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  micro-check a local theorem or signature with
+  \texttt{lake\ env\ lean};
+\item
+  quick-check the enclosing module with
+  \texttt{scripts/lean\_quick\_check.py};
+\item
+  rebuild the enclosing module with \texttt{lake\ build}.
+\end{enumerate}
+
+Only after the module build passes should the ledger, board, article
+note, or blueprint be updated.
+
+\subsection{Branch-probe discipline}\label{branch-probe-discipline}
+
+The Appendix B file is large and declaration order matters. New Biane
+finite branch lemmas should therefore be developed outside the endpoint
+first:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  test the proposed branch implication in small concrete models;
+\item
+  prove the helper in a downstream Lean probe importing
+  \texttt{PptFactorization.AppendixBAubrunGraduate};
+\item
+  only then move the checked helper into the earlier local branch
+  cluster, so the public endpoint never references a declaration that
+  appears later in the file.
+\end{enumerate}
+
+The finite sanity command is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{python3 scripts/aubrun\_branch\_sanity.py {-}{-}max{-}n 9}
+\end{Highlighting}
+\end{Shaded}
+
+This script enumerates small left-tight permutations and searches for
+counterexamples to the currently exposed branch implications. Since
+U-AUB-322 closed the finite gap-three branch list, it now also reports a
+live large-gap profile. Through \texttt{n=9}, the profile checks 6,916
+left-tight permutations and finds no crossing hypotheses at all. This is
+not proof evidence: it supports the expected direct
+noncrossing/large-gap route, but it does not close the structural Biane
+theorem. Its purpose is only to stop obviously false local branch
+attempts before they enter Lean.
+
+\subsection{Article track}\label{article-track}
+
+Narrate Lean is the preferred first pass:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{uvx narratelean narrate PptFactorization/AppendixBAubrunGraduate.lean \textbackslash{}}
+\NormalTok{  {-}{-}no{-}definitions {-}{-}no{-}proofs \textbackslash{}}
+\NormalTok{  {-}o exposition/narratelean\_appendix\_b\_statements.md}
+\end{Highlighting}
+\end{Shaded}
+
+Current policy: narration is optional exposition support, not proof
+evidence. Until a narration pass produces useful mathematics,
+leanblueprint plus hand-maintained Pandoc notes are the reliable path.
+The note is written directly from theorem statements, proof-artifact
+reports, and blueprint declaration checks. Any future Narrate Lean
+output still has to be audited against the same distinction: checked
+reduction is not no-input closure, and local branch normalization is not
+a theorem-strength leaf closure.
+
+Pandoc is the Markdown-to-LaTeX bridge:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pandoc exposition/u\_aub\_02\_formalization\_note.md \textbackslash{}}
+\NormalTok{  {-}o exposition/u\_aub\_02\_formalization\_note.tex}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Blueprint track}\label{blueprint-track}
+
+Leanblueprint has been initialized in \texttt{blueprint/}.
+
+Use these conventions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Put mathematical prose in \texttt{blueprint/src/content.tex}.
+\item
+  Attach Lean declarations using \texttt{\textbackslash{}lean\{...\}}.
+\item
+  Mark statements with \texttt{\textbackslash{}leanok} only after the
+  declaration builds and the axiom audit is benign.
+\item
+  Keep open theorem-strength leaves visibly unmarked or marked as open
+  in prose.
+\item
+  For conditional reduction theorems, say explicitly that
+  \texttt{\textbackslash{}leanok} verifies the reduction from its
+  hypotheses, not the hypotheses themselves.
+\item
+  Every open leaf should name the missing invariant it is expected to
+  prove or preserve, not only the Lean placeholder name.
+\end{enumerate}
+
+Useful commands once content is stable:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CFLAGS="{-}I/opt/homebrew/include" LDFLAGS="{-}L/opt/homebrew/lib" \textbackslash{}}
+\NormalTok{  uvx leanblueprint pdf}
+\end{Highlighting}
+\end{Shaded}
+
+Then generate the web declaration cache:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CFLAGS="{-}I/opt/homebrew/include" LDFLAGS="{-}L/opt/homebrew/lib" \textbackslash{}}
+\NormalTok{  uvx leanblueprint web}
+\end{Highlighting}
+\end{Shaded}
+
+Finally check that every \texttt{\textbackslash{}lean\{...\}}
+declaration referenced from the blueprint exists:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CFLAGS="{-}I/opt/homebrew/include" LDFLAGS="{-}L/opt/homebrew/lib" \textbackslash{}}
+\NormalTok{  uvx leanblueprint checkdecls}
+\end{Highlighting}
+\end{Shaded}
+
+In this repo, \texttt{lake\ build\ EnsX2026} may be needed once before
+\texttt{checkdecls}, because the Lake project still advertises that
+auxiliary library.
+
+Doc generation through \texttt{doc-gen4} is deferred. The first attempt
+tried to switch to \texttt{leanprover/lean4:v4.31.0-rc1} and download a
+large toolchain. Do not enable that until the project deliberately
+chooses a documentation toolchain policy.
+
+\subsection{LeanArchitect track}\label{leanarchitect-track}
+
+LeanArchitect is the right long-term model: keep blueprint metadata
+close to Lean declarations, infer dependencies, and export synchronized
+project documents. It is not currently installed in this local repo, so
+the immediate workflow is:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  maintain leanblueprint declarations now;
+\item
+  keep each blueprint theorem linked to exactly one or a small number of
+  Lean constants;
+\item
+  later migrate those links to LeanArchitect annotations if the package
+  is added to the project.
+\end{enumerate}
+
+\subsection{Adversarial review loop}\label{adversarial-review-loop}
+
+After any significant proof-frontier or exposition change:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ask Grok for adversarial feedback on both the article-style exposition
+  and the workflow note;
+\item
+  treat the feedback as advisory, not as proof evidence;
+\item
+  patch only claims that can be verified against Lean declarations,
+  build output, axiom audits, or generated artifacts;
+\item
+  rerun Pandoc and leanblueprint checks after incorporating accepted
+  changes.
+\end{enumerate}
+
+Use the project review command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tools/grok\_review\_u\_aub\_02.sh}
+\end{Highlighting}
+\end{Shaded}
+
+It asks for adversarial feedback from the current theorem-frontier
+context and keeps the retained Markdown review at
+\texttt{build/grok\_u\_aub\_02\_review.md} mathematical.
+
+Durable summaries of useful Grok feedback should be tracked rather than
+left only under \texttt{build/}. The current summary is the Grok
+workflow review note in the exposition folder. Its main guardrail is to
+foreground the four open theorem-strength leaves before the long checked
+endpoint name, because a checked conditional adapter can otherwise feel
+psychologically close to a done ticket.
+
+Before updating this workflow note or the article note, print the
+current theorem header of the sharp
+\texttt{AubrunBiDefectCountBound\_of\_*} declaration and confirm that
+the listed leaves match its parameters: large-gap left outside
+\texttt{c-a=3}, large-gap right outside \texttt{d-b=3} with
+\texttt{c=b+2}, no finite gap-three branch parameters, the five
+unchanged side-specific residual collision inputs, the smaller
+nonwrapping child internal-subinterval input, and \texttt{hstep}.
+
+The recurring review questions are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Does the exposition overclaim a conditional reduction as an
+  unconditional theorem?
+\item
+  Are all theorem-facing leaves named in plain mathematical terms?
+\item
+  Does every \texttt{\textbackslash{}leanok} marker correspond to a
+  declaration that builds and has a benign axiom audit?
+\item
+  Are the remaining invariants structural, or is the text merely listing
+  cases without a proof strategy?
+\item
+  Does the endpoint-local branch ledger strictly shrink, while the hard
+  collision and Chapuy leaves remain visible when they are still open?
+\end{enumerate}
+
+\subsection{Exit criteria for
+U-AUB-02}\label{exit-criteria-for-u-aub-02}
+
+Do not mark U-AUB-02 done until the public Aubrun expectation pipeline
+no longer exposes the corrected count theorem as an input. At minimum,
+Lean must check:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  large-gap left Biane adjacent link outside \texttt{c-a=3};
+\item
+  large-gap right Biane adjacent link;
+\item
+  nested non-direct return-interval collision theorem;
+\item
+  Chapuy/trisection recurrence;
+\item
+  the final bidefect count endpoint;
+\item
+  the public expectation pipeline consuming that endpoint.
+\end{enumerate}
+
+Each public endpoint must have an axiom audit no worse than:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[propext, Classical.choice, Quot.sound]}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

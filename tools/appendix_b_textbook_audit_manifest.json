@@ -1,0 +1,184 @@
+{
+  "textbook_tex": "AppendixB_textbook.tex",
+  "textbook_pdf": "build/appendix_b_textbook/AppendixB_textbook.pdf",
+  "scope_files": [
+    "PptFactorization/RandomMatrixModel.lean",
+    "PptFactorization/GaussianModel.lean",
+    "PptFactorization/PartialTranspose.lean",
+    "PptFactorization/AppendixBConcreteModel.lean",
+    "PptFactorization/ProbabilityTools.lean",
+    "PptFactorization/AppendixB.lean",
+    "PptFactorization/ComplexGaussianWick.lean",
+    "PptFactorization/TraceWickExpansion.lean",
+    "PptFactorization/TraceWickProductExpansion.lean",
+    "PptFactorization/WickCountingCore.lean",
+    "PptFactorization/WickCountingBounds.lean",
+    "PptFactorization/AubrunMomentSpine.lean",
+    "PptFactorization/AppendixBAubrunProposition71.lean",
+    "PptFactorization/AppendixBAubrunCombinatorics.lean",
+    "PptFactorization/AppendixBAubrunGraduate.lean",
+    "PptFactorization/AppendixBAubrunMomentInput.lean",
+    "PptFactorization/AppendixBDiagonalGamma.lean",
+    "PptFactorization/AppendixBPipeline.lean",
+    "PptFactorization/AppendixBGaussianIntegrability.lean",
+    "PptFactorization/HighDimensionalProbability.lean",
+    "PptFactorization/HighProbabilityBounds.lean",
+    "PptFactorization/AppendixBWishartBridge.lean",
+    "PptFactorization/AppendixBRadialSpherical.lean",
+    "PptFactorization/AppendixBSurfaceMeasure.lean",
+    "PptFactorization/AppendixBLevyPolarBridge.lean",
+    "PptFactorization/AppendixBPolarRadial.lean",
+    "PptFactorization/AppendixBNormalizedExpectations.lean",
+    "PptFactorization/AppendixBConcreteBridge.lean",
+    "PptFactorization/AppendixBSphericalLevy.lean",
+    "PptFactorization/AppendixBSphericalConcentration.lean",
+    "PptFactorization/AppendixBFinal.lean"
+  ],
+  "chapters": [
+    {
+      "title": "The Finite Model",
+      "files": [
+        "PptFactorization/RandomMatrixModel.lean",
+        "PptFactorization/GaussianModel.lean",
+        "PptFactorization/PartialTranspose.lean",
+        "PptFactorization/AppendixBConcreteModel.lean"
+      ],
+      "anchors": [
+        "dimension_product_eq",
+        "bipartiteDimension_eq"
+      ]
+    },
+    {
+      "title": "Medians, Local Extensions, and Local Levy Reduction",
+      "files": [
+        "PptFactorization/ProbabilityTools.lean",
+        "PptFactorization/AppendixB.lean"
+      ],
+      "anchors": [
+        "localized_levy_lemma",
+        "mean_median_gap_from_integrated_tail"
+      ]
+    },
+    {
+      "title": "Deterministic Matrix Lipschitz Calculus",
+      "files": [
+        "PptFactorization/AppendixB.lean"
+      ],
+      "anchors": [
+        "deterministic_matrix_lipschitz_from_operator_and_difference_bounds",
+        "trace_power_bound_from_telescope_and_hs_op_controls"
+      ]
+    },
+    {
+      "title": "Complex Gaussian Wick Expansion",
+      "files": [
+        "PptFactorization/ComplexGaussianWick.lean",
+        "PptFactorization/TraceWickExpansion.lean",
+        "PptFactorization/TraceWickProductExpansion.lean"
+      ],
+      "anchors": [
+        "wickExpansion_pathGammaMonomial_eq_survivingPathPairing_card"
+      ]
+    },
+    {
+      "title": "Aubrun's Combinatorial Counting Layer",
+      "files": [
+        "PptFactorization/WickCountingCore.lean",
+        "PptFactorization/WickCountingBounds.lean",
+        "PptFactorization/AubrunMomentSpine.lean",
+        "PptFactorization/AppendixBAubrunProposition71.lean",
+        "PptFactorization/AppendixBAubrunCombinatorics.lean",
+        "PptFactorization/AppendixBAubrunGraduate.lean"
+      ],
+      "anchors": [
+        "aubrunLemma36_card_le_k_pow_three_mul",
+        "aubrunLemma74_fixedDefectClassCount_le",
+        "aubrunLemma75_relationCounting_of_profileCountSumBound",
+        "aubrunGraduateRelationCounting"
+      ]
+    },
+    {
+      "title": "Aubrun Moment Inputs",
+      "files": [
+        "PptFactorization/AppendixBAubrunMomentInput.lean"
+      ],
+      "anchors": [
+        "gaussianWishartGammaOffDiagonal_traceMoment_eq_survivingPairing_sum",
+        "gaussianWishartGammaOffDiagonalOpNormMean_le_of_chosen_even_moment"
+      ]
+    },
+    {
+      "title": "Diagonal Gamma and the Full Wishart-Gamma Expectation",
+      "files": [
+        "PptFactorization/AppendixBDiagonalGamma.lean",
+        "PptFactorization/AppendixBPipeline.lean",
+        "PptFactorization/AppendixBGaussianIntegrability.lean"
+      ],
+      "anchors": [
+        "gaussianWishartGammaDiagonalOpNormMean_le_C_lambda",
+        "wishartGammaExpectation_from_diagonal_and_offDiagonal"
+      ]
+    },
+    {
+      "title": "High-Probability Bounds",
+      "files": [
+        "PptFactorization/HighDimensionalProbability.lean",
+        "PptFactorization/HighProbabilityBounds.lean",
+        "PptFactorization/AppendixBWishartBridge.lean"
+      ],
+      "anchors": [
+        "ConcreteHighProbabilityBoundsExplicit",
+        "ConcreteNormalizedOperatorNormInputs"
+      ]
+    },
+    {
+      "title": "Surface Measure, Polar Law, and Independence",
+      "files": [
+        "PptFactorization/AppendixBRadialSpherical.lean",
+        "PptFactorization/AppendixBSurfaceMeasure.lean",
+        "PptFactorization/AppendixBLevyPolarBridge.lean",
+        "PptFactorization/AppendixBPolarRadial.lean"
+      ],
+      "anchors": [
+        "invariant_probabilityMeasure_eq_of_compact_pretransitive",
+        "gaussianDirection_law_isProbabilityMeasure",
+        "polarLaw",
+        "gaussianRadius_indep_gaussianDirection"
+      ]
+    },
+    {
+      "title": "Expectation Normalization",
+      "files": [
+        "PptFactorization/AppendixBNormalizedExpectations.lean",
+        "PptFactorization/AppendixBConcreteBridge.lean"
+      ],
+      "anchors": [
+        "concreteRemainingExpectationInputs_to_normalized_bounds",
+        "normalized_operator_norm_inputs_from_bridges"
+      ]
+    },
+    {
+      "title": "Spherical Levy and Localized Concentration",
+      "files": [
+        "PptFactorization/AppendixBSphericalLevy.lean",
+        "PptFactorization/AppendixBSphericalConcentration.lean",
+        "PptFactorization/AppendixBLevyPolarBridge.lean",
+        "PptFactorization/AppendixB.lean"
+      ],
+      "anchors": [
+        "strongGlobalSurfaceSubtypeLevy",
+        "local_lipschitz_concentration_theorem",
+        "paper_main_theorem_assembled"
+      ]
+    },
+    {
+      "title": "Final Assembly",
+      "files": [
+        "PptFactorization/AppendixBFinal.lean"
+      ],
+      "anchors": [
+        "final_appendixB_assembly_no_structure_inputs"
+      ]
+    }
+  ]
+}

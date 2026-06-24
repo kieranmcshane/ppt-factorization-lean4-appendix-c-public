@@ -1,0 +1,762 @@
+\section{Concentration via local Lipschitz estimates}
+\label{app:second_approach}
+
+\makeatletter
+\@ifundefined{revderived}{\newenvironment{revderived}{}{}}{}
+\@ifundefined{revlean}{\newenvironment{revlean}{}{}}{}
+\@ifundefined{revnewmath}{\newenvironment{revnewmath}{}{}}{}
+\@ifundefined{revlatest}{\newenvironment{revlatest}{}{}}{}
+\@ifundefined{revrecent}{\newenvironment{revrecent}{}{}}{}
+\@ifundefined{revearlier}{\newenvironment{revearlier}{}{}}{}
+\makeatother
+
+We prove concentration for the normalized moments
+\[
+  f_k(X)=\Tr\left(\left((XX^*)^\Gamma\right)^k\right),
+  \qquad
+  X\in S_{HS}(d^2,s):=\{X\in M_{d^2,s}(\C):\norm X_2=1\}.
+\]
+The sphere \(S_{HS}(d^2,s)\) is equipped with its uniform probability
+measure, i.e. Euclidean surface measure divided by its surface area.
+
+We use the following norm conventions.  For \(X\in M_{m,n}(\C)\),
+\[
+  \norm X_2=\bigl(\Tr(X^*X)\bigr)^{1/2}
+  =
+  \left(\sum_{i=1}^m\sum_{\alpha=1}^n |X_{i\alpha}|^2\right)^{1/2}
+\]
+is the Hilbert--Schmidt norm, and
+\[
+  \norm X_\infty
+  =
+  \sup_{\norm v_{\ell_2^n}=1}\norm{Xv}_{\ell_2^m}
+\]
+is the operator norm.  For \(A\in M_N(\C)\),
+\[
+  \norm A_1=\Tr|A|,\qquad |A|=(A^*A)^{1/2},
+\]
+is the trace norm.  We regard \(M_{d^2}(\C)\) as
+\(M_d(\C)\otimes M_d(\C)\), and
+\(\Gamma=\operatorname{Id}\otimes T\) denotes partial
+transpose on the second tensor factor.
+
+The only external estimates used below are Levy's spherical concentration
+inequality \cite[Corollary~5.17]{AubrunSzarek2017} and Aubrun's
+off-diagonal partially-transposed Wishart moment estimate
+\cite[Lemma~3.4]{Aubrun12}; all other reductions are written out.
+
+\begin{theorem}[Localized concentration of normalized moments]
+\label{thm:appendixB-local-concentration}
+For every fixed \(k\ge1\) and every \(\lambda>0\), there are constants
+\(c,C>0\), depending only on \(k\) and \(\lambda\), such that for all
+sufficiently large \(d\), all integers \(s\) satisfying
+\[
+  \frac{\lambda}{2}d^2\le s\le 2\lambda d^2,
+\]
+and all \(\varepsilon>0\),
+\[
+  \Prob\left\{
+    \left|
+      \Tr\left(\left((XX^*)^\Gamma\right)^k\right)
+      -
+      \E\Tr\left(\left((XX^*)^\Gamma\right)^k\right)
+    \right|
+    \ge
+    \varepsilon d^{-(2k-2)}
+  \right\}
+  \le
+  C e^{-c d^2}
+  +
+  C\exp\left(-c\frac{d^4\varepsilon^2}{k^2}\right),
+\]
+where \(X\) is uniform on \(S_{HS}(d^2,s)\).
+\end{theorem}
+
+\subsection{A local form of Levy's lemma}
+
+Let \(\sigma_{n-1}\) denote the uniform probability measure on the Euclidean
+unit sphere \(S^{n-1}\subset\R^n\), namely Euclidean surface measure divided
+by the surface area of \(S^{n-1}\).  Distances on \(S^{n-1}\) are measured
+with the ambient Euclidean norm unless explicitly stated otherwise.
+
+\begin{lemma}[Spherical Levy inequality]
+\label{lem:appendixB-spherical-levy}
+Assume \(n\ge3\).  Let \(F:S^{n-1}\to\R\) be \(L\)-Lipschitz for the
+ambient Euclidean distance, with \(L>0\), and let \(M_F\) be a median of
+\(F\) with respect to \(\sigma_{n-1}\).  Then for every \(t>0\),
+\[
+  \sigma_{n-1}\{x\in S^{n-1}: |F(x)-M_F|> t\}
+  \le \exp\left(-\frac{n t^2}{2L^2}\right)
+\].
+\end{lemma}
+
+\begin{proof}
+Aubrun--Szarek's Levy lemma, \cite[Corollary~5.17]{AubrunSzarek2017},
+states the following stronger median estimate for the geodesic distance
+\(g\) on \(S^{n-1}\): if \(n>2\), if \(F\) is \(L\)-Lipschitz for \(g\),
+and if \(M_F\) is a median of \(F\), then, for every \(t>0\),
+\[
+  \sigma_{n-1}\{x: |F(x)-M_F|>t\}
+  \le
+  \exp\left(-\frac{n t^2}{2L^2}\right).
+\]
+The ambient Euclidean distance is dominated by the geodesic distance:
+\[
+  \norm{x-y}_2\le g(x,y)\qquad(x,y\in S^{n-1}).
+\]
+Thus an \(L\)-Lipschitz function for the Euclidean distance is also
+\(L\)-Lipschitz for \(g\), so the displayed estimate is exactly the stated
+estimate.
+\end{proof}
+
+The following elementary localization is the form needed below; all
+probabilities in the statement are with respect to \(\sigma_{n-1}\).
+
+\begin{lemma}[Localized Levy lemma]
+\label{lem:appendixB-local-levy}
+Assume \(n\ge3\).  Let \(\Omega\subset S^{n-1}\) be a nonempty measurable
+set, and let
+\(f:S^{n-1}\to\R\) be measurable.  Assume that \(f\) is
+\(L\)-Lipschitz on \(\Omega\), with \(L>0\).  If \(M_f\) is a median of
+\(f\), then for every \(t>0\),
+\[
+  \Prob\{|f-M_f|>t\}
+  \le
+  2\Prob(\Omega^c)
+  +
+  2\exp\left(-\frac{n t^2}{8L^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Define the McShane extension of \(f|_\Omega\) by
+\[
+  F(x)=\inf_{y\in\Omega}\bigl(f(y)+L\norm{x-y}_2\bigr),
+  \qquad x\in S^{n-1}.
+\]
+Then \(F=f\) on \(\Omega\) and \(F\) is \(L\)-Lipschitz on the whole sphere.
+Indeed, for any \(x,x'\) and any \(y\in\Omega\),
+\[
+  f(y)+L\norm{x-y}_2
+  \le f(y)+L\norm{x'-y}_2+L\norm{x-x'}_2,
+\]
+and taking the infimum over \(y\) gives
+\(F(x)\le F(x')+L\norm{x-x'}_2\); reversing \(x,x'\) gives the Lipschitz
+bound.  If \(x\in\Omega\), the choice \(y=x\) gives \(F(x)\le f(x)\), while
+the Lipschitz property of \(f|_\Omega\) gives
+\(f(x)\le f(y)+L\norm{x-y}_2\) for every \(y\in\Omega\), hence
+\(f(x)\le F(x)\).
+
+Let \(M_F\) be a median of \(F\).  Since \(F=f\) on \(\Omega\),
+\[
+  \Prob\{|f-M_F|>u\}
+  \le
+  \Prob(\Omega^c)+
+  \exp\left(-\frac{n u^2}{2L^2}\right).
+\]
+Here the exponential term is exactly Lemma~\ref{lem:appendixB-spherical-levy}
+applied to the global \(L\)-Lipschitz function \(F\); the extra
+\(\Prob(\Omega^c)\) accounts for the points where \(F\) and \(f\) need not
+agree.
+The median replacement estimate
+\[
+  \Prob\{|f-M_f|>t\}
+  \le
+  2\Prob\{|f-M_F|>t/2\}
+\]
+is elementary: if \(|M_f-M_F|\le t/2\), the event on the left is contained
+in \(\{|f-M_F|>t/2\}\); if \(|M_f-M_F|>t/2\), then
+\(\Prob\{|f-M_F|>t/2\}\ge1/2\) by the definition of a median.  Combining the
+two estimates gives the claim.
+\end{proof}
+
+\subsection{Deterministic Lipschitz estimate}
+
+\begin{lemma}[Trace-power perturbation]
+\label{lem:appendixB-trace-power-perturbation}
+Let \(N,k\ge1\).  For every \(A,B\in M_N(\C)\),
+\[
+  |\Tr(A^k)-\Tr(B^k)|
+  \le
+  k\max(\norm A_\infty,\norm B_\infty)^{k-1}\norm{A-B}_1 .
+\]
+\end{lemma}
+
+\begin{proof}
+The telescoping identity gives
+\[
+  A^k-B^k
+  =
+  \sum_{j=0}^{k-1}A^j(A-B)B^{k-1-j}.
+\]
+For every matrix \(M\), \(|\Tr M|\le\norm M_1\), and the trace norm satisfies
+\[
+  \norm{RST}_1\le\norm R_\infty\norm S_1\norm T_\infty .
+\]
+Therefore
+\[
+\begin{aligned}
+|\Tr(A^k)-\Tr(B^k)|
+&\le
+\sum_{j=0}^{k-1}
+\norm{A^j(A-B)B^{k-1-j}}_1       \\
+&\le
+\sum_{j=0}^{k-1}
+\norm A_\infty^j\norm{A-B}_1\norm B_\infty^{k-1-j}                 \\
+&\le
+k\max(\norm A_\infty,\norm B_\infty)^{k-1}\norm{A-B}_1 .
+\end{aligned}
+\]
+\end{proof}
+
+\begin{lemma}[Partial-transpose moment map Lipschitz bound]
+\label{lem:appendixB-moment-lipschitz}
+Let \(d,s,k\ge1\).  For \(X,Y\in M_{d^2,s}(\C)\), put
+\[
+  A_X=(XX^*)^\Gamma,\qquad A_Y=(YY^*)^\Gamma.
+\]
+Then
+\[
+\begin{aligned}
+&\left|
+  \Tr(A_X^k)-\Tr(A_Y^k)
+\right|                                                     \\
+&\qquad\le
+2kd\,
+\max(\norm{A_X}_\infty,\norm{A_Y}_\infty)^{k-1}
+\max(\norm X_\infty,\norm Y_\infty)\,
+\norm{X-Y}_2 .
+\end{aligned}
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:appendixB-trace-power-perturbation},
+\[
+\left|\Tr(A_X^k)-\Tr(A_Y^k)\right|
+\le
+k\max(\norm{A_X}_\infty,\norm{A_Y}_\infty)^{k-1}
+\norm{A_X-A_Y}_1 .
+\]
+Since \(A_X-A_Y=(XX^*-YY^*)^\Gamma\), partial transpose is an isometry for
+the Hilbert--Schmidt norm, and
+\(\norm M_1\le d\norm M_2\) for \(M\in M_{d^2}(\C)\), we get
+\[
+  \norm{A_X-A_Y}_1
+  \le d\norm{XX^*-YY^*}_2.
+\]
+Finally,
+\[
+  XX^*-YY^*=(X-Y)X^*+Y(X-Y)^*,
+\]
+and the Hilbert--Schmidt ideal inequality gives
+\[
+  \norm{XX^*-YY^*}_2
+  \le
+  \norm{X-Y}_2\norm X_\infty+\norm Y_\infty\norm{X-Y}_2
+  \le
+  2\max(\norm X_\infty,\norm Y_\infty)\norm{X-Y}_2.
+\]
+Combining the estimates proves the lemma.
+\end{proof}
+
+\subsection{Operator-norm good sets}
+
+\begin{lemma}[Gaussian polar decomposition]
+\label{lem:appendixB-gaussian-polar}
+Let \(m,n\ge1\), and let \(G\in M_{m,n}(\C)\) have independent standard
+complex Gaussian entries.  Put \(R=\norm G_2\) and \(X=G/R\), on the
+almost-sure event \(\{R>0\}\).  Then \(X\) is distributed according to the
+uniform probability measure on
+\[
+  S_{HS}(m,n):=\{Y\in M_{m,n}(\C):\norm Y_2=1\},
+\]
+and \(X\) is independent of \(R\).  Moreover
+\[
+  R^2=\sum_{i,\alpha}|G_{i\alpha}|^2
+\]
+has Gamma distribution with shape \(mn\) and scale \(1\).
+\end{lemma}
+
+\begin{proof}
+Identify \(M_{m,n}(\C)\) with \(\C^{mn}\), equipped with the Euclidean norm
+\(\norm{\cdot}_2\).  The density of \(G\) with respect to Lebesgue measure is
+\[
+  z\longmapsto \pi^{-mn}\exp(-\norm z_2^2).
+\]
+The origin has Gaussian measure zero, so \(R>0\) almost surely.  In polar
+coordinates \(z=ru\), with \(r>0\) and \(u\in S_{HS}(m,n)\), Lebesgue measure
+has the form
+\[
+  dz=c_{m,n}\, r^{2mn-1}\,dr\,d\sigma(u),
+\]
+where \(\sigma\) is the uniform probability measure on \(S_{HS}(m,n)\) and
+\(c_{m,n}\) is the surface area constant.  Hence the joint density of
+\((R,X)\) is proportional to
+\[
+  e^{-r^2}r^{2mn-1}\,dr\,d\sigma(u).
+\]
+This factorizes into a function of \(r\) times \(\sigma(du)\), proving both
+the uniformity of \(X\) and the independence of \(X\) and \(R\).  Finally,
+the change of variable \(y=r^2\) gives density proportional to
+\[
+  y^{mn-1}e^{-y}\,dy
+\]
+for \(R^2\), i.e. the Gamma distribution with shape \(mn\) and scale \(1\).
+\end{proof}
+
+\begin{lemma}[Gaussian operator norm]
+\label{lem:appendixB-gaussian-op}
+Let \(m,n\ge1\), and let \(H\in M_{m,n}(\C)\) have independent standard
+complex Gaussian entries.  There is a universal constant \(C\) such that
+\[
+  \E\norm H_\infty\le C(\sqrt m+\sqrt n).
+\]
+\end{lemma}
+
+\begin{proof}
+For unit vectors \(u\in\C^m\) and \(v\in\C^n\),
+\[
+  \langle u,Hv\rangle
+  =
+  \sum_{i,\alpha}\overline{u_i}H_{i\alpha}v_\alpha
+\]
+is a standard complex Gaussian, so
+\(\Prob\{|\langle u,Hv\rangle|\ge r\}=e^{-r^2}\).
+Choose \(1/4\)-nets \(N_1,N_2\) in the unit spheres of \(\C^m\) and
+\(\C^n\).  The elementary volume argument gives
+\[
+  |N_1|\le9^{2m},\qquad |N_2|\le9^{2n}.
+\]
+If
+\[
+  M=\max_{u\in N_1,\ v\in N_2}|\langle u,Hv\rangle|,
+\]
+then \(\norm H_\infty\le2M\).  To see this, approximate arbitrary unit
+\(u,v\) by \(u_0,v_0\) in the nets and use
+\[
+  |\langle u,Hv\rangle|
+  \le
+  |\langle u_0,Hv_0\rangle|
+  +\frac14\norm H_\infty+\frac14\norm H_\infty .
+\]
+By the union bound,
+\[
+  \Prob\{M\ge r\}\le
+  \exp\{2(m+n)\log9-r^2\}.
+\]
+Integrating this tail gives
+\(\E M\le C'(\sqrt m+\sqrt n)\), and hence
+\(\E\norm H_\infty\le C(\sqrt m+\sqrt n)\).
+\end{proof}
+
+\begin{revlatest}
+\begin{lemma}[Median bound for nonnegative random variables]
+\label{lem:appendixB-nonnegative-median-bound}
+Let \(Z\ge0\) be an integrable random variable and let \(M\in\R\) satisfy
+\[
+  \Prob\{Z\ge M\}\ge \frac12 .
+\]
+Then
+\[
+  M\le 2\E Z .
+\]
+In particular, every median of a nonnegative random variable is bounded above
+by twice its expectation.
+\end{lemma}
+
+\begin{proof}
+If \(M\le0\), the claim is immediate.  Otherwise \(M>0\), and
+\[
+  \E Z
+  \ge
+  \E\bigl(Z\mathbf 1_{\{Z\ge M\}}\bigr)
+  \ge
+  M\Prob\{Z\ge M\}
+  \ge
+  \frac M2 .
+\]
+\end{proof}
+\end{revlatest}
+
+\begin{proposition}[Partial-transpose Wishart expectation in the balanced window]
+\label{prop:appendixB-wishart-expectation}
+For every \(\lambda>0\), there are constants \(C_\lambda>0\) and
+\(d_0=d_0(\lambda)\) such that the following holds.  Let \(d\ge d_0\), let
+\(s\) be an integer satisfying
+\[
+  \frac{\lambda}{2}d^2\le s\le 2\lambda d^2 .
+\]
+Let \(G\in M_{d^2,s}(\C)\) have independent standard complex Gaussian
+entries and put \(W=s^{-1}GG^*\).  Then
+\[
+  \E\norm{W^\Gamma}_\infty\le C_\lambda .
+\]
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+  W^\Gamma=\diag(W^\Gamma)+Z,\qquad Z=W^\Gamma-\diag(W^\Gamma).
+\]
+The diagonal is unchanged by partial transpose:
+\[
+  (W^\Gamma)_{ii}=W_{ii}
+  =
+  \frac1s\sum_{\alpha=1}^s |G_{i\alpha}|^2.
+\]
+Thus \(\norm{\diag(W^\Gamma)}_\infty\) is the maximum of \(d^2\) averages of
+\(s\) independent mean-one exponentials.  We record the Chernoff estimate
+needed here.  If \(V_i=s^{-1}\sum_{\alpha=1}^s E_{i\alpha}\), with the
+\(E_{i\alpha}\)'s independent exponentials of mean one, then, for every
+\(u>0\),
+\[
+  \Prob\left\{
+    V_i\ge 1+2\sqrt{u/s}+2u/s
+  \right\}\le e^{-u}.
+\]
+Indeed, for \(\theta\in(0,1)\),
+\[
+  \Prob\{V_i\ge 1+\delta\}
+  \le
+  e^{-\theta s(1+\delta)}(1-\theta)^{-s}.
+\]
+Taking \(\theta=\delta/(1+\delta)\) gives
+\[
+  \Prob\{V_i\ge 1+\delta\}
+  \le
+  \exp\{-s(\delta-\log(1+\delta))\}.
+\]
+With \(z=\sqrt{u/s}\) and \(\delta=2z+2z^2\), the elementary inequality
+\[
+  \log(1+2z+2z^2)\le 2z+z^2
+\]
+implies \(\delta-\log(1+\delta)\ge z^2=u/s\), which proves the tail bound.
+
+Apply this with \(u=v+2\log d\) and take a union bound over the \(d^2\)
+diagonal entries.  For every \(v\ge0\),
+\[
+  \Prob\left\{
+    \max_i V_i
+    \ge
+    1+2\sqrt{\frac{v+2\log d}{s}}
+      +2\frac{v+2\log d}{s}
+  \right\}
+  \le e^{-v}.
+\]
+Let
+\[
+  a(v)=
+  1+2\sqrt{\frac{v+2\log d}{s}}
+    +2\frac{v+2\log d}{s}.
+\]
+The function \(a\) is increasing, and
+\[
+  a'(v)=
+  \frac1{\sqrt{s}\sqrt{v+2\log d}}+\frac2s.
+\]
+By the layer-cake formula and the preceding tail bound,
+\[
+\begin{aligned}
+  \E\max_{1\le i\le d^2}V_i
+  &\le
+  a(0)+\int_0^\infty e^{-v}a'(v)\,dv                         \\
+  &\le
+  1+2\sqrt{\frac{2\log d}{s}}
+    +4\frac{\log d}{s}
+    +\frac1{\sqrt{s}}\int_0^\infty \frac{e^{-v}}{\sqrt v}\,dv
+    +\frac2s                                                    \\
+  &\le
+  1+C\sqrt{\frac{\log d}{s}}
+    +C\frac{\log d}{s}
+\end{aligned}
+\]
+for \(d\ge2\).
+Therefore
+\[
+  \E\norm{\diag(W^\Gamma)}_\infty
+  \le
+  1+C_\lambda\frac{\sqrt{\log d}}{d}.
+\]
+
+For the off-diagonal part we use Aubrun's moment estimate,
+\cite[Lemma~3.4]{Aubrun12}: for every even \(m\ge2\) there is a polynomial
+\(Q\), independent of \(d\) and \(s\), such that
+\[
+  \E\Tr(Z^m)
+  \le
+  \left(\frac2s\right)^m
+  (d+Q(m))^{m+2}(\sqrt s+Q(m))^m.
+\]
+Since \(Z\) is Hermitian and \(m\) is even,
+\[
+  \E\norm Z_\infty
+  \le
+  \bigl(\E\Tr(Z^m)\bigr)^{1/m}.
+\]
+Choose even \(m=m(d)\to\infty\) slowly enough that
+\[
+  Q(m)=o(d),\qquad \frac{\log d}{m}\to0.
+\]
+Taking the \(m\)-th root of Aubrun's estimate gives
+\[
+  \E\norm Z_\infty
+  \le
+  \frac2s(d+Q(m))^{1+2/m}(\sqrt s+Q(m)),
+\]
+which is bounded uniformly in \(d\) because
+\(\lambda d^2/2\le s\le2\lambda d^2\).  The triangle inequality gives the
+result.
+\end{proof}
+
+\begin{revlatest}
+\begin{lemma}[Radial transfer from Wishart to the sphere]
+\label{lem:appendixB-radial-transfer-pt-operator}
+Let \(G\in M_{d^2,s}(\C)\) have independent standard complex Gaussian
+entries, and use its polar decomposition in the real Hilbert space
+\(M_{d^2,s}(\C)\) with the Hilbert--Schmidt norm.  Thus, outside the null
+event \(\{G=0\}\), set
+\[
+  R=\norm G_2,\qquad X=\frac GR,\qquad W=\frac1s GG^*
+\]
+so that \(G=RX\), with \(X\in S_{HS}(d^2,s)\).  By
+Lemma~\ref{lem:appendixB-gaussian-polar}, \(X\) is uniform on the
+Hilbert--Schmidt sphere and independent of \(R\).  Then
+\[
+  \E\norm{(XX^*)^\Gamma}_\infty
+  =
+  \frac1{d^2}\E\norm{W^\Gamma}_\infty .
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:appendixB-gaussian-polar}, \(\E R^2=d^2s\).  Since
+\(G=RX\), we have
+\[
+  W^\Gamma
+  =
+  \frac1s(GG^*)^\Gamma
+  =
+  \frac{R^2}{s}(XX^*)^\Gamma .
+\]
+Taking operator norms and expectations gives
+\[
+  \E\norm{W^\Gamma}_\infty
+  =
+  \frac1s\E\left(R^2\norm{(XX^*)^\Gamma}_\infty\right)
+  =
+  \frac{\E R^2}{s}\E\norm{(XX^*)^\Gamma}_\infty
+  =
+  d^2\,\E\norm{(XX^*)^\Gamma}_\infty,
+\]
+where the middle equality uses independence of \(R\) and \(X\).  Rearranging
+proves the lemma.
+\end{proof}
+\end{revlatest}
+
+\begin{proposition}[Good set in the balanced window]
+\label{prop:appendixB-good-set}
+For every \(\lambda>0\), there are constants \(a,b,c,C>0\) and
+\(d_0=d_0(\lambda)\) such that the following holds.  Let \(d\ge d_0\), let
+\(s\) be an integer satisfying \(\lambda d^2/2\le s\le2\lambda d^2\), and
+let \(X\) be uniform on \(S_{HS}(d^2,s)\).  Then the set
+\[
+  \Omega
+  =
+  \left\{
+    X:\norm X_\infty\le\frac a d,\quad
+    \norm{(XX^*)^\Gamma}_\infty\le\frac b{d^2}
+  \right\}
+\]
+satisfies
+\[
+  \Prob(\Omega^c)\le C e^{-c d^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+Let \(G\in M_{d^2,s}(\C)\) have independent standard complex Gaussian
+entries.  On the almost-sure event \(G\ne0\), put
+\[
+  R=\norm G_2,\qquad X=\frac GR .
+\]
+The polar law in Lemma~\ref{lem:appendixB-gaussian-polar} says precisely that
+this angular variable \(X\) has the uniform surface law on \(S_{HS}(d^2,s)\)
+and is independent of the radial variable \(R\).
+First consider \(h(X)=\norm X_\infty\).  It is \(1\)-Lipschitz on the
+Hilbert--Schmidt sphere.  By independence of \(R\) and \(X\),
+\[
+  \E\norm G_\infty=\E R\,\E\norm X_\infty.
+\]
+Since \(R^2\) has Gamma distribution with shape \(N=d^2s\) and scale \(1\),
+\[
+  \E R^2=N,\qquad \E R^4=N(N+1).
+\]
+The Paley--Zygmund inequality applied to \(R^2\) gives
+\[
+  \Prob\{R^2\ge N/2\}
+  \ge
+  \frac{(N/2)^2}{N(N+1)}
+  \ge \frac18 .
+\]
+Consequently
+\[
+  \E R\ge c\sqrt{d^2s}.
+\]
+Together with Lemma~\ref{lem:appendixB-gaussian-op}, applied with
+\(m=d^2\) and \(n=s\), this gives
+\[
+  \E\norm X_\infty\le \frac{C_\lambda}{d}.
+\]
+\begin{revlatest}
+By Lemma~\ref{lem:appendixB-nonnegative-median-bound}, any median \(M_h\)
+satisfies \(M_h\le2\E h\).  Levy's lemma in the form of
+Lemma~\ref{lem:appendixB-spherical-levy}, applied on the real sphere of
+dimension \(2d^2s-1\), gives, with deviation \(C_\lambda/d\),
+\end{revlatest}
+\[
+  \Prob\left\{\norm X_\infty>\frac a d\right\}\le e^{-c d^2}.
+\]
+
+Now set \(g(X)=\norm{(XX^*)^\Gamma}_\infty\).  On the event
+\(\Omega_1=\{\norm X_\infty\le a/d\}\), the map \(g\) is
+\(C_\lambda/d\)-Lipschitz, because
+\[
+\begin{aligned}
+ |g(X)-g(Y)|
+ &\le
+ \norm{(XX^*)^\Gamma-(YY^*)^\Gamma}_\infty        \\
+ &\le
+ \norm{XX^*-YY^*}_2
+ \le
+ (\norm X_\infty+\norm Y_\infty)\norm{X-Y}_2 .
+\end{aligned}
+\]
+\begin{revlatest}
+Furthermore, Lemma~\ref{lem:appendixB-radial-transfer-pt-operator} and
+Proposition~\ref{prop:appendixB-wishart-expectation} give
+\end{revlatest}
+\[
+  \E g(X)
+  \le
+  \frac{C_\lambda}{d^2}.
+\]
+\begin{revlatest}
+Again Lemma~\ref{lem:appendixB-nonnegative-median-bound} bounds any median
+\(M_g\) by \(2\E g\).  Applying the localized Levy lemma to \(g\) on
+\(\Omega_1\), with deviation \(C_\lambda/d^2\), gives
+\end{revlatest}
+\[
+  \Prob\left\{
+    \norm{(XX^*)^\Gamma}_\infty>\frac b{d^2}
+  \right\}
+  \le
+  C e^{-c d^2}.
+\]
+The union bound proves the proposition.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:appendixB-local-concentration}}
+
+On the good set \(\Omega\) from Proposition~\ref{prop:appendixB-good-set},
+Lemma~\ref{lem:appendixB-moment-lipschitz} gives
+\[
+  |f_k(X)-f_k(Y)|
+  \le
+  \frac{C_{k,\lambda}k}{d^{2k-2}}\norm{X-Y}_2
+  \qquad (X,Y\in\Omega).
+\]
+The real dimension of the Hilbert--Schmidt sphere is \(2d^2s-1\), which is
+of order \(d^4\) and is at least \(2\) for all sufficiently large \(d\).
+Applying Lemma~\ref{lem:appendixB-local-levy} with
+\[
+  L=\frac{C_{k,\lambda}k}{d^{2k-2}},
+  \qquad
+  t=\frac12\varepsilon d^{-(2k-2)},
+\]
+and using
+\(\{|f_k-M_k|\ge \varepsilon d^{-(2k-2)}\}
+  \subset
+  \{|f_k-M_k|>\frac12\varepsilon d^{-(2k-2)}\}\),
+we obtain, for every median \(M_k\) of \(f_k\),
+\[
+  \Prob\left\{
+    |f_k(X)-M_k|\ge \varepsilon d^{-(2k-2)}
+  \right\}
+  \le
+  C e^{-c d^2}
+  +
+  4\exp\left(-c\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+
+It remains to replace the median by the expectation.  Since partial
+transpose is an isometry for the Hilbert--Schmidt norm,
+\[
+  \norm{(XX^*)^\Gamma}_2=\norm{XX^*}_2.
+\]
+Moreover
+\[
+  \norm{XX^*}_2^2=\Tr((X^*X)^2)
+  \le \Tr(X^*X)^2=\norm X_2^4=1.
+\]
+Thus, if \((\alpha_j)\) are the eigenvalues of \((XX^*)^\Gamma\), then
+\(\sum_j|\alpha_j|^2\le1\).  Therefore \(|f_k(X)|\le1\) for \(k\ge2\),
+while \(f_1(X)=1\).  From now on choose a median \(M_k\in[-1,1]\); this is
+possible because \(f_k\) takes values in \([-1,1]\).  Hence
+\[
+  |f_k(X)-M_k|\le2
+\]
+for every \(X\).  This boundedness is not used to integrate a constant tail
+on \([0,\infty)\).  It is used to truncate the layer-cake identity:
+\[
+\begin{aligned}
+  |\E f_k-M_k|
+  &\le \E |f_k-M_k|                                      \\
+  &=\int_0^2
+      \Prob\{|f_k(X)-M_k|\ge u\}\,du .
+\end{aligned}
+\]
+For \(0<u\le2\), the localized Levy estimate applied with this value of
+\(u\), together with \(n=2d^2s\asymp_\lambda d^4\) and
+\(L=C_{k,\lambda}k d^{-(2k-2)}\), gives
+\[
+  \Prob\{|f_k(X)-M_k|\ge u\}
+  \le
+  C e^{-c d^2}
+  +
+  4\exp\left(-c\,\frac{d^{4k}u^2}{k^2}\right).
+\]
+Therefore
+\[
+\begin{aligned}
+  |\E f_k-M_k|
+  &\le
+  2C e^{-c d^2}
+  +
+  4\int_0^\infty
+    \exp\left(-c\,\frac{d^{4k}u^2}{k^2}\right)\,du        \\
+  &\le
+  C e^{-c d^2}+\frac{C_{k,\lambda}k}{d^{2k}} .
+\end{aligned}
+\]
+If the right hand side in the last display is at most
+\(\varepsilon d^{-(2k-2)}/2\), then
+\[
+  \{|f_k-\E f_k|\ge\varepsilon d^{-(2k-2)}\}
+  \subset
+  \{|f_k-M_k|\ge\tfrac12\varepsilon d^{-(2k-2)}\},
+\]
+and the preceding median estimate gives the result after changing constants.
+If instead
+\[
+  |\E f_k-M_k|>\frac12\varepsilon d^{-(2k-2)},
+\]
+then the displayed bound on \(|\E f_k-M_k|\) forces
+\(\varepsilon\le C_{k,\lambda}d^{-2}\), up to changing constants and ignoring
+the exponentially small term.  In that regime
+\[
+  \exp\left(-c\frac{d^4\varepsilon^2}{k^2}\right)
+\]
+is bounded below by a positive constant depending only on \(k,\lambda\), so
+the right hand side of the theorem can be made at least \(1\) by increasing
+\(C\).  The probability bound is then trivial.  This proves the theorem.

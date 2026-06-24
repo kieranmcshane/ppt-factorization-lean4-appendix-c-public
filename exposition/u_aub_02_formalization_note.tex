@@ -1,0 +1,634 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={U-AUB-02: bidefect count route{,} current formal frontier},
+  pdfauthor={Kieran McShane},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{U-AUB-02: bidefect count route, current formal frontier}
+\author{Kieran McShane}
+\date{2026-06-07}
+
+\begin{document}
+\maketitle
+
+\section{U-AUB-02: bidefect count route, current formal
+frontier}\label{u-aub-02-bidefect-count-route-current-formal-frontier}
+
+\textbf{Status.} U-AUB-02 is still open. The current Lean declaration is
+a checked conditional reduction: it proves that the listed Biane,
+frontier, and Chapuy inputs imply \texttt{AubrunBiDefectCountBound\ m};
+it does not prove those inputs.
+
+\subsection{Target}\label{target}
+
+The formal target behind U-AUB-02 is the corrected Aubrun count input
+used by the expectation pipeline. In mathematical terms, the route now
+tries to prove a bidefect count theorem of the following form.
+
+For each Wick length \(m\), every admissible pair of defects \((a,b)\)
+should satisfy \[
+  \#\{\pi : \delta_+(\pi)=a,\ \delta_-(\pi)=b\}
+  \le
+  E_m(a,b),
+\] where \(E_m(a,b)\) is the explicit Aubrun envelope used later in the
+scalar sum. Once this count is known, the already checked scalar
+absorption turns the double defect sum into shifted bases rather than a
+false common-base maximum.
+
+The remaining theorem-strength work is exactly the following four
+groups:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the large-gap left Biane adjacent-link theorem;
+\item
+  the large-gap right Biane adjacent-link theorem;
+\item
+  the side-specific residual branch collision theorems for non-fixed
+  predecessor skips, including the nonwrapping smaller
+  internal-subinterval child branch;
+\item
+  the Chapuy/trisection recurrence.
+\end{enumerate}
+
+The active Lean endpoint is the checked reduction from those four groups
+to the bidefect count bound:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_nestedStrictReturnIntervalOpenNonwrapOffCycleSmallerInternalOnly\_and\_chapuy}
+\end{Highlighting}
+\end{Shaded}
+
+This name should not be read as a solved ticket. Its theorem statement
+still contains the theorem-strength hypotheses listed immediately below.
+
+The previous reduction layer was:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_skipMinimalFrontierCommonCycle\_and\_chapuy}
+\end{Highlighting}
+\end{Shaded}
+
+Delta: the previous layers still asked the collision theorem to work
+from the minimal-frontier packet. The active layer uses
+\texttt{permCyclicPredecessorSkip\_direct\_commonCycle} internally,
+supplies branch-normalized return intervals internally, descends
+internal-right repeats to actual shorter subintervals, splits the three
+origin-tag side cases, and exposes the nonwrapping internal-subinterval
+branch only in the off-cycle open-internal form. The newest checked
+support then sends the off-cycle witness through a smaller side-aware
+residual child and splits that child into primitive and
+internal-subinterval branches, then absorbs the strict primitive child
+alternatives into the already theorem-facing parent primitive residual
+leaf.
+
+Recent left-slice improvement: the residual branch
+\texttt{not\ pi(a,a+2)\ and\ S(a,a+2)} is contradictory. The repeat
+\texttt{S(a,a+2)} copies the one-step contour move from \texttt{a+2} to
+\texttt{c} into a length-two path from \texttt{S(a)} to \texttt{S(c)}.
+Tree uniqueness compares this copied path with the direct length-two
+path from \texttt{pi(a,c)} and forces \texttt{T(a+2)=T(a)}, i.e.
+\texttt{pi(a,a+2)}, contradicting the branch assumption.
+
+That change is \texttt{U-AUB-316} in the ledger. It removes the last
+left-start gap-three parameter; the start slice \texttt{c-a=3,\ b=a+1}
+is no longer present on the endpoint surface. The later
+\texttt{U-AUB-317} closes the right special-slice branch
+\texttt{S(b,c)}: if \texttt{S(c,d)} failed, copying the contour step
+\texttt{c\ -\textgreater{}\ d} across \texttt{S(b)=S(c)} would give a
+simple path from \texttt{S(b)} to \texttt{S(d)}, and tree uniqueness
+against the direct path from \texttt{pi(b,d)} would force
+\texttt{pi(b,c)}, contradicting \texttt{pi(a,c)} and the separating
+non-link \texttt{not\ pi(a,b)}.
+
+The active endpoint reduces \texttt{AubrunBiDefectCountBound\ m} to the
+following theorem-strength inputs:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the remaining large-gap left Biane adjacent link under
+  \texttt{2\textless{}c-a} and \texttt{c-a\ !=\ 3};
+\item
+  the remaining large-gap right Biane adjacent link outside the checked
+  \texttt{d-b=3,\ c=b+2} slice;
+\item
+  the side-specific residual branch collision theorems for non-fixed
+  predecessor skips, together with the strict nonwrapping smaller child
+  internal-subinterval collision theorem carrying the parent/child side
+  data;
+\item
+  the Chapuy/trisection recurrence.
+\end{enumerate}
+
+Current support discipline: these live leaf groups are also rendered as
+a Graphviz frontier at \texttt{build/u\_aub\_02\_frontier.svg}, tracked
+in the leanblueprint declaration inventory, and checked by
+\texttt{tools/build\_formalization\_artifacts.sh}. Grok review is used
+only as scientific criticism of the exposition; it is not a second
+formalization agent. The finite permutation scripts remain conjecture
+finders only.
+
+Previous delta: \texttt{U-AUB-349} consumes the off-cycle witness
+through a smaller side-aware residual interval. The smaller
+contour-repeat interval now splits: either it already gives the common
+\(\pi\)/\(S\pi\) pair, or it leaves a strictly smaller
+\texttt{leftTightStrictReturnIntervalResidual} with the inherited
+no-\(x\)-cycle and block-off-\(x\) invariants. The current endpoint
+therefore no longer asks for the whole nonwrapping off-cycle
+open-internal subinterval theorem.
+
+Most recent delta: \texttt{U-AUB-358} absorbs the strict child primitive
+branches into the parent primitive residual leaf. The theorem face
+therefore no longer asks separately for the child internal \texttt{S},
+start \texttt{S}, end \texttt{S}, fixed predecessor, or adjacent
+\texttt{T} branches. Those are all primitive residuals on a strict child
+interval, hence primitive residuals on the parent interval. The
+remaining smaller nonwrapping child leaf is the genuine
+internal-subinterval branch.
+
+Previous delta: \texttt{U-AUB-355} wires the strict split of the smaller
+contour-repeat packet into the sharp endpoint. U-AUB-356 then replaces
+raw internal \texttt{T} by adjacent \texttt{T} or genuine shorter
+internal subinterval, and U-AUB-358 absorbs the primitive alternatives
+as above.
+
+Previous delta: \texttt{U-AUB-350} splits that smaller child residual by
+the subinterval-preserving descent. The theorem face now asks separately
+for the side-aware primitive child branch and the side-aware
+internal-subinterval child branch; the raw child residual predicate is
+no longer the exposed input.
+
+Previous delta: \texttt{U-AUB-348} turns the confined off-cycle internal
+witness into a strictly smaller charged contour interval. The witness
+endpoints \(a+r,a+s\) form a same-\(\pi\) interval strictly inside
+\((a,c)\), the interval has its own
+\texttt{leftTightContourIntervalRepeat} packet, and the whole witness
+block is still off the skipped \(x\)-cycle. This is support for the open
+collision leaf, not a closure of that leaf.
+
+Previous delta: \texttt{U-AUB-347} proves strict noncrossing confinement
+for the off-cycle nonwrapping internal block. If \(a,c\) are the
+first-return endpoints in the skipped \(x\)-cycle and the internal
+witness starts at \(a+r\) off that cycle, the whole \(\pi\)-block of
+\(a+r\) lies strictly inside \((a,c)\).
+
+Previous delta: \texttt{U-AUB-329} makes the branch-normalized return
+interval theorem-facing at the current sharp endpoint. The collision
+theorem no longer has to consume an arbitrary minimal-frontier packet;
+it can use the nonwrapping first-return, wrap-below last-return, or
+wrap-above first-return interval tied to the original skip. This is a
+sharper checked conditional endpoint, not a proof of the collision
+theorem.
+
+Previous delta: \texttt{U-AUB-328} completes the branch-normalized
+return-interval package for nested predecessor skips. The wrap-below
+branch now chooses the last same-\texttt{pi} return below \texttt{x};
+because a nonfixed wrapping skip has
+\texttt{x.val\ \textless{}\ (pi\ x).val}, the interval ending at
+\texttt{(pi\ x).val} has a genuine gap and carries the repeated-contour
+obstruction. The unified theorem packages nonwrapping first return,
+wrap-below last return, and wrap-above first return. This still does not
+prove the nested collision theorem. A new pure-math article source was
+also created at \texttt{article/u\_aub\_02\_pure\_math\_article.tex}; it
+compiles cleanly and has one Grok referee pass recorded in
+\texttt{build/grok\_u\_aub\_02\_article\_referee.md}.
+
+Previous delta: \texttt{U-AUB-327} extracts first-return contour
+intervals in two branches of the nested predecessor-skip leaf. In the
+nonwrapping branch, the first same-\texttt{pi} return after
+\texttt{(pi\ x).val} is separated by a genuine gap unless the
+already-closed direct-hit case occurs. The same first-return package is
+now available for the wrap-above branch. Both packages include the
+left-tight repeated-contour obstruction. They do not prove the collision
+theorem.
+
+Previous delta: \texttt{U-AUB-326} adds a tied contour extractor for the
+nested predecessor-skip leaf. A non-fixed skip now produces a long
+repeated contour interval together with an origin tag: either the
+interval is exactly \texttt{{[}(pi\ x).val,x.val{]}}, or it is a
+wrapping interval ending at \texttt{(pi\ x).val}, or it is a wrapping
+interval starting at \texttt{x.val}. This prevents the later collision
+proof from treating the charged interval as anonymous. It does not prove
+the collision theorem.
+
+Previous delta: \texttt{U-AUB-325} removes the direct-hit branch from
+the minimal-frontier leaf. If \texttt{finRotate\ (pi\ x)} is already in
+the same \texttt{pi}-cycle as \texttt{x}, the checked theorem
+\texttt{permCyclicPredecessorSkip\_direct\_commonCycle} supplies the
+nontrivial common \texttt{pi}/\texttt{finRotate*pi} pair. The live
+frontier theorem therefore only needs to handle the nested case where
+this same-cycle relation fails.
+
+Most recent delta, right special slice: \texttt{U-AUB-320} closes the
+last checked right branch, \texttt{S(b+1,d)}. If \texttt{S(b+1,d)} holds
+while the target \texttt{S(c,d)} fails, uniqueness of simple incidence
+paths from \texttt{S(c)} to \texttt{S(d)} forces \texttt{pi(b+1,c)}.
+Combined with \texttt{pi(a,c)}, this gives \texttt{pi(a,b+1)}. The
+shifted left adjacent-link input on \texttt{(a,b,b+1,d)} gives
+\texttt{S(a,b)}, and then \texttt{S(a,b)}, \texttt{S(b+1,d)},
+\texttt{pi(a,b+1)}, and \texttt{pi(b,d)} form the forbidden incidence
+square. The active endpoint no longer exposes \texttt{hRightS\_b1\_d},
+\texttt{hRightFixed\_b1}, \texttt{hRightS\_b\_c}, or
+\texttt{hRightT\_b1\_c}. This is a checked closure of the right
+gap-three special slice; U-AUB-02 remains open because the non-local
+leaves below are still theorem-facing.
+
+Recent delta, left end slice: \texttt{U-AUB-321} closes the fixed
+\texttt{a+1} branch. In the slice \texttt{c-a=3}, \texttt{b=a+2},
+fixedness of \texttt{a+1} gives the adjacent repeat \texttt{S(a+1,b)}.
+If the target \texttt{S(a,b)} failed, the contour step
+\texttt{a\ -\textgreater{}\ a+1}, this repeat, and the contour step
+\texttt{b\ -\textgreater{}\ c} would form a simple length-four incidence
+path from \texttt{S(a)} to \texttt{S(c)}. Tree uniqueness compares that
+path with the direct length-two path from \texttt{pi(a,c)},
+contradiction. The active endpoint no longer exposes
+\texttt{hLeftEndFixed\_a1}.
+
+Most recent delta, left end slice: \texttt{U-AUB-322} closes the
+remaining \texttt{S(a+1,c)} branch. The branch copies the contour step
+\texttt{a+1\ -\textgreater{}\ b} into a simple path from \texttt{S(c)}
+to \texttt{S(b)}. The reversed contour step
+\texttt{b\ -\textgreater{}\ c} gives a second simple path with the same
+endpoints. Tree uniqueness identifies their middle right vertices, hence
+forces \texttt{pi(a+1,b)}. The existing \texttt{pi(a+1,b)} absorber then
+closes the target. The active endpoint no longer exposes any finite
+gap-three branch.
+
+Tooling delta: \texttt{U-AUB-323} makes the large-gap sanity profile
+reproducible. The branch sanity script now checks the live large-gap
+crossing hypotheses in small left-tight models; through \texttt{n=9}, it
+enumerates 6,916 left-tight permutations and finds no crossing
+hypotheses. This is conjecture-finding evidence only, not a substitute
+for the large-gap Biane theorem.
+
+This endpoint is a checked reduction, not a no-input closure of
+U-AUB-02. Each item in the list above is still theorem-facing. Thus a
+\texttt{leanok} marker for this endpoint means that the reduction from
+these inputs is verified; it does not mean that the Aubrun count theorem
+has been proved unconditionally. In particular, words such as
+\texttt{Biane}, \texttt{frontier}, or \texttt{chapuy} inside the Lean
+name are not completion markers. They name the hypotheses being
+consumed.
+
+\subsection{Mathematical route}\label{mathematical-route}
+
+This section states the intended counting theorem, not a currently
+closed checked theorem.
+
+The corrected route is one-sided first. The intended combinatorial
+theorem interprets the plus-defect \(\delta_+\) through the
+unicellular-map genus: \[
+  \delta_+(\pi) = 2g(\pi).
+\] The expected counting strategy is then: \[
+  \#\{\delta_+=0\} \le 4^{m+1},
+\] and for genus \(g\), \[
+  N_{m,g+1}
+  \le (2(m+1))^3 N_{m,g}.
+\] Iterating gives \[
+  N_{m,g} \le 4^{m+1}(2(m+1))^{3g}.
+\] This is the combinatorial content that should feed the bidefect
+envelope. This paragraph is a proof target, not a closed checked
+theorem. The current verified content is the reduction from concrete
+Biane/Chapuy inputs to the bidefect envelope; the unconditional
+genus-zero and Chapuy counting theorems remain open.
+
+\subsection{Current Checked Content}\label{current-checked-content}
+
+The proof graph contains a large amount of checked surrounding
+structure.
+
+The high plus-defect tail, finite small-window reductions, bidefect
+scalar absorption, \texttt{NCPart} cardinality, gap-two Biane adjacent
+links, and several minimal-contour/frontier reductions are already
+verified. The latest checked endpoint sharpens the route as follows:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large{-}gap Biane half{-}links}
+\NormalTok{+ checked gap{-}three frontier reductions}
+\NormalTok{+ side{-}specific residual branch collisions}
+\NormalTok{+ Chapuy recurrence}
+\NormalTok{=\textgreater{} AubrunBiDefectCountBound m.}
+\end{Highlighting}
+\end{Shaded}
+
+This display is a conditional implication, not a completed theorem. The
+named declaration still carries the large-gap Biane inputs, the
+side-specific residual return-interval collision theorems, and the
+Chapuy recurrence as hypotheses.
+
+As a conditional adapter, the endpoint narrows the previous large-gap
+route in two ways. First, it removes the direct no-skip hypothesis from
+the theorem face. Instead of asking directly that a noncrossing
+left-tight cycle partition has no non-fixed predecessor skip, the
+current endpoint asks for the sharper collision statement:
+
+If a non-fixed predecessor skip exists, extract the side-tied long
+same-\(\pi\) return interval. Split the origin side into nonwrapping
+first return, wrap-below last return, and wrap-above first return; then
+split each side into primitive and internal-subinterval branches. In the
+nonwrapping internal-subinterval branch the endpoint-touching case and
+the case where the internal witness remains in the skipped \(x\)-cycle
+are checked impossible, so the theorem-facing nonwrapping child leaf is
+now split into the side-aware primitive and internal-subinterval child
+branches produced from the off-cycle witness; the child interval lies
+strictly inside the first-return interval, has no skipped \(x\)-cycle
+points inside it, and its \(\pi\)-block stays inside the parent interval
+and off \(x\). The remaining branch theorems must force two distinct
+points \(y,z\) such that \[
+  y \sim_\pi z
+  \quad\text{and}\quad
+  y \sim_{\gamma\pi} z.
+\] This contradicts left-tight transversality.
+
+Second, it no longer asks the broad left large-gap Biane hypothesis to
+handle any \texttt{c-a=3} slice. Since
+\texttt{a\textless{}b\textless{}c} and \texttt{c-a=3} force either
+\texttt{b=a+1} or \texttt{b=a+2}, both left length-three slices are now
+routed through finite contour reductions.
+
+For \texttt{c-a=3}, \texttt{b=a+1}, the left start-slice branches are
+now all discharged at the active endpoint. The four former branches were
+\[
+  S(b,c),\quad \pi(a+2)=a+2,\quad \pi(b,a+2),
+  \quad
+  \bigl(\neg(a\sim_\pi a+2)\ \wedge\ S(a,a+2)\bigr).
+\] The left-start \texttt{S(b,c)} among them is supplied by the right
+Biane frontier. The fixed-point branch and the \texttt{pi(b,a+2)} branch
+both force that already-closed left-start \texttt{S(b,c)} branch. The
+last branch is closed directly by the copied length-two incidence path
+described above.
+
+For \texttt{c-a=3}, \texttt{b=a+2}, the remaining left finite branches
+are \[
+  S(a+1,c).
+\] The earlier start-slice proof used several normalizations before the
+final closure. If the raw branch \(S(a,a+2)\) also has the hidden link
+\(a\sim_\pi a+2\), the checked start-gap-two right-repeat theorem gives
+the target \(S(a,b)\). The adjacent branch \(S(a+2,c)\) is exactly the
+adjacent repeat at \(a+2\), hence becomes the fixed-point branch
+\(\pi(a+2)=a+2\). The target \(S(a,b)\) itself is impossible: \(b=a+1\),
+while \(a\) already lies in a nontrivial same-\(\pi\) interval with
+\(c\) and \(c-a=3\). An adjacent \((\gamma\pi)\)-repeat \(S(a,a+1)\)
+would force \(a\) to be fixed by \(\pi\), contradicting \(a\sim_\pi c\)
+with \(a<c\). The checked theorem
+\texttt{leftTight\_bianeAdjacentLink\_left\_of\_gap\_three\_start\_adjacent\_branch\_to\_target\_iff\_false}
+therefore records that branch-to-target implications in this slice are
+the same as proving the corresponding branch impossible. The branch
+\(\pi(a,a+1)\) is now closed: together with \(\pi(a,c)\) it gives
+\(\pi(a+1,c)\), so the shifted gap-two crossing \((a+1,b,c,d)\) gives
+\(S(a+1,b)\), which feeds the already exposed branch. The branch
+\(\pi(a+1,b)\) is also closed: viewed on the shifted crossing
+\((a,a+1,c,d)\), it is the already exposed start-adjacent \(\pi(b,a+2)\)
+branch. That branch gives \(S(a,a+1)\), which is impossible for the
+nontrivial same-\(\pi\) interval \(a\sim_\pi c\). The remaining
+adjacent-repeat branch \(S(a+1,b)\) has also been normalized: because
+\(b=a+2\), it is exactly the adjacent left repeat at \(a+1\), and
+left-tightness turns it into the fixed-point branch \(\pi(a+1)=a+1\).
+That fixed-point branch is now closed: fixedness gives \(S(a+1,b)\), and
+a denial of \(S(a,b)\) produces a simple length-four path from \(S(a)\)
+to \(S(c)\). Tree uniqueness compares it with the direct length-two path
+from \(a\sim_\pi c\), contradiction.
+
+The right branch \texttt{S(b,c)} is now closed: assuming \texttt{S(b,c)}
+and denying the target \texttt{S(c,d)} gives a copied contour path from
+\texttt{S(b)} to \texttt{S(d)}, and tree uniqueness against the direct
+\texttt{pi(b,d)} path forces the forbidden link \texttt{pi(b,c)}. This
+right special branch is no longer a theorem-facing input to the active
+endpoint.
+
+The branch \texttt{pi(b+1,c)} is also no longer independent. It combines
+with the crossing link \texttt{pi(a,c)} to give \texttt{pi(a,b+1)}.
+Applying the large-gap right input to the shifted crossing
+\texttt{(a,b,b+1,d)} gives \texttt{S(b+1,d)}, because the shifted
+crossing is not the special \texttt{c=b+2} slice.
+
+The fixed branch \texttt{pi(b+1)=b+1} is now also internal. Fixedness
+gives the adjacent repeat \texttt{S(b+1,c)}. If \texttt{S(b+1,d)}
+failed, the contour step \texttt{b\ -\textgreater{}\ b+1} followed by
+the copied contour step \texttt{c\ -\textgreater{}\ d} would be a simple
+length-four incidence path from \texttt{S(b)} to \texttt{S(d)}. Tree
+uniqueness compares that path with the direct length-two path from
+\texttt{pi(b,d)}, contradiction. So the fixed branch feeds the same
+\texttt{S(b+1,d)} implication.
+
+The last right branch \texttt{S(b+1,d)} is now closed. If the target
+\texttt{S(c,d)} were false, path uniqueness would force
+\texttt{pi(b+1,c)}. Then \texttt{pi(a,c)} gives \texttt{pi(a,b+1)}, the
+shifted left link gives \texttt{S(a,b)}, and the four incidences
+\texttt{pi(a,b+1)}, \texttt{pi(b,d)}, \texttt{S(a,b)}, \texttt{S(b+1,d)}
+form a forbidden square.
+
+There are no remaining right finite branches in the checked
+\texttt{d-b=3}, \texttt{c=b+2} slice. The right branch \(\pi(b,c)\) is
+now closed: together with the crossing link \(\pi(a,c)\), it would imply
+\(\pi(a,b)\), contradicting the separating non-link. The adjacent-repeat
+branch \(S(b+1,c)\) has also been normalized: because \(c=b+2\), it is
+exactly the adjacent left repeat at \(b+1\), and left-tightness turns it
+into the fixed-point branch \(\pi(b+1)=b+1\).
+
+These branch lists are endpoint-local snapshots. The same public
+endpoint still separately requires the large-gap left Biane input, the
+large-gap right Biane input, the side-specific residual collision
+theorems, and the Chapuy recurrence.
+
+\subsection{What remains open}\label{what-remains-open}
+
+U-AUB-02 is not done. The remaining theorem-strength leaves are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  prove the remaining large-gap left Biane adjacent-link cases;
+\item
+  prove the remaining large-gap right Biane adjacent-link cases;
+\item
+  prove the remaining side-specific residual collision theorems, now
+  with branch-normalized return data available in all three nested
+  branches and the nonwrapping child residual carrying the inherited
+  no-\(x\)-cycle and block-off-\(x\) data; only the genuine smaller
+  child internal-subinterval branch remains theorem-facing after child
+  primitive absorption;
+\item
+  prove the Chapuy/trisection recurrence.
+\end{enumerate}
+
+These branches are not mere notation. They are finite Biane contour
+cases that likely need incidence-tree uniqueness or a descent lemma, not
+a naive cycle-transitivity shortcut. The finite branch scripts are
+conjecture finders only; their clean output is not counted as proof.
+
+\subsection{Checked reduction
+evidence}\label{checked-reduction-evidence}
+
+The new endpoint is in:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PptFactorization/AppendixBAubrunGraduate.lean}
+\end{Highlighting}
+\end{Shaded}
+
+The active checked declaration is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PptFactorization.AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_start\_impossible\_frontiers\_nestedReturnContourIntervalCommonCycle\_and\_chapuy}
+\end{Highlighting}
+\end{Shaded}
+
+The previous reduction layer is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PptFactorization.AppendixB.AubrunBiDefectCountBound\_of\_bianeAdjacentLinkHalves\_left\_gap\_three\_frontiers\_skipMinimalFrontierCommonCycle\_and\_chapuy}
+\end{Highlighting}
+\end{Shaded}
+
+Verification performed:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{python3 scripts/lean\_quick\_check.py PptFactorization.AppendixBAubrunGraduate {-}{-}timeout 300}
+\NormalTok{lake build PptFactorization.AppendixBAubrunGraduate}
+\NormalTok{lake build PptFactorization.AristotleTargets.UpperFromLowerColumnConcreteChoices}
+\NormalTok{python3 scripts/aubrun\_branch\_sanity.py {-}{-}max{-}n 9 {-}{-}all}
+\NormalTok{Pandoc rebuild of exposition/u\_aub\_02\_formalization\_note.pdf}
+\NormalTok{Blueprint print{-}PDF rebuild and declaration inventory check}
+\NormalTok{Grok adversarial review}
+\NormalTok{\#print axioms ...left\_gap\_three\_start\_impossible\_frontiers\_nestedReturnContourIntervalCommonCycle\_and\_chapuy}
+\NormalTok{\#print axioms ...left\_of\_gap\_three\_end\_adjacent\_fixed\_a1}
+\end{Highlighting}
+\end{Shaded}
+
+The axiom audit reports only:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[propext, Classical.choice, Quot.sound]}
+\end{Highlighting}
+\end{Shaded}
+
+This audit is evidence that the current reduction layer has no
+project-specific axioms. It is not evidence for the open leaves
+themselves. In particular, the large-gap Biane links, the nested
+non-direct return-interval collision theorem, and the Chapuy recurrence
+still need their own checked declarations and axiom audits.
+
+\subsection{Tooling status}\label{tooling-status}
+
+Automatic prose narration is not used as proof evidence. The current
+note is hand-curated from the checked Lean declarations, and any future
+machine-written prose must be audited against the exact hypothesis list
+of the active endpoint.
+
+Pandoc is installed and converts this note to both LaTeX and PDF using
+the repository TeX setup. This PDF has been refreshed from the current
+Markdown. Leanblueprint was initialized for the project, with a
+declaration inventory at \texttt{blueprint/lean\_decls}; blueprint
+refreshes are treated as a separate verification step and are not proof
+evidence by themselves. Full doc-gen integration was deliberately
+deferred when it attempted to download a 518 MB Lean release-candidate
+toolchain, which would slow the current proof workflow.
+
+A finite branch sanity script is now available at
+\texttt{scripts/aubrun\_branch\_sanity.py}. It enumerates small
+left-tight permutations and checks active branch implications for
+counterexamples before they are attempted in Lean. This is only a
+guardrail: the current script reports no active finite gap-three
+branches, then records the large-gap profile through \texttt{n=9}.
+
+Grok was used for advisory proof-architecture and exposition review. Its
+commentary remains advisory; Lean declarations, builds, axiom audits,
+Pandoc artifacts, and blueprint checks are the evidence.
+
+\end{document}

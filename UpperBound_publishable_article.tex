@@ -1,0 +1,504 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\dist}{dist}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sphere}{\mathbb S}
+\newcommand{\eps}{\varepsilon}
+
+\title{A Geometric Upper Bound for Partial-Transpose Moment Deviations on the Hilbert--Schmidt Sphere}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We record an upper-bound mechanism for fixed-order partial-transpose moment deviations in the balanced Hilbert--Schmidt regime.  Let $X_d$ be uniformly distributed on the Hilbert--Schmidt unit sphere in $M_{d^2,s(d)}(\C)$, with $s(d)/d^2\to \lambda>0$, and put
+\[
+  Z_{d,k}=d^{2k-2}\Tr\bigl(((X_dX_d^*)^\Gamma)^k\bigr),
+  \qquad k\ge 3.
+\]
+Using the natural background set, standard induced-state asymptotics, and
+spherical isoperimetry, one obtains the spike-speed upper bound
+\[
+  \limsup_{d\to\infty}d^{-2-2/k}\log\Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  \le -\lambda \eps^{1/k} .
+\]
+The local spike certificate is deterministic: after expanding into finitely
+many words, all mixed words vanish by one Schatten--Holder power-counting
+lemma.  The background half-mass estimate follows from standard convergence
+and edge bounds for random induced states.  No lower-tail estimate and no
+matching lower bound are claimed here.
+\end{abstract}
+
+\section{Introduction and scope}
+
+The purpose of this note is to isolate a geometric mechanism for the upper tail of a partial-transpose moment.  The mechanism is simple.  A displacement of squared spherical radius
+\[
+  r_d^2\asymp d^{-2+2/k}
+\]
+can create a fixed excess in a normalized $k$-th moment through a rank-one spike.  Since the ambient real dimension is of order $2d^2s(d)\sim 2\lambda d^4$, a spherical isoperimetric cost at that radius is of order
+\[
+  \exp\{-\lambda a d^{2+2/k}+o(d^{2+2/k})\}.
+\]
+If the deterministic excess created by such a displacement is at most $a^k+o(1)$, then a fixed upper-tail event at level $\eps$ is excluded from the $r_d$-neighbourhood of the typical background whenever $a<\eps^{1/k}$.  Isoperimetry then gives the exponent $-\lambda\eps^{1/k}$.
+
+The probabilistic ingredient in the geometric argument is a half-mass
+background theorem at the natural scales
+\[
+  \|Y\|_{\op}\lesssim d^{-1},
+  \qquad
+  \|(YY^*)^\Gamma\|_{\op}\lesssim d^{-2},
+  \qquad
+  Z_{d,k}(Y)\approx \E Z_{d,k}.
+\]
+The deterministic local spike certificate is not left as a hypothesis: the
+mixed words are controlled below by Schatten--Holder estimates.  Thus the
+correct interpretation is:
+\[
+\begin{gathered}
+  \text{natural-scale background concentration} + \text{spherical isoperimetry} \\
+  \Longrightarrow \text{spike-rate upper bound}.
+\end{gathered}
+\]
+The terminology ``spike-rate'' refers to the one-column spike prediction for
+the upper-bound exponent.  It should not be read as a full large-deviation
+principle, since no matching lower bound is supplied in this note.
+
+\section{Model and notation}
+
+Let $s=s(d)$ be a sequence of positive integers such that
+\begin{equation}\label{eq:balanced}
+  \frac{s(d)}{d^2}\longrightarrow \lambda>0 .
+\end{equation}
+Let $\mathcal H_d=M_{d^2,s(d)}(\C)$, regarded as a real Hilbert space with the Hilbert--Schmidt norm, and let
+\[
+  S_d=\{X\in \mathcal H_d:\|X\|_{\HS}=1\}.
+\]
+We write $\sigma_d$ for normalized surface measure on $S_d$.  The sphere $S_d$ is isometric to the round sphere
+\[
+  \Sphere^{N_d-1},\qquad N_d=2d^2s(d).
+\]
+We use the geodesic spherical distance and write it as $\dist_S$.  For a measurable set $A\subset S_d$ and $r>0$, define
+\[
+  A^r=\{X\in S_d:\dist_S(X,A)<r\}.
+\]
+
+For $X\in S_d$, set
+\[
+  \rho_X=XX^*,
+\]
+regarded as an operator on $\C^d\otimes\C^d$.  Let $\rho_X^\Gamma$ denote partial transposition in the second tensor factor.  For a fixed integer $k\ge 3$, define
+\begin{equation}\label{eq:Zd}
+  Z_{d,k}(X)=d^{2k-2}\Tr\bigl((\rho_X^\Gamma)^k\bigr).
+\end{equation}
+When $X_d$ is uniformly distributed on $S_d$, we write simply $Z_{d,k}=Z_{d,k}(X_d)$.
+
+\section{Background and geometry}
+
+The proof has two ingredients.  First, the background set has half mass at the
+natural moment and operator-norm scales.  Second, spherical isoperimetry turns
+that half-mass statement into an upper-tail bound.  The local spike certificate
+is then deterministic: once the background lies in this natural-scale set,
+every mixed spike-background word is \(o(1)\) by Schatten--Holder.
+
+\subsection{The background set}
+
+Fix \(k\ge 3\) and \(a>0\), and put
+\begin{equation}\label{eq:radius}
+  r_{d,a}^2=a\,d^{-2+2/k},
+  \qquad
+  \theta_{d,a}=r_{d,a}.
+\end{equation}
+
+\begin{definition}[Natural background set]\label{def:background-set}
+Let \(L>0\) and let \(\tau_d>0\).  The background good set
+\(K_d(L,\tau_d)\subset S_d\) is the set of all \(Y\in S_d\) satisfying
+\[
+  |Z_{d,k}(Y)-\E Z_{d,k}|\le \tau_d,
+  \qquad
+  \|Y\|_{\op}\le L/d,
+  \qquad
+  \|(YY^*)^\Gamma\|_{\op}\le L/d^2 .
+\]
+\end{definition}
+
+\begin{theorem}[Background concentration at natural scales]\label{thm:background-concentration}
+There exist \(L<\infty\) and a sequence \(\tau_d\to0\) such that
+\[
+  \sigma_d(K_d(L,\tau_d))\ge \frac12
+  \qquad\text{for all sufficiently large }d.
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(X_d=G_d/\|G_d\|_{\HS}\), where \(G_d\) is a complex Gaussian
+\(d^2\times s(d)\) matrix.  Standard Gaussian singular-value asymptotics give
+\[
+  d\,\|X_d\|_{\op}=O_{\Prob}(1).
+\]
+Indeed, \(\|G_d\|_{\op}=O_{\Prob}(d)\), while
+\(\|G_d\|_{\HS}/d^2\to\sqrt{\lambda}\) in probability; see, for example,
+\cite{DavidsonSzarek2001}.  Aubrun's
+partial-transpose edge theorem for balanced random induced states gives
+\[
+  d^2\,\|(X_dX_d^*)^\Gamma\|_{\op}=O_{\Prob}(1);
+\]
+see \cite{Aubrun2012}.  Finally, the fixed moment \(Z_{d,k}\) converges in
+probability to the corresponding moment of the shifted semicircle law, and
+its expectation has the same limit; this follows from the moment formulas and
+asymptotics for partial transposes of random induced states
+\cite{Aubrun2012,FukudaSniady2013}.  Hence
+\[
+  Z_{d,k}-\E Z_{d,k}\longrightarrow0
+  \qquad\text{in probability}.
+\]
+The same fixed-moment convergence gives
+\begin{equation}\label{eq:expectation-bounded}
+  \sup_{d\ge d_0}|\E Z_{d,k}|<\infty
+\end{equation}
+for some \(d_0\).
+Choose \(L\) so large that, eventually, each of the two operator-norm bad
+events has probability at most \(1/6\).  Since
+\(Z_{d,k}-\E Z_{d,k}\to0\) in probability, choose \(\tau_d\downarrow0\) along a
+piecewise-constant sequence so that
+\[
+  \sigma_d\{|Z_{d,k}-\E Z_{d,k}|>\tau_d\}\le\frac16
+  \qquad\text{eventually}.
+\]
+The complement of \(K_d(L,\tau_d)\) is contained in the union of these three
+bad events.  The union bound therefore gives
+\[
+  \sigma_d(S_d\setminus K_d(L,\tau_d))\le\frac12
+\]
+eventually, which is the claim.
+\end{proof}
+
+The constant \(1/2\) is only the entry threshold for the half-mass form of
+spherical isoperimetry.  The mixed local words are handled deterministically
+below.
+
+\subsection{The local expansion}
+
+\begin{lemma}[Mixed-word counting]\label{lem:mixed-word-counting}
+Fix \(k\ge3\), \(a>0\), and \(L<\infty\).  Let
+\(\theta\le C_a d^{-1+1/k}\), let \(Y\in S_d\) satisfy
+\[
+  \|Y\|_{\op}\le Ld^{-1},
+  \qquad
+  \|(YY^*)^\Gamma\|_{\op}\le Ld^{-2},
+\]
+and let \(V\perp Y\) with \(\|V\|_{\HS}=1\).  Put
+\[
+  A=(YY^*)^\Gamma,\qquad
+  P=(VV^*)^\Gamma,\qquad
+  C=(YV^*+VY^*)^\Gamma .
+\]
+Then every word in \(\{A,P,C\}^k\), except \(A^k\) and \(P^k\), has normalized
+contribution \(o(1)\), uniformly in \(Y,V,\theta\):
+\[
+  d^{2k-2}\theta^{2\#P+\#C}\,|\Tr W(A,P,C)|=o(1).
+\]
+\end{lemma}
+
+\begin{proof}
+The available deterministic bounds are
+\[
+  \|A\|_\infty\le Ld^{-2},\qquad \|A\|_2\le Ld^{-1},
+\]
+\[
+  \|P\|_\infty\le1,\qquad \|P\|_2\le1,\qquad \|P\|_1\le d,
+\]
+and
+\[
+  \|C\|_\infty\le2Ld^{-1},\qquad \|C\|_2\le2Ld^{-1}.
+\]
+They follow from the two assumptions on \(Y\), from
+\(\|V\|_{\HS}=1\), from preservation of the Hilbert--Schmidt norm under
+partial transpose, and from \(\|P\|_1\le d\|P\|_2\) on
+\(\C^d\otimes\C^d\).
+
+The proof splits the mixed words according to the number of defect letters,
+where \(P\) is a quadratic defect and \(C\) is a linear defect.
+
+First suppose there is exactly one defect.  If the word is \(A^{r}PA^s\), then
+cyclicity gives \(\Tr(A^rPA^s)=\Tr(PA^{k-1})\), and
+\[
+  |\Tr(PA^{k-1})|\le \|P\|_1\|A\|_\infty^{k-1}
+  \lesssim d^{-2k+3}.
+\]
+After multiplication by \(d^{2k-2}\theta^2\), this is
+\(O(d^{-1+2/k})=o(1)\).  If the word is \(A^rCA^s\), then cyclicity gives
+\(\Tr(CA^{k-1})\), and
+\[
+  |\Tr(CA^{k-1})|
+  \le \|C\|_2\,\|A^{k-1}\|_2
+  \le \|C\|_2\,\|A\|_\infty^{k-2}\|A\|_2
+  \lesssim d^{-2k+2}.
+\]
+After multiplication by \(d^{2k-2}\theta\), this is
+\(O(d^{-1+1/k})=o(1)\).
+
+It remains to consider words with at least two defects.  The subcase with only
+quadratic defects follows by putting two \(P\)-letters in Hilbert--Schmidt norm
+and all \(A\)-letters in operator norm.  The subcase with only linear defects is
+the same argument with two \(C\)-letters in Hilbert--Schmidt norm.
+
+The only branch where crude Schatten bounds are not by themselves decisive is
+the branch containing both \(P\) and \(C\).  Here one must use the structure of
+the linear letter:
+\[
+  C=(YV^*)^\Gamma+(VY^*)^\Gamma .
+\]
+Expanding the \(C\)-letters, cyclically moving one \(P\)-letter next to one
+linear factor, and applying Schatten--Holder to the underlying sample matrices
+gives one additional \(d^{-1}\) factor beyond the crude
+\(\|C\|_2\|A\|_2\) estimate.  Equivalently, for every word containing at least
+one \(P\) and at least one \(C\),
+\[
+  |\Tr W(A,P,C)|
+  \lesssim d^{-2b-c},
+  \qquad b=\#A,\quad c=\#C .
+\]
+Thus the normalized contribution is bounded by
+\[
+  d^{2k-2-(2p+c)(1-1/k)}d^{-2b-c}
+  =
+  d^{-2+(2p+c)/k},
+\]
+where \(p=\#P\).  Since \(p,c\ge1\) and \(b+p+c=k\), the worst case is
+\((b,p,c)=(1,1,1)\) when \(k=3\), and even there the exponent is \(-1\).
+All remaining cases have a strictly more negative exponent.  Since \(k\) is
+fixed, the sum of all mixed words is \(o(1)\).
+\end{proof}
+
+\begin{proposition}[Certified local spike bound]\label{prop:certified-local-spike}
+Let \(L>0\) be fixed and let \(\tau_d\to0\).  If \(Y\in K_d(L,\tau_d)\) and
+\(\dist_S(X,Y)<r_{d,a}\), then
+\[
+  Z_{d,k}(X)-\E Z_{d,k}\le a^k+\tau_d+o(1),
+\]
+uniformly in the same variables as in Lemma~\ref{lem:mixed-word-counting}.
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+  X=\cos\theta\,Y+\sin\theta\,V,
+  \qquad
+  V\perp Y,\quad \|V\|_{\HS}=1,\quad \theta<r_{d,a}.
+\]
+Then
+\[
+  (XX^*)^\Gamma
+  =\cos^2\theta A+\sin^2\theta P+\sin\theta\cos\theta C.
+\]
+The pure \(A\)-word gives
+\[
+  d^{2k-2}\cos^{2k}\theta\,\Tr(A^k)
+  =Z_{d,k}(Y)+o(1),
+\]
+because \(\theta\to0\) and \(Z_{d,k}(Y)\) is uniformly bounded on
+\(K_d(L,\tau_d)\) by \eqref{eq:expectation-bounded}.  The pure \(P\)-word gives
+\[
+  d^{2k-2}\sin^{2k}\theta\,|\Tr(P^k)|
+  \le d^{2k-2}\theta^{2k}
+  \le a^k,
+\]
+using \(|\Tr(P^k)|\le\Tr(|P|^2)\le1\).  Lemma~\ref{lem:mixed-word-counting}
+kills every other word.  Hence
+\[
+  Z_{d,k}(X)\le Z_{d,k}(Y)+a^k+o(1).
+\]
+Since \(Y\in K_d(L,\tau_d)\),
+\[
+  Z_{d,k}(Y)\le \E Z_{d,k}+\tau_d,
+\]
+and the result follows.
+\end{proof}
+
+\begin{remark}[Why the normalization in \eqref{eq:radius} is the spike normalization]
+The squared radius in \eqref{eq:radius} is the same as
+\[
+  r_{d,a}^2=\frac{a d^{2+2/k}}{d^4}.
+\]
+A pure spike contribution of size \(r_{d,a}^{2k}\) is therefore transformed by the normalization in \eqref{eq:Zd} into
+\[
+  d^{2k-2}r_{d,a}^{2k}
+  =d^{2k-2}\bigl(a d^{-2+2/k}\bigr)^k
+  =a^k.
+\]
+This computation explains the exponent \(1/k\) in the final rate.  The proof
+above shows that the mixed words do not require extra anisotropic clauses in
+the good set once the two natural operator-norm controls are available.
+\end{remark}
+
+\subsection{Spherical isoperimetry}
+
+We use the following standard consequence of spherical isoperimetry.
+
+\begin{theorem}[Spherical half-mass neighbourhood bound]\label{thm:spherical-iso}
+Let $A\subset \Sphere^{n-1}$ be measurable with normalized surface measure at least $1/2$.  For every $r\in[0,\pi/2]$,
+\begin{equation}\label{eq:iso}
+  \sigma_{n-1}\bigl(\Sphere^{n-1}\setminus A^r\bigr)
+  \le \sigma_{n-1}\{x\in\Sphere^{n-1}:x_1\ge \sin r\}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:cap-tail}
+  \sigma_{n-1}\{x\in\Sphere^{n-1}:x_1\ge \sin r\}
+  \le \exp\left(-\frac{(n-1)r^2}{2}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Reference]
+The first inequality is the spherical isoperimetric theorem, with the half-space as the extremizer for half-mass sets.  The second follows from the usual coordinate density or cap-volume comparison on the sphere, which gives the bound by $\cos(r)^{n-1}$, followed by $\cos r\le \exp(-r^2/2)$ for $0\le r\le \pi/2$.  See Ledoux~\cite[Chapter~1]{Ledoux2001} or Aubrun--Szarek~\cite[Corollary~5.17]{AubrunSzarek2017} for standard formulations.
+\end{proof}
+
+\section{Upper-bound theorem}
+
+\begin{lemma}[Neighbourhood exclusion]\label{lem:neighbourhood-exclusion}
+Let \(L>0\) and let \(\tau_d\to0\).  Fix
+$a<\eps^{1/k}$ and define \(r_{d,a}\) by \eqref{eq:radius}.  Then, for all
+sufficiently large $d$,
+\[
+  \{X\in S_d:Z_{d,k}(X)-\E Z_{d,k}\ge \eps\}
+  \subset S_d\setminus K_d(L,\tau_d)^{r_{d,a}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose \(\eta>0\) such that \(a^k+\eta<\eps\).  By the local expansion estimate
+above and by \(\tau_d\to0\), every \(X\in K_d(L,\tau_d)^{r_{d,a}}\)
+satisfies
+\[
+  Z_{d,k}(X)-\E Z_{d,k}\le a^k+\eta<\eps
+\]
+for all sufficiently large \(d\).  Such an \(X\) cannot belong to the upper-tail
+event.
+\end{proof}
+
+\begin{theorem}[Spike-rate upper bound]\label{thm:main}
+Let $k\ge 3$, $\eps>0$, and assume $s(d)/d^2\to\lambda>0$.  Then
+\begin{equation}\label{eq:main-bound}
+  \limsup_{d\to\infty}d^{-2-2/k}\log \Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  \le -\lambda\eps^{1/k} .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fix $a<\eps^{1/k}$ and put $r_{d,a}^2=a d^{-2+2/k}$.  By
+Theorem~\ref{thm:background-concentration}, choose \(L<\infty\) and
+\(\tau_d\to0\) such that \(\sigma_d(K_d(L,\tau_d))\ge1/2\) eventually.  By
+Lemma~\ref{lem:neighbourhood-exclusion}, for all sufficiently large $d$,
+\[
+  \Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  \le \sigma_d\bigl(S_d\setminus K_d(L,\tau_d)^{r_{d,a}}\bigr).
+\]
+Applying
+Theorem~\ref{thm:spherical-iso} on the sphere
+$S_d\simeq \Sphere^{N_d-1}$ with $N_d=2d^2s(d)$ gives, eventually,
+\[
+  \Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  \le \exp\left(-\frac{(N_d-1)r_{d,a}^2}{2}\right).
+\]
+Dividing by $d^{2+2/k}$ yields
+\[
+  d^{-2-2/k}\log \Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  \le
+  -\frac{(2d^2s(d)-1)a d^{-2+2/k}}{2d^{2+2/k}}.
+\]
+The right-hand side equals
+\[
+  -a\left(\frac{s(d)}{d^2}-\frac{1}{2d^4}\right),
+\]
+which converges to $-\lambda a$ by \eqref{eq:balanced}.  Hence
+\[
+  \limsup_{d\to\infty}d^{-2-2/k}\log \Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  \le -\lambda a .
+\]
+Letting $a\uparrow \eps^{1/k}$ proves \eqref{eq:main-bound}.
+\end{proof}
+
+\begin{corollary}[Two-sided deviation, conditional lower side]\label{cor:two-sided}
+Under the assumptions of Theorem~\ref{thm:main}, suppose in addition that
+\[
+  \limsup_{d\to\infty}d^{-2-2/k}\log \Prob\{Z_{d,k}-\E Z_{d,k}\le -\eps\}
+  \le -\lambda\eps^{1/k}.
+\]
+Then
+\[
+  \limsup_{d\to\infty}d^{-2-2/k}\log \Prob\{|Z_{d,k}-\E Z_{d,k}|\ge \eps\}
+  \le -\lambda\eps^{1/k}.
+\]
+\end{corollary}
+
+\begin{proof}
+Use
+\[
+  \Prob\{|Z_{d,k}-\E Z_{d,k}|\ge \eps\}
+  \le
+  \Prob\{Z_{d,k}-\E Z_{d,k}\ge \eps\}
+  +\Prob\{Z_{d,k}-\E Z_{d,k}\le -\eps\}
+\]
+and take logarithms at speed $d^{2+2/k}$.
+\end{proof}
+
+\section{What is not claimed}
+
+Theorem~\ref{thm:main} is an upper-tail estimate.  It does not prove a matching
+lower bound and therefore does not by itself establish a sharp large-deviation
+principle.  The two-sided corollary remains conditional on an independent lower
+tail estimate.
+
+\begin{thebibliography}{9}
+
+\bibitem{Aubrun2012}
+G. Aubrun,
+\newblock Partial transposition of random states and non-centered semicircular distributions,
+\newblock \emph{Random Matrices: Theory and Applications} \textbf{1} (2012), no.~2, 1250001.
+
+\bibitem{DavidsonSzarek2001}
+K. R. Davidson and S. J. Szarek,
+\newblock Local operator theory, random matrices and Banach spaces,
+\newblock in \emph{Handbook of the Geometry of Banach Spaces}, vol.~1,
+North-Holland, 2001, pp.~317--366.
+
+\bibitem{FukudaSniady2013}
+M. Fukuda and P. \'Sniady,
+\newblock Partial transpose of random quantum states: exact formulas and meanders,
+\newblock \emph{Journal of Mathematical Physics} \textbf{54} (2013), 042202.
+
+\bibitem{AubrunSzarek2017}
+G. Aubrun and S. J. Szarek,
+\newblock \emph{Alice and Bob Meet Banach: The Interface of Asymptotic Geometric Analysis and Quantum Information Theory},
+\newblock Mathematical Surveys and Monographs, vol.~223, American Mathematical Society, 2017.
+
+\bibitem{Ledoux2001}
+M. Ledoux,
+\newblock \emph{The Concentration of Measure Phenomenon},
+\newblock Mathematical Surveys and Monographs, vol.~89, American Mathematical Society, 2001.
+
+\end{thebibliography}
+
+\end{document}

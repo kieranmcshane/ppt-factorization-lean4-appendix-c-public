@@ -1,0 +1,594 @@
+\chapter{Corrected Aubrun bidefect route}
+
+This blueprint tracks the formal proof route for ticket U-AUB-02.  The goal is
+to close the corrected Aubrun count theorem used by the expectation pipeline.
+The current route is not the old tight-fiber route and not the false
+total-defect route.  It is the one-sided plus-defect route, converted to a
+bidefect count and then absorbed by the shifted-base scalar estimate.
+
+\section{Bidefect endpoint}
+
+\begin{theorem}[Conditional gap-three Biane frontier with child primitive absorption]
+  \label{thm:large-gap-minimal-frontier-endpoint}
+  \lean{PptFactorization.AppendixB.AubrunBiDefectCountBound_of_bianeAdjacentLinkHalves_left_gap_three_start_impossible_frontiers_nestedStrictReturnIntervalOpenNonwrapOffCycleSmallerInternalOnly_and_chapuy}
+  \leanok
+  \uses{thm:gap-two-biane-left, thm:gap-two-biane-right, thm:left-gap-three-fixed-a1, thm:left-gap-three-S-a1-c, thm:right-gap-three-S-b-c, thm:right-gap-three-T-b1-c, thm:right-gap-three-fixed-b1, thm:right-gap-three-S-b1-d, thm:skip-branch-normalized-return, thm:skip-strict-return-frontier, thm:skip-residual-return-frontier, thm:skip-subinterval-descended-residual, thm:smaller-residual-descended-branch-cases, thm:smaller-child-primitive-absorbed}
+  This is not a no-input proof of U-AUB-02.  Fix a Wick length \(m\).
+  Assume the remaining large-gap left and right
+  Biane adjacent-link statements outside the checked gap-three slices,
+  assume the side-tied residual branch collision statements: the
+  primitive-residual branches for nonwrapping first return, wrap-below last
+  return, and wrap-above first return; the internal-subinterval branches for
+  wrap-below and wrap-above; and the nonwrapping off-cycle open-internal
+  branch.
+  In the nonwrapping internal-subinterval branch, the checked
+  first-return refinement removes both the endpoint-touching subcase and the
+  subcase where the internal witness remains in the skipped \(x\)-cycle; the
+  checked noncrossing confinement lemma below then traps the whole internal
+  witness block strictly inside the return interval.
+  Also assume the Chapuy recurrence
+  \[
+    N_{m,g+1} \le (2(m+1))^3 N_{m,g}.
+  \]
+  Then the Aubrun bidefect count bound holds at length \(m\).
+  The phrase ``checked endpoint'' here means checked implication from these
+  hypotheses.  It does not mean that the Biane, side-tied return-interval, or
+  Chapuy hypotheses have been proved.  This is the current honest theorem face:
+  it keeps the predecessor-skip origin data, still exposes the shorter-interval
+  alternative as an actual internal subinterval of the side-tied return
+  interval, splits the side disjunction into three theorem-facing origin-tag
+  cases, splits each origin-tag case into primitive-residual versus
+  internal-subinterval branches, exposes the nonwrapping internal-subinterval
+  leaf only in its off-cycle open-internal form, sends that off-cycle witness
+  to a smaller side-aware child interval, splits the child into primitive and
+  internal-subinterval branches, and then absorbs the primitive child branch
+  into the already theorem-facing parent primitive residual leaf.  The only
+  remaining smaller child input is the genuine internal-subinterval branch.
+  The loose
+  primitive endpoint is kept only as a conditional diagnostic; a checked no-go
+  theorem below shows that its primitive residual input is false without the
+  nested side data.
+  The right gap-three branch theorems listed as dependencies are checked
+  internal dischargers; they are not hypotheses of the endpoint statement.
+  In particular, the active endpoint no longer exposes the right special-slice
+  parameters corresponding to \(S(b,c)\), \(b+1\sim_\pi c\), or
+  \(\pi(b+1)=b+1\), and it no longer exposes the final branch
+  \(S(b+1,d)\).  It also no longer exposes the left end-slice branch
+  \(S(a+1,c)\).  The checked finite gap-three branch list is closed at this
+  endpoint.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  The checked gap-two Biane theorems supply the adjacent links when the visible
+  gap has length two.  The checked gap-three reductions remove both left
+  slices \(c-a=3,b=a+1\) and \(c-a=3,b=a+2\), together with the right slice
+  \(d-b=3,c=b+2\), from the broad large-gap hypotheses.  The left
+  start-adjacent slice \(c-a=3,b=a+1\) is now fully discharged at this
+  endpoint: the \(S(b,c)\) branch is supplied from the right frontier, the
+  fixed-\(a+2\) and \(\pi(b,a+2)\) branches force that same contradiction, and
+  the residual \(\neg(a\sim_\pi a+2)\wedge S(a,a+2)\) branch is contradicted
+  by tree uniqueness for a copied length-two contour path.  In the left
+  end-adjacent slice, the fixed \(a+1\) branch is also closed by comparing the
+  copied length-four path \(S(a)\to S(c)\) with the direct path from
+  \(a\sim_\pi c\).  The remaining branch \(S(a+1,c)\) forces
+  \(a+1\sim_\pi b\) by comparing the copied contour step \(a+1\to b\) with the
+  reversed contour step \(b\to c\), and the already checked
+  \(a+1\sim_\pi b\) branch absorber closes it;
+  in the right slice, the \(\pi(b,c)\) branch is closed by the immediate
+  contradiction with the separating non-link \(a\not\sim_\pi b\), and the
+  \(S(b,c)\) branch is closed by copying the contour step \(c\to d\) across
+  \(S(b)=S(c)\) and comparing it with the direct path from
+  \(b\sim_\pi d\).  The \(\pi(b+1,c)\) branch is routed through the shifted
+  crossing \((a,b,b+1,d)\): it gives \(a\sim_\pi b+1\), the large-gap right
+  input gives \(S(b+1,d)\).  The fixed branch \(\pi(b+1)=b+1\) is also routed
+  through \(S(b+1,d)\): fixedness gives the adjacent repeat \(S(b+1,c)\), and
+  denying \(S(b+1,d)\) creates a length-four incidence path from \(S(b)\) to
+  \(S(d)\) that contradicts the direct length-two path from \(b\sim_\pi d\).
+  Finally, the \(S(b+1,d)\) branch itself is closed: denying \(S(c,d)\) forces
+  \(b+1\sim_\pi c\) by path uniqueness, the shifted left adjacent link gives
+  \(S(a,b)\), and the resulting four incidences form a forbidden square.
+  These links give noncrossing.  The direct skip-hit case is consumed
+  internally by the checked theorem
+  \(\texttt{permCyclicPredecessorSkip\_direct\_commonCycle}\).  Thus the
+  theorem-facing return-interval theorem only has to handle the nested
+  non-direct case.  The branch-normalized return data is supplied internally,
+  the full-endpoint common-cycle branch is discharged internally, and the raw
+  internal right-repeat branch is first replaced by a subinterval-preserving
+  descended pair of alternatives: an adjacent right repeat or a strictly
+  shorter longer same-\(\pi\) subinterval \([a+r,a+s]\) inside the current
+  return interval.  The theorem-facing return-collision input is therefore the
+  side-tied subinterval-descended residual frontier, not the loose primitive
+  five-branch frontier.  The separate primitive descent theorem is only a
+  conditional diagnostic unless the predecessor-skip side data is carried
+  through descent.  In the nonwrapping off-cycle child interval, the checked
+  reductions either find the common pair immediately or preserve the side data
+  on a smaller child residual; the primitive child part of that residual is
+  absorbed back into the parent primitive residual leaf.  Thus the remaining
+  smaller child theorem-facing branch is only the genuine
+  internal-subinterval branch.
+  Together with left-tight transversality this rules out
+  non-fixed predecessor skips.  The existing genus-zero and Chapuy route then
+  gives the bidefect count bound.  This is a conditional reduction theorem:
+  the \(\leanok\)
+  marker certifies the reduction from the named hypotheses, not the open
+  large-gap Biane, side-tied subinterval return-interval, or Chapuy inputs
+  themselves.
+\end{proof}
+
+\begin{theorem}[Off-cycle internal blocks are strictly nested]
+  \label{thm:off-cycle-block-confinement}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalOpenInternalOffCycleSubintervalResidual_block_strictly_inside}
+  \leanok
+  In the nonwrapping first-return branch, suppose \(a\) and \(c\) lie in the
+  same left cycle, the transported cycle partition is noncrossing, and the
+  internal subinterval witness starts at a point \(a+r\) which is not in the
+  skipped \(x\)-cycle.  Then every point of the left cycle containing \(a+r\)
+  lies strictly between \(a\) and \(c\).
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  The points \(a\) and \(c\) lie in the skipped \(x\)-cycle, while \(a+r\) is
+  off that cycle.  Thus the block of \(a+r\) is distinct from the block of
+  \(a,c\), and it contains a point strictly between \(a\) and \(c\).  The
+  noncrossing interval-nesting lemma confines the whole block to the closed
+  interval \([a,c]\).  If one of its points were equal to \(a\) or \(c\), the
+  block would meet the skipped \(x\)-cycle, contradicting the off-cycle
+  condition.  Therefore the confinement is strict.
+\end{proof}
+
+\begin{theorem}[Off-cycle witnesses give smaller contour intervals]
+  \label{thm:off-cycle-smaller-contour-interval}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalOpenInternalOffCycleSubintervalResidual_strictSubinterval_contourRepeat}
+  \leanok
+  In the same nonwrapping off-cycle branch, the internal witness interval
+  \([a+r,a+s]\) is itself a strictly smaller same-\(\pi\) return interval
+  inside \((a,c)\).  It carries the standard
+  \texttt{leftTightContourIntervalRepeat} obstruction, and every point of its
+  \(\pi\)-block remains off the skipped \(x\)-cycle.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  The endpoints \(a+r\) and \(a+s\) come directly from the off-cycle internal
+  residual witness.  The inequalities \(0<r<s<c-a\) and \(1<s-r\) make this a
+  strictly smaller nontrivial interval.  The previous confinement theorem and
+  the first-return condition show that the whole witness block lies in
+  \((a,c)\) and is disjoint from the skipped \(x\)-cycle.  Finally the generic
+  left-tight contour-repeat theorem applies to the longer same-\(\pi\)
+  interval \([a+r,a+s]\).
+\end{proof}
+
+\begin{theorem}[Off-cycle witnesses reduce to smaller side-aware residuals]
+  \label{thm:off-cycle-smaller-side-aware-residual}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalOpenInternalOffCycleSubintervalResidual_common_or_smallerResidual}
+  \leanok
+  In the nonwrapping off-cycle branch, the smaller contour-repeat interval
+  either already gives a common \(\pi\)/\(S\pi\) pair, or leaves a strict
+  residual on a smaller interval.  In the latter case, no point of the skipped
+  \(x\)-cycle lies inside the child interval, and the child \(\pi\)-block
+  remains inside the parent interval and off the skipped cycle.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Apply the smaller-contour theorem, then split the resulting contour repeat by
+  the strict-frontier decomposition.  The common branch is immediate.  In the
+  residual branch, the first-return condition restricts from the parent
+  interval to the child interval, and the block confinement data is carried
+  unchanged.
+\end{proof}
+
+\begin{theorem}[The smaller residual splits into descended child branches]
+  \label{thm:smaller-residual-descended-branch-cases}
+  \lean{PptFactorization.AppendixB.leftTight_nonwrap_smallerResidual_common_of_descendedBranchCases}
+  \leanok
+  The side-aware residual child from the nonwrapping off-cycle branch can be
+  decomposed by the subinterval-preserving descent.  Thus the theorem-facing
+  child input is not a raw residual predicate: it is either the side-aware
+  primitive residual branch or the side-aware internal-subinterval branch,
+  with the no-\(x\)-cycle and block-off-\(x\) data still available.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Apply the checked descent from a raw strict residual to the
+  subinterval-preserving descended residual.  The definitional branch split of
+  that descended residual gives the primitive child case or the internal
+  subinterval child case, and each case is passed to the corresponding
+  side-aware collision input.
+\end{proof}
+
+\begin{theorem}[The smaller primitive child splits into five local branches]
+  \label{thm:smaller-primitive-child-branch-cases}
+  \lean{PptFactorization.AppendixB.leftTight_nonwrap_smallerPrimitive_common_of_branchCases}
+  \leanok
+  The primitive child residual in the nonwrapping off-cycle branch admits a
+  checked five-way local split:
+  internal \(S\)-repeat, start-attached \(S\)-repeat, end-attached
+  \(S\)-repeat, fixed predecessor, and adjacent \(T\)-repeat.  Each case still
+  carries the outer nonwrapping first-return data, the no-\(x\)-cycle condition
+  inside the child interval, and the block-off-\(x\) invariant.  The current
+  endpoint no longer exposes these five cases separately; the following
+  arithmetic bridge absorbs them into the parent primitive leaf.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Unfold the primitive residual frontier into its definitional five-way branch
+  split.  Each branch is passed to the corresponding side-aware child
+  collision input with the inherited first-return, no-\(x\)-cycle, and
+  block-off-\(x\) hypotheses unchanged.
+\end{proof}
+
+\begin{theorem}[Strict child primitive residuals are parent primitive residuals]
+  \label{thm:smaller-child-primitive-absorbed}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalPrimitiveResidual_of_strictChildPrimitive}
+  \leanok
+  Let \([a',c']\) be a strict child interval inside a parent interval
+  \([a,c]\).  If the child interval carries any primitive residual branch, then
+  the parent interval itself carries a primitive residual branch.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  The proof is arithmetic.  Internal, start-attached, and end-attached child
+  \(S\)-repeats become internal parent \(S\)-repeats after translating the
+  offsets from \(a'\) to \(a\).  A fixed predecessor at \(c'-1\) gives the
+  adjacent left repeat \((c'-1,c')\), again an internal parent \(S\)-repeat.
+  A child adjacent \(T\)-repeat remains an adjacent \(T\)-repeat after the same
+  offset translation.  Thus no new child primitive collision theorem is
+  needed beyond the parent primitive residual leaf.
+\end{proof}
+
+\section{Checked local Biane inputs}
+
+\begin{theorem}[Left gap-two Biane link]
+  \label{thm:gap-two-biane-left}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_two}
+  \leanok
+  For a crossing \(a<b<c<d\) with \(c-a=2\), the left adjacent
+  \((\gamma\pi)\)-cycle link \(a\sim_{\gamma\pi} b\) follows from
+  left-tightness, the crossing links \(a\sim_\pi c\), \(b\sim_\pi d\), and the
+  separating non-link \(a\not\sim_\pi b\).
+\end{theorem}
+
+\begin{theorem}[Right gap-two Biane link]
+  \label{thm:gap-two-biane-right}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_right_of_gap_two}
+  \leanok
+  For a crossing \(a<b<c<d\) with \(d-b=2\), the right adjacent
+  \((\gamma\pi)\)-cycle link \(c\sim_{\gamma\pi} d\) follows from the same
+  left-tight crossing data.
+\end{theorem}
+
+\begin{theorem}[Left gap-three start-adjacent reduction]
+  \label{thm:left-gap-three-reduction}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_start_adjacent_reduced_fixed_a2_no_pi_a_a2}
+  \leanok
+  In the finite slice \(c-a=3\), \(b=a+1\), the contour-repeat split first
+  reduces the left Biane link to four explicit start-slice branches:
+  the residual branch \(\neg(a\sim_\pi a+2)\) together with \(S(a,a+2)\),
+  \(S(b,c)\), the fixed-point branch \(\pi(a+2)=a+2\), and \(\pi(b,a+2)\).
+  Later checked suppliers discharge all four at the endpoint, so this reducer
+  is now historical plumbing for the fully closed left start-adjacent slice.
+\end{theorem}
+
+\begin{theorem}[Left start target impossibility]
+  \label{thm:left-start-target-impossible}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_start_adjacent_branch_to_target_iff_false}
+  \leanok
+  In the same finite slice \(c-a=3\), \(b=a+1\), the target \(S(a,b)\) is
+  incompatible with the nontrivial \(\pi\)-interval \(a\sim_\pi c\).  Hence
+  each remaining branch-to-target obligation in this start slice is equivalent
+  to proving that the branch itself is impossible.
+\end{theorem}
+
+\begin{theorem}[Residual left-start branch]
+  \label{thm:left-start-residual}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_start_S_a_a2_no_pi_false}
+  \leanok
+  In the slice \(c-a=3\), \(b=a+1\), the branch
+  \(\neg(a\sim_\pi a+2)\wedge S(a,a+2)\) is impossible.  The repeat
+  \(S(a,a+2)\) copies the contour step from \(a+2\) to \(c\) into a
+  length-two path from \(S(a)\) to \(S(c)\); comparison with the direct
+  length-two path from \(a\sim_\pi c\) forces \(a\sim_\pi a+2\).
+\end{theorem}
+
+\begin{theorem}[Left gap-three end-adjacent reduction]
+  \label{thm:left-gap-three-end-reduction}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_end_adjacent_reduced_fixed_a1_no_pi_branches}
+  \leanok
+  In the finite slice \(c-a=3\), \(b=a+2\), the contour-repeat split reduces
+  the left Biane link to two explicit branch implications.  The adjacent
+  repeat \(S(a+1,b)\) has been normalized, using left-tightness, to the
+  fixed-point branch \(\pi(a+1)=a+1\).  The other remaining branch is
+  \(S(a+1,c)\).  The next two theorems close both branches, so this finite
+  slice is no longer theorem-facing on the sharp endpoint.
+\end{theorem}
+
+\begin{theorem}[Left gap-three fixed \(a+1\) branch]
+  \label{thm:left-gap-three-fixed-a1}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_end_adjacent_fixed_a1}
+  \leanok
+  In the same slice \(c-a=3\), \(b=a+2\), fixedness of \(a+1\) gives the
+  adjacent repeat \(S(a+1,b)\).  If the target \(S(a,b)\) failed, the contour
+  step \(a\to a+1\), this repeat, and the contour step \(b\to c\) would form a
+  simple length-four incidence path from \(S(a)\) to \(S(c)\).  Tree
+  uniqueness compares it with the direct length-two path from \(a\sim_\pi c\),
+  contradiction.
+\end{theorem}
+
+\begin{theorem}[Left gap-three \(S(a+1,c)\) branch]
+  \label{thm:left-gap-three-S-a1-c}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_end_adjacent_T_a1_b_of_S_a1_c}
+  \leanok
+  In the same slice \(c-a=3\), \(b=a+2\), the branch \(S(a+1,c)\) forces
+  \(a+1\sim_\pi b\).  The copied contour step \(a+1\to b\) is a simple path
+  from \(S(c)\) to \(S(b)\), and the reversed contour step \(b\to c\) is
+  another simple path with the same endpoints.  Tree uniqueness identifies
+  their middle right vertices.  The already checked
+  \(a+1\sim_\pi b\) branch theorem then closes the target.
+\end{theorem}
+
+\begin{theorem}[The \(\pi(a,a+1)\) end-adjacent branch]
+  \label{thm:left-gap-three-pi-a-a1}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_end_adjacent_of_pi_a_a1}
+  \leanok
+  In the same slice, the branch \(\pi(a,a+1)\) is absorbed by the shifted
+  gap-two theorem: \(\pi(a,a+1)\) and \(\pi(a,c)\) imply
+  \(\pi(a+1,c)\), so the crossing \((a+1,b,c,d)\) gives \(S(a+1,b)\), which
+  is one of the remaining explicit branches.
+\end{theorem}
+
+\begin{theorem}[The \(\pi(a+1,b)\) end-adjacent branch]
+  \label{thm:left-gap-three-pi-a1-b}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_left_of_gap_three_end_adjacent_of_pi_a1_b}
+  \leanok
+  In the same slice, the branch \(\pi(a+1,b)\) is absorbed by the already
+  exposed start-adjacent branch on the shifted crossing \((a,a+1,c,d)\).
+  That branch gives the adjacent repeat \(S(a,a+1)\), which contradicts the
+  nontrivial same-\(\pi\) interval \(a\sim_\pi c\).
+\end{theorem}
+
+\begin{theorem}[Right gap-three end-adjacent reduction]
+  \label{thm:right-gap-three-reduction}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_right_of_gap_three_end_adjacent_reduced_fixed_b1_no_pi_b_b1_no_pi_b_c}
+  \leanok
+  In the finite slice \(d-b=3\), \(c=b+2\), the contour-repeat split and the
+  shifted gap-two branch remove the \(\pi(b,b+1)\) case, while transitivity
+  with \(a\sim_\pi c\) removes the \(\pi(b,c)\) case.  The remaining branches
+  at this reducer level are \(S(b,c)\), \(\pi(b+1)=b+1\), \(S(b+1,d)\), and
+  \(\pi(b+1,c)\).  The adjacent repeat \(S(b+1,c)\) has been normalized,
+  using left-tightness, to the fixed-point branch.  The separate theorem below
+  closes the \(S(b,c)\) branch at the current endpoint, and the next theorem
+  routes the \(\pi(b+1,c)\) branch through \(S(b+1,d)\).  The fixed-branch
+  theorem after that routes \(\pi(b+1)=b+1\) through the same \(S(b+1,d)\)
+  branch, and the final theorem below closes \(S(b+1,d)\) itself.  Thus the
+  active endpoint has no theorem-facing right branch in this checked slice.
+\end{theorem}
+
+\begin{theorem}[Right gap-three \(S(b,c)\) branch]
+  \label{thm:right-gap-three-S-b-c}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_right_of_gap_three_end_adjacent_of_S_b_c}
+  \leanok
+  In the finite slice \(d-b=3\), \(c=b+2\), the branch \(S(b,c)\) forces the
+  target \(S(c,d)\).  If \(S(c,d)\) failed, the contour step from \(c\) to
+  \(d\), copied across \(S(b)=S(c)\), would be a simple path from \(S(b)\) to
+  \(S(d)\).  Tree uniqueness compares it with the direct path from
+  \(b\sim_\pi d\), forcing \(b\sim_\pi c\), which contradicts the crossing
+  link \(a\sim_\pi c\) and the separating non-link \(a\not\sim_\pi b\).
+\end{theorem}
+
+\begin{theorem}[Right gap-three \(\pi(b+1,c)\) branch]
+  \label{thm:right-gap-three-T-b1-c}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_right_of_gap_three_end_adjacent_T_b1_c_to_S_b1_d_of_right_rest}
+  \leanok
+  In the finite slice \(d-b=3\), \(c=b+2\), the branch
+  \(b+1\sim_\pi c\) gives \(a\sim_\pi b+1\) by transitivity with the crossing
+  link \(a\sim_\pi c\).  Applied to the shifted crossing \((a,b,b+1,d)\), the
+  large-gap right input supplies \(S(b+1,d)\), because this shifted crossing
+  is not the special \(c=b+2\) slice.  The final right-branch theorem below
+  consumes \(S(b+1,d)\), so \(b+1\sim_\pi c\) is no longer theorem-facing.
+\end{theorem}
+
+\begin{theorem}[Right gap-three fixed \(b+1\) branch]
+  \label{thm:right-gap-three-fixed-b1}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_right_of_gap_three_end_adjacent_fixed_b1_to_S_b1_d}
+  \leanok
+  In the finite slice \(d-b=3\), \(c=b+2\), the fixed branch
+  \(\pi(b+1)=b+1\) gives the adjacent repeat \(S(b+1,c)\).  If \(S(b+1,d)\)
+  failed, the contour step \(b\to b+1\), followed by the copied contour step
+  \(c\to d\), would form a simple length-four incidence path from \(S(b)\) to
+  \(S(d)\).  Tree uniqueness compares it with the direct length-two path
+  coming from \(b\sim_\pi d\), contradiction.  Hence the fixed branch is no
+  longer theorem-facing at the active endpoint; it is fed to the final
+  \(S(b+1,d)\) branch theorem.
+\end{theorem}
+
+\begin{theorem}[Right gap-three \(S(b+1,d)\) branch]
+  \label{thm:right-gap-three-S-b1-d}
+  \lean{PptFactorization.AppendixB.leftTight_bianeAdjacentLink_right_of_gap_three_end_adjacent_of_S_b1_d_of_left_shift}
+  \leanok
+  In the finite slice \(d-b=3\), \(c=b+2\), the branch \(S(b+1,d)\) forces the
+  target \(S(c,d)\), provided the shifted left adjacent link on
+  \((a,b,b+1,d)\) is available.  If \(S(c,d)\) failed, uniqueness of the two
+  simple incidence paths from \(S(c)\) to \(S(d)\) would force
+  \(b+1\sim_\pi c\).  Then \(a\sim_\pi c\) gives \(a\sim_\pi b+1\), the
+  shifted left link gives \(S(a,b)\), and the links
+  \(a\sim_\pi b+1\), \(b\sim_\pi d\), \(S(a,b)\), and \(S(b+1,d)\) form a
+  forbidden incidence square.
+\end{theorem}
+
+\section{Skip frontier}
+
+\begin{theorem}[Minimal frontier extracted from a non-fixed skip]
+  \label{thm:skip-minimal-frontier}
+  \lean{PptFactorization.AppendixB.leftTight_nonfixed_cyclicPredecessorSkip_exists_minimal_frontier}
+  \leanok
+  Any non-fixed predecessor skip in a left-tight permutation produces a
+  minimal long same-\(\pi\) interval.  Its contour frontier has five possible
+  alternatives: an adjacent right repeat, an internal left repeat, a proper
+  start-touching left repeat, a proper end-touching left repeat, or a fixed
+  predecessor at the right endpoint.
+\end{theorem}
+
+\begin{theorem}[Tied contour interval extracted from a non-fixed skip]
+  \label{thm:skip-tied-contour}
+  \lean{PptFactorization.AppendixB.leftTight_nonfixed_cyclicPredecessorSkip_exists_tied_contourIntervalRepeat}
+  \leanok
+  Any non-fixed predecessor skip in a left-tight permutation produces a long
+  repeated contour interval whose endpoints remember the skip witness.  In the
+  nonwrapping case the interval is exactly
+  \([(\pi x).\mathrm{val},x.\mathrm{val}]\); in the wrapping-below case it
+  ends at \((\pi x).\mathrm{val}\) and starts below \(x\); in the
+  wrapping-above case it starts at \(x.\mathrm{val}\) and ends above
+  \((\pi x).\mathrm{val}\).
+\end{theorem}
+
+\begin{theorem}[First return in the nonwrapping nested skip branch]
+  \label{thm:skip-nonwrap-first-return}
+  \lean{PptFactorization.AppendixB.leftTight_nonwrap_nested_cyclicPredecessorSkip_exists_first_contourIntervalRepeat}
+  \leanok
+  In the nonwrapping branch, if \(\gamma(\pi x)\) is not in the
+  \(\pi\)-cycle of \(x\), then the first same-\(\pi\) return after
+  \((\pi x).\mathrm{val}\) is separated by a genuine gap.  The resulting
+  interval starts at \((\pi x).\mathrm{val}\), has no earlier same-cycle
+  return to \(x\), and carries the repeated-contour obstruction.
+\end{theorem}
+
+\begin{theorem}[First return in the wrap-above nested skip branch]
+  \label{thm:skip-wrap-above-first-return}
+  \lean{PptFactorization.AppendixB.leftTight_wrapAbove_nested_cyclicPredecessorSkip_exists_first_contourIntervalRepeat}
+  \leanok
+  In the wrap-above branch, the first same-\(\pi\) return above
+  \((\pi x).\mathrm{val}\) is also separated from \(\pi x\) by a genuine gap
+  unless the direct-hit case occurs.  The corresponding long interval starts
+  at \(x.\mathrm{val}\) and carries the repeated-contour obstruction.
+\end{theorem}
+
+\begin{theorem}[Branch-normalized nested skip return]
+  \label{thm:skip-branch-normalized-return}
+  \lean{PptFactorization.AppendixB.leftTight_nonfixed_nested_cyclicPredecessorSkip_exists_returnContourIntervalRepeat}
+  \leanok
+  In a genuinely nested non-fixed predecessor skip, the canonical return
+  interval is now available in every branch: first return in the nonwrapping
+  branch, last return in the wrap-below branch, and first return in the
+  wrap-above branch.  Each interval has a genuine gap and carries the
+  repeated-contour obstruction supplied by left-tightness.
+\end{theorem}
+
+\begin{theorem}[Strict return-interval frontier]
+  \label{thm:skip-strict-return-frontier}
+  \lean{PptFactorization.AppendixB.leftTightContourIntervalRepeat_strict_frontier}
+  \leanok
+  A branch-normalized repeated-contour interval can be sharpened to a strict
+  return frontier.  The full endpoint repeat is already a common-cycle
+  collision.  The start-adjacent left repeat is impossible by left-tightness,
+  and the end-adjacent left repeat is exactly the fixed-predecessor branch.
+  The theorem-facing strict alternatives are therefore internal left repeat,
+  proper start repeat, proper end repeat, fixed predecessor, or internal
+  right repeat.
+\end{theorem}
+
+\begin{theorem}[Residual return-interval frontier]
+  \label{thm:skip-residual-return-frontier}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalFrontier_common_or_residual}
+  \leanok
+  The strict return frontier splits into an already-solved common-cycle branch
+  and a residual frontier.  The active endpoint consumes only the residual
+  frontier; the common-cycle branch is discharged internally.
+\end{theorem}
+
+\begin{theorem}[Descended residual return frontier]
+  \label{thm:skip-descended-residual}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalResidual_descend_internal_right}
+  \leanok
+  The residual internal right-repeat branch is no longer left raw.  A checked
+  descent replaces it by either an adjacent same-\(\pi\) repeat or a strictly
+  shorter longer same-\(\pi\) interval.  This is a narrowing of the nested
+  collision input, not a proof of that collision input.
+\end{theorem}
+
+\begin{theorem}[Subinterval-descended residual return frontier]
+  \label{thm:skip-subinterval-descended-residual}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalResidual_descend_internal_right_subinterval}
+  \leanok
+  The residual internal right-repeat branch is narrowed without losing the
+  side-tied return-interval geometry.  Adjacent internal right repeats become
+  the adjacent primitive branch; non-adjacent internal right repeats are kept
+  as an actual shorter subinterval \([a+r,a+s]\) of the current return
+  interval.  Thus the theorem-facing recursive branch is no longer an
+  arbitrary shorter same-\(\pi\) interval.
+\end{theorem}
+
+\begin{theorem}[Loose primitive residual no-go]
+  \label{thm:loose-primitive-residual-no-go}
+  \lean{PptFactorization.AppendixB.not_forall_loose_primitiveResidual_commonCycle}
+  \leanok
+  The primitive residual collision statement is false if stated without the
+  nested predecessor-skip origin data.  Concretely, at \(m=2\), the inverse
+  long cycle is left-tight and noncrossing, the interval \((0,2)\) satisfies
+  the primitive residual predicate through the adjacent-\(\pi\) branch, but
+  \(\gamma\pi=1\), so there is no nontrivial common \(\pi\)- and
+  \(\gamma\pi\)-cycle pair.
+\end{theorem}
+
+\begin{theorem}[Primitive residual descent]
+  \label{thm:skip-primitive-residual}
+  \lean{PptFactorization.AppendixB.leftTightStrictReturnIntervalDescendedResidual_common_of_primitive}
+  \leanok
+  The strictly shorter same-\(\pi\) interval alternative in the descended
+  residual frontier is closed by well-founded descent on interval length.  It
+  is enough for the theorem-facing collision input to solve the five primitive
+  residual branches: internal left repeat, proper start repeat, proper end
+  repeat, fixed predecessor, and adjacent right repeat.  This theorem is not
+  the current endpoint bridge by itself, because its primitive input does not
+  carry the predecessor-skip side data.
+\end{theorem}
+
+\section{Open leaves}
+
+\begin{theorem}[Large-gap left Biane link]
+  \label{thm:open-large-gap-left}
+  For every genuine crossing with \(2<c-a\) and \(c-a\ne3\), prove the left
+  adjacent link \(a\sim_{\gamma\pi} b\).  This is still open.
+\end{theorem}
+
+\begin{theorem}[Large-gap right Biane link]
+  \label{thm:open-large-gap-right}
+  For every genuine crossing with \(2<d-b\) outside the checked slice
+  \(d-b=3,\ c=b+2\), prove the right adjacent link
+  \(c\sim_{\gamma\pi} d\).  This is still open.
+\end{theorem}
+
+\begin{theorem}[Nested return-interval branch collision]
+  \label{thm:open-minimal-frontier-collision}
+  Prove the side-tied residual branch collision statements consumed by the
+  current endpoint, or replace them by a side-descending primitive theorem.
+  These are the primitive-residual branches for nonwrapping first return,
+  wrap-below last return, and wrap-above first return; the internal-subinterval
+  branches for wrap-below and wrap-above; and the nonwrapping off-cycle
+  open-internal branch.  In the nonwrapping internal-subinterval case, the
+  endpoint-touching start \(r=0\) and the \(x\)-cycle internal-witness subcase
+  are already discharged by the first-return condition, so the remaining leaf
+  is the off-cycle open-internal case.  The theorem must carry
+  the origin tag or carry equivalent context through interval descent.  The raw
+  internal right-repeat branch has been replaced by adjacent-or-subinterval
+  descent, and the recursive branch now remembers the internal offsets
+  \([a+r,a+s]\) inside the side-tied return interval.  What remains is not the
+  loose primitive frontier by itself:
+  Lean gives a counterexample to that over-broad statement.  The remaining
+  theorem must use the nested side/context data and a genuine
+  noncrossing/incidence-tree argument.
+\end{theorem}
+
+\begin{theorem}[Chapuy recurrence]
+  \label{thm:open-chapuy}
+  Prove the slicing recurrence
+  \[
+    N_{m,g+1} \le (2(m+1))^3 N_{m,g}.
+  \]
+  This is still open.
+\end{theorem}

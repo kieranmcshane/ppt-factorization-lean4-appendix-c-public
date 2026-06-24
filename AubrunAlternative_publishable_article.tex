@@ -1,0 +1,709 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=red]{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\op}{\operatorname{op}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\eps}{\varepsilon}
+
+\title[A moment-Hankel reduction of the PPT threshold]{A moment-Hankel reduction of Aubrun's PPT threshold}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a moment-Hankel reduction for the constant \(4\) in Aubrun's
+PPT threshold for random induced states in the balanced Hilbert--Schmidt
+regime.  Let \(G_d\) be a \(d^2\times s(d)\) complex Gaussian matrix,
+\(\rho_d=G_dG_d^*/\Tr(G_dG_d^*)\), and \(s(d)/d^2\to\lambda\).  Under two
+explicit moment inputs, the reduction yields the qualitative threshold:
+\(\rho_d^\Gamma\) is asymptotically positive when \(\lambda>4\), and
+asymptotically non-positive when \(\lambda<4\).  Above \(4\), one does not
+need the full operator-norm edge theorem merely to prove PPT: it is enough to
+show that an exact unnormalised centered trace moment of
+\[
+  \widehat H_d
+  =
+  \frac{d^2s(d)}{\norm{G_d}_{\HS}^2}
+  \left(\frac{(G_dG_d^*)^\Gamma}{s(d)}\right)
+  =
+  d^2\rho_d^\Gamma
+\]
+tends to zero:
+\[
+  \EE\Tr\left[(\widehat H_d-\Id)^{2p_d}\right]\longrightarrow0
+\]
+for a growing order \(p_d\), typically \(p_d\asymp\log d\).
+When the growing moment input has the form
+\[
+  \EE\Tr((\widehat H_d-\Id)^{2p_d})
+  \le C(\log d)^\alpha d^2 q^{c\log d},
+  \qquad 0<q<1,
+\]
+and \(c\log(1/q)>2\), the same reduction gives an explicit polynomial
+failure rate, up to a power of \(\log d\).
+Below \(4\), a finite Stieltjes--Hankel certificate detects a negative
+eigenvalue: one fixed shifted Hankel determinant has a negative semicircular
+limit and concentrates around it.  The sharp non-asymptotic probability
+inequalities remain those of Aubrun's stronger edge analysis.
+\end{abstract}
+
+\section{Introduction}
+
+Aubrun's theorem says that the partial transpose of a random induced state on
+\(\C^d\otimes\C^d\) has a threshold at environment size \(4d^2\).  More
+precisely, for a random induced state \(\rho_d\) with environment dimension
+\(s(d)\), the event
+\[
+  \rho_d^\Gamma\ge0
+\]
+has probability tending to one if \(s(d)/d^2\to\lambda>4\), and probability
+tending to zero if \(s(d)/d^2\to\lambda<4\).  Aubrun's original proof is
+stronger than this qualitative statement: it gives quantitative estimates on
+the probabilities.  The route below is conditional on two moment inputs that
+encode the principal analytic work; they are stated explicitly so that the
+deterministic certificates can be examined separately.  We keep probability
+estimates visible, although the constants and exponents below are not meant
+to reproduce the sharp non-asymptotic inequalities of the original theorem.
+
+The point of the reduction is conceptual.  The lower side
+\(\lambda<4\) is not proved by locating the smallest eigenvalue directly.
+Instead, one finds a finite moment certificate.  If \(\rho_d^\Gamma\ge0\),
+then the shifted Hankel matrices built from the moments of
+\(d^2\rho_d^\Gamma\) must be positive.  But for every \(\lambda<4\), one can
+choose a finite order \(m\) such that the limiting shifted Hankel determinant
+is strictly negative.  Concentration of finitely many moments then makes PPT
+overwhelmingly unlikely.
+
+The upper side \(\lambda>4\) is complementary.  Let
+\[
+  H_d=\frac{W_d^\Gamma}{s(d)}.
+\]
+By Gaussian invariance, \(H_d\) is centered at \(\Id\): \(\EE H_d=\Id\).
+For positivity of the random state, however, the exact object is
+\[
+  \widehat H_d=d^2\rho_d^\Gamma
+  =
+  \frac{d^2s(d)}{\Tr W_d}H_d.
+\]
+Thus the normalization by \(\Tr W_d=\norm{G_d}_{\HS}^2\) is not hidden in
+the statement.  If \(\widehat H_d\) has a negative eigenvalue, then
+\(\widehat H_d-\Id\) has an eigenvalue less than \(-1\).  Hence, for every
+\(p\ge1\),
+\[
+  \widehat H_d\ngeq0
+  \quad\Longrightarrow\quad
+  \Tr\left((\widehat H_d-\Id)^{2p}\right)\ge1.
+\]
+Consequently a high centered trace moment bound tending to zero implies PPT
+with high probability by Markov's inequality.  This is weaker than proving
+operator-norm convergence to the spectral edge, but it is exactly strong
+enough for the positivity conclusion.
+
+\section{Model and Statement}
+
+Let \(G_d\in M_{d^2,s(d)}(\C)\) have independent standard complex Gaussian
+entries.  Set
+\[
+  W_d=G_dG_d^*,
+  \qquad
+  \rho_d=\frac{W_d}{\Tr W_d}.
+\]
+The matrix \(W_d\), and hence \(\rho_d\), acts on
+\(\C^d\otimes\C^d\).  The partial transpose on the second tensor factor is
+denoted by \(\Gamma\).
+
+We use the normalized partially transposed matrix
+\[
+  A_d=d^2\rho_d^\Gamma.
+\]
+For the upper-side moment estimates we also write
+\[
+  \widehat H_d=A_d
+  =
+  \frac{d^2s(d)}{\Tr W_d}
+  \left(\frac{W_d^\Gamma}{s(d)}\right).
+\]
+Its trace is \(d^2\), and its empirical spectral measure has total mass one
+after dividing the trace by \(d^2\).  The limiting law is the semicircle law
+with center \(1\) and variance \(1/\lambda\), whose support is
+\[
+  \left[1-\frac{2}{\sqrt\lambda},\,1+\frac{2}{\sqrt\lambda}\right].
+\]
+This fixed-moment limit is the partial-transpose Wick/shifted-semicircle
+input; it is the same moment law that appears in Aubrun's analysis.
+
+\begin{theorem}[Moment-Hankel threshold under explicit inputs]
+\label{thm:ppt-threshold}
+Let \(s(d)/d^2\to\lambda\in(0,\infty)\).
+
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item If \(\lambda>4\) and Assumption~\ref{ass:centered-trace-moment}
+  holds along the sequence, then
+  \[
+    \PP\{\rho_d^\Gamma\ngeq0\}\longrightarrow0.
+  \]
+  More quantitatively, if the explicit logarithmic moment bound
+  \eqref{eq:explicit-log-moment-bound} holds with a choice of
+  \(p_d=\lfloor c\log d\rfloor\) for which
+  \[
+    c\log\left(\frac{\lambda}{4+\eta}\right)>2,
+  \]
+  then, for every
+  \[
+    0<\delta<c\log\left(\frac{\lambda}{4+\eta}\right)-2,
+  \]
+  the failure probability is \(O((\log d)^\alpha d^{-\delta})\).
+  Equivalently, the scalar endpoint takes a paper-shape bound
+  \[
+    \EE\Tr((\widehat H_d-\Id)^{2p_d})
+    \le C(\log d)^\alpha d^2q^{c\log d},
+    \qquad 0<q<1,\quad c\log(1/q)>2,
+  \]
+  directly to \(\PP\{\rho_d^\Gamma\ngeq0\}\to0\), with the same envelope.
+\item If \(\lambda<4\) and Assumption~\ref{ass:moment-concentration} holds,
+  then there are constants \(C,c>0\) such that for all
+  sufficiently large \(d\),
+  \[
+    \PP\{\rho_d^\Gamma\ge0\}
+    \le C\exp(-c d^2).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+The upper side stated here is intentionally weaker than Aubrun's full
+spectral-edge theorem.  It proves positivity using only a centered trace
+moment that tends to zero.  If one supplies Aubrun's strongest
+non-asymptotic spectral estimates, the upper-side probability can be upgraded
+accordingly.
+\end{remark}
+
+\section{Quantitative Inputs}
+
+The proof below is conditional on two explicit inputs.  They are stated
+separately to make clear where probability enters, and also to avoid hiding
+the hard part of the argument.  The first input is not proved in this article;
+it is the upper-side growing-moment theorem that would have to be supplied by a
+uniform partial-transpose Wick analysis.  The scalar and deterministic
+consequences of that input are proved here.
+
+\begin{assumption}[High-moment input above the threshold]
+\label{ass:centered-trace-moment}
+Assume \(\lambda>4\) and \(s(d)/d^2\to\lambda\).  With
+\[
+  H_d=\frac{W_d^\Gamma}{s(d)},
+  \qquad
+  \widehat H_d
+  =
+  \frac{d^2s(d)}{\Tr W_d}H_d
+  =
+  d^2\rho_d^\Gamma,
+\]
+there is a sequence \(p_d\to\infty\) such that
+\[
+  \EE\Tr\left((\widehat H_d-\Id)^{2p_d}\right)\longrightarrow0.
+\]
+\end{assumption}
+
+\begin{remark}
+Assumption~\ref{ass:centered-trace-moment} should be read as a target input,
+not as a disguised theorem.  The expected source is a growing-order version of
+the partial-transpose Wick expansion for the centered matrix \(H_d-\Id\),
+together with a radial transfer through
+\(\Tr W_d=\norm{G_d}_{\HS}^2\).  Equivalently, one may prove the estimate
+directly for \(\widehat H_d-\Id\), which is the exact observable used by the
+formal endpoint.  For fixed \(p\), the Wick expansion gives the shifted
+semicircle moments, with Catalan leading terms.  To use
+\(p=p_d\asymp\log d\), one needs a uniform counting estimate showing that the
+non-leading diagrams remain summable in this growing range.  That uniform
+counting is the hard spectral-edge content; Aubrun's original proof proves
+stronger estimates by carrying out this kind of edge control.
+
+An explicit sufficient version is the following growing-moment estimate.
+For some \(\eta>0\) with \(4+\eta<\lambda\), suppose that there are
+constants \(C,\alpha,c_0,d_0>0\) such that, for all \(d\ge d_0\) and all
+integers \(1\le p\le c_0\log d\),
+\begin{equation}
+\label{eq:explicit-log-moment-bound}
+  \EE\Tr\left((\widehat H_d-\Id)^{2p}\right)
+  \le
+  C d^2 p^\alpha
+  \left(\frac{4+\eta}{s(d)/d^2}\right)^p.
+\end{equation}
+If \(c_0\log(\lambda/(4+\eta))>2\), then choosing
+\(p_d=\lfloor c\log d\rfloor\) with
+\[
+  \frac{2}{\log(\lambda/(4+\eta))}<c<c_0
+\]
+gives Assumption~\ref{ass:centered-trace-moment}.  This is the
+high-moment combinatorial input.  It is weaker than an operator-norm edge
+theorem, but sufficient for PPT.
+
+The estimate \eqref{eq:explicit-log-moment-bound} is deliberately separated
+from the rest of the paper.  Fixed-order moment convergence alone does not
+imply it: for fixed \(p\), the unnormalised moment still carries the ambient
+factor \(d^2\).  The logarithmic order is precisely what can defeat that
+factor when \(\lambda>4\).
+
+For formalization it is convenient to separate the random-matrix estimate
+from the scalar probability step.  After increasing \(4+\eta\) slightly and
+passing to all sufficiently large \(d\), \eqref{eq:explicit-log-moment-bound}
+implies a bound of the cleaner form
+\begin{equation}
+\label{eq:paper-shape-log-bound}
+  \EE\Tr\left((\widehat H_d-\Id)^{2p_d}\right)
+  \le
+  C'(\log d)^\alpha d^2 q^{c\log d},
+  \qquad 0<q<1,\quad c\log(1/q)>2.
+\end{equation}
+The Lean endpoint proves that this scalar envelope alone forces the
+non-PPT probability to tend to zero.  The difficult unproved input is the
+model-specific growing-moment estimate that supplies such a \(q\).
+\end{remark}
+
+For the lower side we need only fixed moments.  Define
+\[
+  M_{\ell,d}=d^{-2}\Tr(A_d^\ell),
+  \qquad \ell\ge0.
+\]
+Let \(m_\ell(\lambda)\) be the \(\ell\)-th moment of the semicircle law with
+center \(1\) and variance \(1/\lambda\), and set
+\[
+  H_m(\lambda)=\bigl[m_{i+j+1}(\lambda)\bigr]_{0\le i,j\le m}.
+\]
+The corresponding random Hankel determinant is
+\[
+  D_{m,d}=\det\bigl[M_{i+j+1,d}\bigr]_{0\le i,j\le m},
+  \qquad
+  D_m(\lambda)=\det H_m(\lambda).
+\]
+
+\begin{assumption}[Fixed moment concentration]
+\label{ass:moment-concentration}
+For every fixed \(m\), every compact \(J\Subset(0,\infty)\), and every
+\(\tau>0\), there are constants \(C,c>0\) and \(d_0\) such that if
+\(d\ge d_0\) and \(s/d^2\in J\), then
+\[
+  \PP\left\{
+    \abs{D_{m,d}-D_m(s/d^2)}>\tau
+  \right\}
+  \le C\exp(-c d^2).
+\]
+\end{assumption}
+
+\section{The Hankel Threshold Computation}
+
+The finite certificate is governed by a Chebyshev determinant.  Let
+\[
+  \alpha_m=4\cos^2\left(\frac{\pi}{m+2}\right).
+\]
+Then \(\alpha_m\uparrow4\).
+
+\begin{proposition}[Chebyshev-Hankel sign]
+\label{prop:chebyshev-sign}
+For every \(m\ge1\) and every \(\lambda>0\),
+\[
+  D_m(\lambda)
+  =
+  (\sqrt\lambda)^{(m+1)^2}
+  U_{m+1}\left(\frac{\sqrt\lambda}{2}\right),
+\]
+where \(U_{m+1}\) is the Chebyshev polynomial of the second kind.  In
+particular, \(D_m(\lambda)>0\) for \(\lambda>\alpha_m\).
+Moreover, if
+\[
+  \cos\left(\frac{2\pi}{m+2}\right)
+  <
+  \frac{\sqrt\lambda}{2}
+  <
+  \cos\left(\frac{\pi}{m+2}\right),
+\]
+then \(D_m(\lambda)<0\).  Consequently, for every \(0<\lambda<4\) there is
+some \(m\ge1\) such that \(D_m(\lambda)<0\).
+\end{proposition}
+
+\begin{proof}
+The determinant formula is the closed form for the shifted Hankel determinant
+of the centered semicircular moment sequence.  The sign follows from the
+trigonometric identity
+\[
+  U_{m+1}(\cos\theta)=\frac{\sin((m+2)\theta)}{\sin\theta}.
+\]
+Writing \(\sqrt\lambda/2=\cos\theta\), the first zero occurs when
+\(\theta=\pi/(m+2)\), namely at
+\(\lambda=4\cos^2(\pi/(m+2))=\alpha_m\).  For
+\(\lambda>\alpha_m\), either \(\sqrt\lambda/2\ge1\), where all \(U_n\) are
+positive, or \(0<\theta<\pi/(m+2)\), where both sine factors are positive.
+If instead
+\[
+  \cos\left(\frac{2\pi}{m+2}\right)
+  <
+  \frac{\sqrt\lambda}{2}
+  <
+  \cos\left(\frac{\pi}{m+2}\right),
+\]
+then, since cosine is decreasing on \([0,\pi]\),
+\[
+  \frac{\pi}{m+2}<\theta<\frac{2\pi}{m+2}.
+\]
+Thus \(\pi<(m+2)\theta<2\pi\), so
+\(\sin((m+2)\theta)<0\), while \(\sin\theta>0\).  Hence
+\(U_{m+1}(\sqrt\lambda/2)<0\), and therefore \(D_m(\lambda)<0\).
+
+Finally fix \(0<\lambda<4\), and set
+\[
+  \theta=\arccos\left(\frac{\sqrt\lambda}{2}\right)\in(0,\pi/2).
+\]
+Choose
+\[
+  N=\left\lfloor\frac{\pi}{\theta}\right\rfloor+1.
+\]
+Then \(N\ge3\), and
+\[
+  \pi<N\theta\le \pi+\theta<\frac{3\pi}{2}.
+\]
+With \(m=N-2\), one has \(\sin((m+2)\theta)<0\), hence
+\(D_m(\lambda)<0\).
+\end{proof}
+
+\begin{remark}
+The Lean file \texttt{PptFactorization/Threshold.lean} proves exactly this
+sign computation through the theorems
+\texttt{det\_pos\_above\_threshold} and
+\texttt{det\_neg\_below\_threshold}.
+\end{remark}
+
+\section{Proof Above Four}
+
+\begin{lemma}[Trace-moment positivity criterion]
+\label{lem:trace-moment-positivity}
+Let \(H\) be a Hermitian matrix and let \(p\ge1\).  If
+\[
+  \Tr\left((H-\Id)^{2p}\right)<1,
+\]
+then \(H\ge0\).
+\end{lemma}
+
+\begin{proof}
+Let \(y_1,\ldots,y_n\) be the eigenvalues of \(H\).  The eigenvalues of
+\((H-\Id)^{2p}\) are \((y_i-1)^{2p}\), hence
+\[
+  \Tr\left((H-\Id)^{2p}\right)=\sum_{i=1}^n (y_i-1)^{2p}.
+\]
+If \(H\) had a negative eigenvalue \(y_i<0\), then \(y_i-1<-1\), so
+\((y_i-1)^{2p}>1\).  The trace would be at least \(1\), contradicting the
+assumption.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:ppt-threshold}(i)]
+Assume \(\lambda>4\), and put \(\widehat H_d=d^2\rho_d^\Gamma\).  Since
+\(d^2>0\),
+\[
+  \widehat H_d\ge0
+  \quad\Longleftrightarrow\quad
+  \rho_d^\Gamma\ge0.
+\]
+By Lemma~\ref{lem:trace-moment-positivity},
+\[
+  \{\,\rho_d^\Gamma\ngeq0\,\}
+  =
+  \{\,\widehat H_d\ngeq0\,\}
+  \subseteq
+  \left\{
+    \Tr\left((\widehat H_d-\Id)^{2p_d}\right)\ge1
+  \right\}.
+\]
+Markov's inequality gives
+\[
+  \PP\{\rho_d^\Gamma\ngeq0\}
+  \le
+  \EE\Tr\left((\widehat H_d-\Id)^{2p_d}\right).
+\]
+Assumption~\ref{ass:centered-trace-moment} makes the right-hand side tend
+to zero.
+
+If the explicit bound \eqref{eq:explicit-log-moment-bound} is available,
+then for \(p_d=\lfloor c\log d\rfloor\),
+\[
+  \PP\{\rho_d^\Gamma\ngeq0\}
+  \le
+  C d^2 p_d^\alpha
+  \left(\frac{4+\eta}{s(d)/d^2}\right)^{p_d}.
+\]
+Since \(s(d)/d^2\to\lambda\) and
+\(c\log(\lambda/(4+\eta))>2\), this is
+\[
+  O\left((\log d)^\alpha d^{-\delta}\right)
+\]
+for every
+\[
+  0<\delta<c\log\left(\frac{\lambda}{4+\eta}\right)-2.
+\]
+In the paper-shape form \eqref{eq:paper-shape-log-bound}, the bound is even
+more transparent:
+\[
+  \PP\{\rho_d^\Gamma\ngeq0\}
+  \le C'(\log d)^\alpha d^2q^{c\log d}
+  =
+  C'(\log d)^\alpha d^{2+c\log q}.
+\]
+The exponent is negative exactly when \(c\log(1/q)>2\).
+\end{proof}
+
+\section{Proof Below Four}
+
+\begin{lemma}[PPT implies shifted Hankel positivity]
+\label{lem:ppt-hankel}
+If \(\rho_d^\Gamma\ge0\), then for every \(m\ge0\),
+\[
+  D_{m,d}\ge0.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(\rho_d^\Gamma\ge0\), then \(A_d=d^2\rho_d^\Gamma\) is positive
+semidefinite.  Its empirical spectral measure is supported on
+\([0,\infty)\).  The matrix
+\[
+  \bigl[M_{i+j+1,d}\bigr]_{0\le i,j\le m}
+\]
+is the Gram matrix of the functions
+\[
+  x^{i}\sqrt{x},
+  \qquad 0\le i\le m,
+\]
+in \(L^2\) of that positive measure.  It is therefore positive
+semidefinite, and its determinant is nonnegative.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:ppt-threshold}(ii)]
+Assume \(0<\lambda<4\).  By Proposition~\ref{prop:chebyshev-sign}, choose
+\(m\ge1\) such that
+\[
+  D_m(\lambda)<0.
+\]
+By continuity of \(D_m\), there are \(\gamma>0\) and a compact interval
+\(J\Subset(0,\infty)\) containing \(\lambda\), and hence containing
+\(s(d)/d^2\) for all large \(d\), such that
+\[
+  D_m(t)\le -2\gamma
+  \qquad (t\in J).
+\]
+If \(\rho_d^\Gamma\ge0\), Lemma~\ref{lem:ppt-hankel} gives \(D_{m,d}\ge0\).
+For large \(d\), since \(s(d)/d^2\in J\), this forces
+\[
+  \abs{D_{m,d}-D_m(s(d)/d^2)}\ge 2\gamma.
+\]
+Consequently
+\[
+  \PP\{\rho_d^\Gamma\ge0\}
+  \le
+  \PP\left\{
+    \abs{D_{m,d}-D_m(s(d)/d^2)}\ge2\gamma
+  \right\}.
+\]
+Assumption~\ref{ass:moment-concentration} gives
+\[
+  \PP\{\rho_d^\Gamma\ge0\}\le C\exp(-c d^2).
+\]
+\end{proof}
+
+\section{What This Proves, and What It Does Not Claim}
+
+The proof above recovers the threshold constant \(4\) with probability
+estimates of different strength on the two sides:
+\[
+  \lambda>4
+  \quad\Longrightarrow\quad
+  \PP\{\rho_d^\Gamma\ge0\}\to1
+  \quad\text{under the centered growing-moment input,}
+\]
+with the explicit rate
+\[
+  \PP\{\rho_d^\Gamma\ngeq0\}
+  \le C(\log d)^\alpha d^2q^{c\log d}
+  =
+  O((\log d)^\alpha d^{-\delta})
+\]
+whenever the supplied centered moment bound has
+\(0<q<1\), \(c\log(1/q)>2\), and
+\(\delta<c\log(1/q)-2\);
+and
+\[
+  \lambda<4
+  \quad\Longrightarrow\quad
+  \PP\{\rho_d^\Gamma\ge0\}\le Ce^{-c d^2}.
+\]
+The lower side is a finite-certificate argument.  It is especially robust:
+one fixed shifted Stieltjes--Hankel determinant becomes negative in the limit
+and concentration does the rest.
+
+The upper side is a growing centered moment argument.  The key observation is
+that positivity is easier than full edge convergence: if
+\(\Tr((\widehat H_d-\Id)^{2p_d})<1\), then \(d^2\rho_d^\Gamma\) has no
+negative eigenvalue.  To obtain the full strength of Aubrun's
+non-asymptotic theorem, one still needs the strongest available spectral-edge
+probability estimates.  The present article isolates the threshold mechanism
+and keeps the hard high-moment input explicit.  In particular,
+Assumption~\ref{ass:centered-trace-moment} is not presented as a new proof of
+the edge estimate; it is the exact growing-moment statement whose proof
+remains to be supplied.  Thus the article is best read as a moment-Hankel
+reduction of the constant \(4\), not as a line-by-line replacement for
+Aubrun's sharper probability inequalities.
+
+In current formal terms, the scalar and deterministic probability adapters
+above the threshold are now closed.  The remaining frontier is not the
+Markov step, nor the logarithmic-rate algebra; it is the actual
+partial-transpose growing-moment estimate for the exact normalized observable.
+The bridge from the canonical finite Gaussian model to the scalar positivity
+endpoint is now formalized.
+
+\section{Formalization Notes}
+
+The Lean development contains the algebraic and combinatorial skeleton used
+by this article.
+
+\begin{itemize}[leftmargin=*]
+\item \texttt{PartialTranspose.lean} defines the concrete
+  partial transpose and proves its algebraic identities.
+\item \texttt{Threshold.lean} proves the Chebyshev-Hankel sign computation:
+  above
+  \[
+    \alpha_m=4\cos^2(\pi/(m+2)),
+  \]
+  the determinant is positive, while the negative direction is the sharper
+  band statement used in the proof:
+  \[
+    \cos\left(\frac{2\pi}{m+2}\right)
+    <
+    \frac{\sqrt\lambda}{2}
+    <
+    \cos\left(\frac{\pi}{m+2}\right)
+    \quad\Longrightarrow\quad
+    \det H_m(\lambda)<0.
+  \]
+  Varying \(m\) gives a negative finite certificate for every
+  \(0<\lambda<4\).
+\item \texttt{TransferMatrix.lean} records the
+  Stieltjes/Hankel certificate: positivity of the partial transpose implies
+  positivity of the shifted Hankel matrices.
+\item \texttt{AubrunMomentSpine.lean} and
+  \texttt{AppendixBAubrunProposition71.lean} formalize the
+  exact Wick reduction for the off-diagonal partial transpose and isolate the
+  remaining Aubrun counting estimate.
+\item \texttt{AubrunAlternative.lean} contains the deterministic bridge used
+  above:
+  \[
+    \texttt{all\_nonneg\_of\_centered\_even\_moment\_lt\_one}.
+  \]
+  It proves that a finite spectrum is nonnegative once the unnormalised
+  centered even moment is \(<1\).  The same file also records the fixed-moment
+  bulk adapters: normalized negative-count and negative-mass bounds from
+  centered even moments, event-shaped count and mass implications, and the
+  scalar Catalan choice
+  \[
+    \lambda>4,\ \eta>0
+    \quad\Longrightarrow\quad
+    \exists m,\ \frac{C_m}{\lambda^m}<\eta .
+  \]
+  The same file also contains the scalar upper-side rate wrappers:
+  \[
+    \texttt{negative\_event\_measure\_le\_of\_lintegral\_bound\_log\_quadratic\_rpow\_log},
+  \]
+  which turns a bound of the form
+  \(C(\log d)^\alpha d^2q^{c\log d}\) into a finite-\(d\) non-PPT
+  probability bound, and
+  \[
+    \texttt{exists\_log\_order\_constants\_and\_tendsto\_negative\_event\_measure\_zero\_of\_four\_lt},
+  \]
+  which packages the condition \(\lambda>4\) into constants
+  \(0<q<1\) and \(c\) with \(c\log(1/q)>2\).  These theorems audit only to
+  the usual Lean foundations; they do not prove the random-matrix
+  growing-moment estimate.
+\item \texttt{AubrunAlternativeModelBridge.lean} connects the scalar
+  positivity endpoint to the exact random induced state normalization.  In
+  particular, it contains the Frobenius-mass endpoint
+  \[
+  \begin{gathered}
+    \texttt{tendsto\_rhoGamma\_posSemidef\_measureReal\_one\_of}\\
+    \texttt{\_wishartGamma\_frobeniusMass\_traceMoment\_tendsto\_zero},
+  \end{gathered}
+  \]
+  and its varying-space and canonical finite Gaussian versions.  These
+  theorems formalize the implication from
+  \[
+    \EE\Tr\left[
+      \left(
+        \frac{d^2s(d)}{\norm{G_d}_{\HS}^2}
+        \frac{(G_dG_d^*)^\Gamma}{s(d)}
+        -\Id
+      \right)^{2p_d}
+    \right]\longrightarrow0
+  \]
+  to
+  \[
+    \PP\{\rho_d^\Gamma\ge0\}\longrightarrow1.
+  \]
+  The remaining model-specific input is therefore the displayed
+  growing-moment convergence itself, plus the harmless eventual
+  non-degeneracy of the environment dimension.
+\end{itemize}
+
+The formal files therefore support the exact algebraic threshold mechanism.
+Above the threshold, the remaining analytic probability input is the growing
+centered trace moment estimate.  A full operator-norm edge theorem would be
+stronger, but it is not logically necessary for the PPT conclusion.
+The fixed-moment convergence/concentration inputs and the growing-moment
+combinatorial estimate remain explicit frontiers rather than hidden
+formalized facts.
+
+\begin{thebibliography}{9}
+
+\bibitem{Aubrun2012}
+G.~Aubrun,
+\emph{Partial transposition of random states and non-centered semicircular
+distributions},
+Random Matrices: Theory and Applications \textbf{1} (2012), no.~2, 1250001.
+
+\bibitem{AubrunSzarek2017}
+G.~Aubrun and S.~J. Szarek,
+\emph{Alice and Bob Meet Banach: The Interface of Asymptotic Geometric
+Analysis and Quantum Information Theory},
+Mathematical Surveys and Monographs, vol.~223, American Mathematical Society,
+2017.
+
+\bibitem{Ledoux2001}
+M.~Ledoux,
+\emph{The Concentration of Measure Phenomenon},
+Mathematical Surveys and Monographs, vol.~89, American Mathematical Society,
+2001.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,2 @@
+source_row,source_t,source_g,source_p,source_q,target_t,target_g,target_p,target_q,new_domain_offsets,old_domains_checked,choices_checked,hit_count,distinct_witnesses,duplicate_hits,min_hits_per_old_domain,max_hits_per_old_domain,hits_by_offset
+7,41,51,53,52,42,52,54,54,"0,1,2,3,4,5",246,1062720,168264,168264,0,684,684,0:28044;1:28044;2:28044;3:28044;4:28044;5:28044

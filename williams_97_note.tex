@@ -1,0 +1,399 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\indep}{\perp\!\!\!\perp}
+\newcommand{\one}{\mathbf{1}}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{example}[thm]{Example}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\title{The i.i.d.\ indicator admission \\
+  \large Past-determined target meets independent uniform draw}
+\author{ENS/Polytechnique 2026 Math A --- Lean 4 formalization\\
+  Companion note (revised after external-LLM verification)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note explains the probabilistic lemma admitted in the project as
+\verb|iIndepFun_iIdentDistrib_uniformIndic_pastDep|. The earlier
+draft of this note framed it as ``Williams \S 9.7'', citing
+Williams, \emph{Probability with Martingales}, \S 9.7. \textbf{That
+framing is misleading.} An external LLM, asked to prove the
+underlying claim with all named-theorem invocations explicitly
+forbidden, produced a direct $\sim$10-line counting argument
+using only definitions of independence + uniformity + the
+admitted local tree structure. No graduate student would write
+``by Williams \S 9.7'' in their exam booklet. We give the direct
+argument here, identify the specific Mathlib API gap that forces
+the Lean admission anyway, and document its two project uses.
+\end{abstract}
+
+\section{Statement}
+
+Throughout, $(\Omega, \F, \Prob)$ is a probability space and $S$ a
+finite set of cardinality $|S| = n$. Equip $S$ with the discrete
+$\sigma$-algebra. Let $(Y_k)_{k \geq 0}$ be a sequence of independent,
+identically distributed random variables, each uniform on $S$:
+\[
+  \Prob(Y_k = s) = \frac{1}{n} \qquad \text{for every } s \in S.
+\]
+Define the natural filtration $\G_k := \sigma(Y_0, Y_1, \dots, Y_{k-1})$
+for $k \geq 1$, with $\G_0 := \{\emptyset, \Omega\}$ trivial.
+
+\begin{thm}[Williams \S 9.7, restated for our setting]
+\label{thm:main}
+Let $c \in \{0, 1, \dots, n\}$ and let $A_k : \Omega \to 2^S$ be a
+sequence of $\G_k$-measurable random subsets of $S$ with constant
+cardinality $|A_k(\omega)| = c$ for every $\omega \in \Omega$.
+Define the indicator sequence
+\[
+  f_k(\omega) := \one_{\{Y_k(\omega) \in A_k(\omega)\}}, \qquad k \geq 0.
+\]
+Then $(f_k)_{k \geq 0}$ is an i.i.d.\ sequence of Bernoulli random
+variables with parameter $c/n$.
+\end{thm}
+
+\noindent The two project applications correspond to specific choices of $S$,
+$Y_k$, and $A_k$; see \S\ref{sec:applications}.
+
+\section{The direct counting proof (what a grad student would write)}
+
+The proof reduces to counting on the finite-product measure
+$\Prob_M := \mathrm{Unif}(S)^{\otimes M}$ on $S^M$, where
+$M = \max(I) + 1$ for the index set $I$ of interest.
+
+\begin{proof}[Direct proof of Theorem~\ref{thm:main}]
+Fix any finite $I = \{i_1 < \dots < i_r\} \subset \N_0$ and any
+assignment $\epsilon : I \to \{0, 1\}$. We show
+\[
+  \Prob\bigl(\forall i \in I,\ f_i = \epsilon_i\bigr)
+    = \prod_{i \in I} p_{\epsilon_i},
+  \qquad p_1 := c/n,\ p_0 := 1 - c/n.
+\]
+
+The event depends only on the first $M$ coordinates, so it suffices
+to count realizing tuples in $S^M$. For each prefix length
+$\ell \in \{0, 1, \dots, M-1\}$, given a partial realization
+$(y_0, \dots, y_{\ell-1}) \in S^\ell$ that satisfies the constraints
+$f_i = \epsilon_i$ for all $i \in I \cap [0, \ell)$, count the
+number $c_\ell$ of admissible choices for $y_\ell$:
+\begin{itemize}
+  \item If $\ell \notin I$: no constraint at step $\ell$; all $n$
+    values of $y_\ell$ are admissible. So $c_\ell = n$.
+  \item If $\ell \in I$ with $\epsilon_\ell = 1$: need $y_\ell \in
+    A_\ell(y_0, \dots, y_{\ell-1})$, which has cardinality $c$. So
+    $c_\ell = c$.
+  \item If $\ell \in I$ with $\epsilon_\ell = 0$: need $y_\ell \notin
+    A_\ell(\dots)$, cardinality $n - c$. So $c_\ell = n - c$.
+\end{itemize}
+
+Crucially, $c_\ell$ does \textbf{not} depend on the partial realization
+$(y_0, \dots, y_{\ell-1})$; only on whether $\ell \in I$ and the
+desired $\epsilon_\ell$. (The set $A_\ell(\dots)$ varies with the
+prefix, but its \emph{size} is the constant $c$ by hypothesis.)
+
+By induction on $\ell$ from $0$ to $M-1$, the total count is
+$N = \prod_{\ell=0}^{M-1} c_\ell$. The probability of the event is
+\[
+  \frac{N}{n^M} = \prod_{\ell=0}^{M-1} \frac{c_\ell}{n}
+    = \prod_{\ell \in I} \frac{c_{\ell}}{n}
+    = \prod_{i \in I} p_{\epsilon_i}
+\]
+(steps $\ell \notin I$ contribute factor $1$). This establishes
+mutual independence and identical Bernoulli$(c/n)$ distribution.
+\end{proof}
+
+\begin{remark}[Length and depth of the argument]
+The substantive content is the bullet list and the
+``$c_\ell$ does not depend on the prefix'' observation. That's two
+sentences. Combined with the inductive product formula, the proof is
+$\sim 10$ lines. There is no abstract conditional-expectation step.
+The argument scales to any finite $I$ and any past-dependence
+structure as long as the cardinality $|A_\ell| = c$ is constant.
+\end{remark}
+
+\section{An equivalent, more abstract framing (for context)}
+
+The same fact is sometimes packaged as a corollary of a
+measure-theoretic lemma:
+
+\begin{lem}\label{lem:cond-law}
+For every $k \geq 0$ and every $\G_k$-measurable event
+$E \subseteq \Omega$,
+\[
+  \Prob(\{f_k = 1\} \cap E) = \frac{c}{n}\, \Prob(E).
+\]
+\end{lem}
+
+\begin{proof}
+The set $A_k$ is $\G_k$-measurable and takes values in the finite
+collection $\binom{S}{c}$ of $c$-subsets of $S$. Decompose $E$ by
+the value of $A_k$:
+\[
+  E = \bigsqcup_{T \in \binom{S}{c}} \big(E \cap \{A_k = T\}\big).
+\]
+Each piece $E_T := E \cap \{A_k = T\}$ is $\G_k$-measurable. On $E_T$,
+the event $\{f_k = 1\} = \{Y_k \in T\}$. By independence of $Y_k$ from
+$\G_k$ (which holds since $\G_k = \sigma(Y_0, \dots, Y_{k-1})$ and the
+$Y_j$ are independent),
+\[
+  \Prob(\{Y_k \in T\} \cap E_T)
+    = \Prob(Y_k \in T) \cdot \Prob(E_T)
+    = \frac{|T|}{n} \cdot \Prob(E_T)
+    = \frac{c}{n} \cdot \Prob(E_T).
+\]
+Sum over $T$:
+\[
+  \Prob(\{f_k = 1\} \cap E)
+    = \sum_T \Prob(\{Y_k \in T\} \cap E_T)
+    = \frac{c}{n} \sum_T \Prob(E_T)
+    = \frac{c}{n} \cdot \Prob(E). \qedhere
+\]
+\end{proof}
+
+\begin{cor}\label{cor:f-indep}
+$f_k$ is independent of $\G_k$, and marginally $f_k \sim
+\mathrm{Bernoulli}(c/n)$.
+\end{cor}
+
+\begin{proof}
+Take $E = \Omega$ in Lemma~\ref{lem:cond-law}: $\Prob(f_k = 1) = c/n$
+gives the marginal. For independence, we must show
+$\Prob(\{f_k = a\} \cap E) = \Prob(f_k = a)\,\Prob(E)$ for $a \in
+\{0, 1\}$ and any $\G_k$-measurable $E$. The case $a = 1$ is
+Lemma~\ref{lem:cond-law}; the case $a = 0$ follows by complementation:
+\[
+  \Prob(\{f_k = 0\} \cap E) = \Prob(E) - \Prob(\{f_k = 1\} \cap E)
+    = \Big(1 - \frac{c}{n}\Big)\,\Prob(E). \qedhere
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+We have established that each $f_k$ has marginal
+$\mathrm{Bernoulli}(c/n)$, so the family is identically distributed.
+For mutual independence, observe that $f_0, f_1, \dots, f_{k-1}$ are
+$\G_k$-measurable (since $f_j$ is determined by $Y_0, \dots, Y_j$ and
+$j \leq k - 1$ implies $\sigma(f_j) \subseteq \G_k$). By
+Corollary~\ref{cor:f-indep}, $f_k$ is independent of $\G_k$, hence in
+particular of $(f_0, \dots, f_{k-1})$. Inductively, the family
+$(f_k)_{k \geq 0}$ is mutually independent. Combined with identical
+distribution, the family is i.i.d.
+\end{proof}
+
+\begin{remark}
+The hypothesis ``$|A_k|$ constant'' is essential. If $|A_k|$ were a
+genuine random variable (say, $\G_k$-measurable but not constant),
+then the conditional probability $\Prob(f_k = 1 \mid \G_k) = |A_k|/n$
+would still be a deterministic function of the past, but \emph{not}
+constant; $f_k$ would be conditionally Bernoulli with a random
+parameter, and the marginal would involve averaging $|A_k|/n$ over
+the past. Independence from the past would fail in general.
+\end{remark}
+
+\begin{lem}[``Constant conditional probability'' lemma]
+\label{lem:cond-law}
+For every $k \geq 0$ and every $\G_k$-measurable event
+$E \subseteq \Omega$,
+\[
+  \Prob(\{f_k = 1\} \cap E) = \frac{c}{n}\, \Prob(E).
+\]
+\end{lem}
+
+This is provable as before via decomposition over the finite values
+of $A_k$. From here mutual independence follows by a tower-of-induction
+argument, exactly as Williams \S 9.7 packages it.
+
+\textbf{The framing question.} Both the direct counting proof and
+the abstract lemma~\ref{lem:cond-law} are correct and equivalent.
+The direct counting is what a graduate student would write in 10
+lines on their exam booklet; the abstract lemma is what a textbook
+records for general use. \emph{Neither is harder than the other; they
+encode identical content at different abstraction levels.}
+
+\section{Why ``the centred indicators are not i.i.d.\ '' is wrong}
+
+A common heuristic, repeated in the project's earlier draft (errata
+note E3 of \verb|RandomWalk.lean|), goes:
+
+\begin{quote}\itshape
+The centred indicator $\xi_i := \one_{\{Y_i \in A_i\}} - c/n$
+\textbf{depends on the past} (through $A_i$), hence the family
+$(\xi_i)$ is not independent.
+\end{quote}
+
+This is incorrect. ``Depends on the past'' is a statement about
+\emph{measurability}, not about \emph{independence}. The
+$\xi_i$ is $\sigma(Y_0, \dots, Y_i)$-measurable, true. But
+Theorem~\ref{thm:main} says the family is nevertheless i.i.d.\
+because the conditional law given the past is \emph{constant}:
+``constant conditional law'' is a measure-theoretic property strictly
+stronger than ``measurable function of past'' and strictly weaker
+than ``deterministic''.
+
+The constant-cardinality hypothesis $|A_k| = c$ is exactly the
+content the heuristic misses.
+
+\section{Project applications}\label{sec:applications}
+
+In both applications, $S = \{a, b, a^{-1}, b^{-1}\}$ is the
+generating set of $F_2$, equipped with the uniform measure
+$Z_{\mathrm{unif}}$ ($n = 4$), and $Y_k$ is the $k$-th step of the
+random walk on $F_2$.
+
+\subsection{Q42 --- binomial identification}
+
+The exam asks to show that
+\[
+  \frac{b_\varphi(X_n) + n}{2} \sim \mathcal{B}(n, 3/4).
+\]
+Write the LHS as $\sum_{i<n} \xi_i$ where
+\[
+  \xi_i := \frac{b_\varphi(X_{i+1}) - b_\varphi(X_i) + 1}{2}.
+\]
+By the admitted $1+3$ neighbour structure of the Busemann function,
+exactly $1$ of the $4$ generators decreases $b_\varphi$ by~$1$ and $3$
+increase it by~$1$. So $\xi_i = \one_{\{Y_i \in A_i\}}$ where
+\[
+  A_i(\omega) := \{ s \in S : b_\varphi(X_i(\omega) \cdot s)
+    = b_\varphi(X_i(\omega)) + 1 \}
+\]
+has constant cardinality $|A_i| = 3$. By Theorem~\ref{thm:main},
+$(\xi_i)$ is i.i.d.\ Bernoulli$(3/4)$, hence
+$\sum_{i<n} \xi_i \sim \mathcal{B}(n, 3/4)$.
+
+The exam's admitted Hoeffding inequality (preamble) then gives the
+required tail bound, and Borel--Cantelli yields the SLLN
+$b_\varphi(X_n)/n \to 1/2$ a.s.
+
+\subsection{Q43 --- cancellation coupling}
+
+The exam asks to show $|X_n|/n \to 1/2$ a.s. Writing $|X_n| = n - 2
+C_n$ where $C_n$ counts cancellations, the proof reduces to $C_n/n
+\to 1/4$ a.s. Define
+\[
+  \mathrm{coupled}_k := \one_{\{Y_k = (s_k)^{-1}\}}
+\]
+where $s_k$ is the last letter of $X_k$ (with arbitrary default at
+identity). The set $A_k = \{(s_k)^{-1}\} \subseteq S$ has constant
+cardinality $1$. By Theorem~\ref{thm:main}, $(\mathrm{coupled}_k)$ is
+i.i.d.\ Bernoulli$(1/4)$. Mathlib's strong law gives $C_n/n \to 1/4$
+a.s.\ (after a coupling argument that handles the random visits to
+identity, where the formal $\mathrm{coupled}_k$ disagrees with the
+true cancellation indicator on a finite set a.s.).
+
+\subsection{Common structure}
+
+Both applications fit Theorem~\ref{thm:main} with $|S| = 4$ and
+constant $c \in \{1, 3\}$. They are the only places in the project
+where the admission is invoked. Wave 23C consolidated them under a
+single generic Lean axiom matching Theorem~\ref{thm:main}'s
+statement.
+
+\section{Necessity}
+
+\subsection{Q42 cannot be done without it at graduate level}
+
+The exam asks the \emph{student} to derive the binomial law of
+$\sum \xi_i$. The derivation requires showing the family is i.i.d.
+This is exactly the content of Theorem~\ref{thm:main}; there is no
+shorter route.
+
+Alternative: admit the binomial law directly. This replaces a single
+general admission with a more specific one and does not help any
+other question.
+
+\subsection{Q43 alternative routes}
+
+The cleanest grad-level proof is the i.i.d.\ coupling above. A
+geometric ``$4$-ray'' argument exists but invokes either:
+\begin{itemize}
+  \item the same i.i.d.\ structure on the Busemann increments
+    (no saving), or
+  \item more elaborate facts about random walks on non-amenable groups
+    (Kesten, Woess, Ch.~8), strictly stronger than what the exam
+    expects.
+\end{itemize}
+The i.i.d.\ coupling using Theorem~\ref{thm:main} is the minimal
+graduate-level argument. The errata document confirms this (Q43
+\S(b), corrected route).
+
+\section{The Lean obstacle (this is purely about Mathlib API, not the math)}
+
+The direct counting proof (\S 2) and the abstract framing (\S 3) are
+both pure mathematics and complete. Why, then, do we admit the
+statement in Lean?
+
+The answer is that Lean's Mathlib library has a specific gap:
+\[
+  \mu = \mathrm{Measure.infinitePi}(\mu_S)_{k \in \N}
+\]
+into ``finite prefix $\otimes$ infinite suffix'' over $\N$:
+\[
+  \mu = \mathrm{Measure.pi}\bigl(\mu_S^{[0,N)}\bigr)
+    \otimes \mathrm{Measure.infinitePi}(\mu_S)_{k \geq N}.
+\]
+Mathlib has the finite-prefix split for $\mathrm{Measure.pi}$ over
+\verb|Iic b| ranges (\verb|pi_prod_map_IicProdIoc|), but not for
+$\mathrm{Measure.infinitePi}$ over $\N$. Filling this gap (\~200~LOC
+of pure measure-theoretic plumbing, no probability or
+graph-theoretic content) would dissolve the Lean admission and turn
+Theorem~\ref{thm:main} into a Lean theorem.
+
+This is a one-time Mathlib investment with multiple downstream
+benefits beyond this project.
+
+Once the prefix-suffix split is in place, the Lean proof of
+Theorem~\ref{thm:main} is the same direct counting argument as
+\S 2: project to $S^M$, count $N = \prod c_\ell$, divide by $n^M$.
+$\sim 200$ LOC of measure-theoretic plumbing for a 10-line
+mathematical argument.
+
+\textbf{The honest situation:} the Lean admission is misleadingly
+named after Williams \S 9.7 because that's a convenient textbook
+citation. The mathematical content is undergraduate-tier counting;
+the Lean blocker is purely the absence of a finite-prefix split for
+\verb|Measure.infinitePi|. Future readers should understand: this is
+not a deep probability admission, it is a Lean infrastructure gap.
+
+\section{References}
+
+\begin{itemize}[leftmargin=*]
+  \item D.~Williams, \emph{Probability with Martingales}, Cambridge
+    University Press, 1991. \S 9.7 (``Conditional expectations:
+    further properties'').
+  \item A.~Klenke, \emph{Probability Theory: A Comprehensive Course},
+    Springer, 2014, 2nd~ed. \S 5.3 (``Conditional probabilities and
+    conditional expectations'').
+  \item D.~Bertsekas, J.~Tsitsiklis, \emph{Introduction to
+    Probability}, Athena Scientific, 2008. \S 1.5--1.6 covers the
+    finite-state version (``constant conditional probability $\Rightarrow$
+    independence'') as a worked exercise.
+\end{itemize}
+
+\end{document}

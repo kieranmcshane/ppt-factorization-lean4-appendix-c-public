@@ -1,0 +1,95 @@
+{
+  "title": "Appendix B Checklist",
+  "subtitle": "Objective criteria only: theorem names, remaining input wrappers, and a direct build check.",
+  "updated": "2026-05-10 15:12:40",
+  "completed": 14,
+  "total": 14,
+  "sections": [
+    {
+      "name": "Build Health",
+      "items": [
+        {
+          "label": "No `sorry`, `admit`, or standalone `axiom` remains in Appendix B or HighProbabilityBounds.",
+          "checked": true,
+          "evidence": "Scanned 20 tracked Lean files with no placeholders found."
+        },
+        {
+          "label": "`PptFactorization/AppendixBFinal.lean` compiles.",
+          "checked": true,
+          "evidence": "Direct build check passed for AppendixBFinal.lean at 2026-05-10 15:12:40."
+        }
+      ]
+    },
+    {
+      "name": "Closed Packages",
+      "items": [
+        {
+          "label": "`GaussianQuadraticFormBernsteinStatement_of_estimate` is a theorem.",
+          "checked": true,
+          "evidence": "HighProbabilityBounds.lean:4501 - theorem GaussianQuadraticFormBernsteinStatement_of_estimate :"
+        },
+        {
+          "label": "`ConcreteHighProbabilityBoundsStatement` is a theorem.",
+          "checked": true,
+          "evidence": "HighProbabilityBounds.lean:7530 - theorem ConcreteHighProbabilityBoundsStatement :"
+        },
+        {
+          "label": "`ConcreteHighProbabilityBoundsExplicit` is a theorem.",
+          "checked": true,
+          "evidence": "HighProbabilityBounds.lean:7537 - theorem ConcreteHighProbabilityBoundsExplicit :"
+        },
+        {
+          "label": "`concreteRemainingExpectationInputs` exists as the concrete no-input package.",
+          "checked": true,
+          "evidence": "AppendixBConcreteBridge.lean:264 - noncomputable def concreteRemainingExpectationInputs"
+        },
+        {
+          "label": "`concreteRemainingExpectationInputs_to_normalized_bounds` is a theorem.",
+          "checked": true,
+          "evidence": "AppendixBConcreteBridge.lean:503 - theorem concreteRemainingExpectationInputs_to_normalized_bounds"
+        },
+        {
+          "label": "`aubrunLemma36_card_le_k_pow_three_mul` is a theorem.",
+          "checked": true,
+          "evidence": "AppendixBAubrunGraduate.lean:386 - theorem aubrunLemma36_card_le_k_pow_three_mul"
+        },
+        {
+          "label": "`aubrunLemma74_fixedDefectClassCount_le` is a theorem.",
+          "checked": true,
+          "evidence": "AppendixBAubrunGraduate.lean:406 - theorem aubrunLemma74_fixedDefectClassCount_le"
+        },
+        {
+          "label": "`aubrunLemma75_relationCounting_of_profileCountSumBound` is a theorem.",
+          "checked": true,
+          "evidence": "AppendixBAubrunGraduate.lean:641 - theorem aubrunLemma75_relationCounting_of_profileCountSumBound"
+        }
+      ]
+    },
+    {
+      "name": "Remaining Blockers",
+      "items": [
+        {
+          "label": "`AubrunGraduateRelationCounting` is no longer a `def ... : Prop` placeholder.",
+          "checked": true,
+          "evidence": "The old `def AubrunGraduateRelationCounting ... : Prop` line is gone."
+        },
+        {
+          "label": "A top-level theorem `polarLaw` exists in `AppendixBLevyPolarBridge.lean`.",
+          "checked": true,
+          "evidence": "AppendixBLevyPolarBridge.lean:432 - theorem polarLaw"
+        },
+        {
+          "label": "A concrete radius-direction independence theorem exists.",
+          "checked": true,
+          "evidence": "AppendixBLevyPolarBridge.lean:1096 - theorem gaussianRadius_indep_gaussianDirection"
+        },
+        {
+          "label": "`StrongGlobalSurfaceSubtypeLevy` is no longer just a `def ... : Prop` input.",
+          "checked": true,
+          "evidence": "The old `def StrongGlobalSurfaceSubtypeLevy ... : Prop` line is gone."
+        }
+      ]
+    }
+  ],
+  "openItems": []
+}

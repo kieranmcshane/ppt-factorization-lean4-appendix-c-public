@@ -1,0 +1,69 @@
+\documentclass[11pt,reqno]{amsart}
+\usepackage{amsmath,amsthm}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{graphbox}
+\usepackage{textcomp}
+\usepackage[colorlinks = true, linkcolor = blue, urlcolor  = blue, citecolor = red]{hyperref}
+\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\usepackage{comment}
+\usepackage{appendix}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\N{\mathbb{N}}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Prob}{P}
+\DeclareMathOperator{\diag}{diag}
+
+% Draft provenance colors.
+\definecolor{RevisionDerived}{RGB}{105,105,105}
+\definecolor{RevisionLean}{RGB}{0,105,120}
+\definecolor{RevisionNewMath}{RGB}{0,45,150}
+\newenvironment{revderived}{\begingroup\color{RevisionDerived}}{\endgroup}
+\newenvironment{revlean}{\begingroup\color{RevisionLean}}{\endgroup}
+\newenvironment{revnewmath}{\begingroup\color{RevisionNewMath}}{\endgroup}
+\newenvironment{revlatest}{\begin{revnewmath}}{\end{revnewmath}}
+\newenvironment{revrecent}{\begin{revlean}}{\end{revlean}}
+\newenvironment{revearlier}{\begin{revderived}}{\end{revderived}}
+
+\begin{document}
+\appendix
+\input{AppendixB_article_replacement.tex}
+
+% Standalone-only bibliography for compiling this wrapper outside the article.
+% Do not paste this block into the main article, which already uses
+% \bibliographystyle{alpha} and \bibliography{references}.
+\begin{thebibliography}{2}
+\bibitem{Aubrun12}
+G.~Aubrun,
+\emph{Partial transposition of random states and non-centered semicircular
+distributions},
+Random Matrices: Theory Appl. \textbf{1} (2012), 1250001.
+
+\bibitem{AubrunSzarek2017}
+G.~Aubrun and S.~J. Szarek,
+\emph{Alice and Bob Meet Banach: The Interface of Asymptotic Geometric
+Analysis and Quantum Information Theory},
+Mathematical Surveys and Monographs, vol.~223, American Mathematical
+Society, 2017.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,1082 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\dist}{dist}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\OmegaGood}{\Omega}
+\newcommand{\one}{\mathbf{1}}
+
+\title{Appendix B: Plain-English Mathematical Translation of the Lean Proof}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose of this translation}
+
+This note is a line-by-line mathematical translation of the Lean file
+\[
+\texttt{PptFactorization/AppendixB.lean}.
+\]
+It records exactly what the formal proof establishes.  The genuinely analytic
+inputs of Appendix B are not reproved here; they remain explicit hypotheses,
+as they do in Lean.  The verified content is the deterministic Lipschitz
+bookkeeping, the good-set union bound, the comparison of the Levy exponent
+with the desired scale, the median-to-mean reduction, the absorption of
+numerical constants, and the final paper-facing wrappers.
+
+\section{Local Lipschitz bookkeeping}
+
+\begin{definition}[Local Lipschitz property]
+Let \(X\) be a set, let \(\OmegaGood\subset X\), let
+\(\rho:X\times X\to\R\) be a nonnegative distance-like function on
+\(\OmegaGood\), and let \(f:X\to\R\).  We say that \(f\) is
+\(L\)-Lipschitz on \(\OmegaGood\) if, for all \(x,y\in\OmegaGood\),
+\[
+  |f(x)-f(y)|\le L\,\rho(x,y).
+\]
+\end{definition}
+
+\begin{lemma}[Enlarging a Lipschitz constant]
+Assume \(\rho(x,y)\ge0\) for all \(x,y\in\OmegaGood\).  If \(f\) is
+\(L\)-Lipschitz on \(\OmegaGood\) and \(L\le L'\), then \(f\) is
+\(L'\)-Lipschitz on \(\OmegaGood\).
+\end{lemma}
+
+\begin{proof}
+For \(x,y\in\OmegaGood\),
+\[
+  |f(x)-f(y)|\le L\rho(x,y)\le L'\rho(x,y),
+\]
+because \(\rho(x,y)\ge0\).  This is precisely the enlarged Lipschitz
+estimate.
+\end{proof}
+
+\section{Deterministic matrix Lipschitz reductions}
+
+The Lean proof first isolates the deterministic algebra which turns local
+matrix estimates into a local Lipschitz estimate for a trace-power functional.
+The matrix type is kept abstract: it only needs enough algebra to form powers
+and differences.
+
+\begin{proposition}[Trace perturbation plus difference bound]
+Let \(A:X\to\mathcal A\) be a map into a ring, let
+\(\tau:\mathcal A\to\R\) be the trace functional used in the paper, and let
+\(\|\cdot\|_{1,*}:\mathcal A\to\R\) be an abstract trace-norm placeholder.
+Fix \(k\in\mathbb N\).  Suppose that, for all \(x,y\in\OmegaGood\),
+\[
+ |\tau(A(x)^k)-\tau(A(y)^k)|
+   \le a\,\|A(x)-A(y)\|_{1,*},
+\]
+and
+\[
+ \|A(x)-A(y)\|_{1,*}\le b\,\rho(x,y).
+\]
+Assume also \(a\ge0\), \(\rho(x,y)\ge0\) on \(\OmegaGood\), and
+\[
+  ab\le L.
+\]
+Then the function \(x\mapsto \tau(A(x)^k)\) is \(L\)-Lipschitz on
+\(\OmegaGood\).
+\end{proposition}
+
+\begin{proof}
+For \(x,y\in\OmegaGood\), multiply the difference bound by the nonnegative
+number \(a\):
+\[
+ a\|A(x)-A(y)\|_{1,*}\le a\,b\,\rho(x,y).
+\]
+Hence
+\[
+\begin{aligned}
+ |\tau(A(x)^k)-\tau(A(y)^k)|
+ &\le a\|A(x)-A(y)\|_{1,*} \\
+ &\le ab\,\rho(x,y) \\
+ &\le L\,\rho(x,y),
+\end{aligned}
+\]
+where the last step uses \(ab\le L\) and \(\rho(x,y)\ge0\).
+\end{proof}
+
+\begin{proposition}[Good-set size bound version]
+Assume the preceding trace perturbation estimate holds with coefficient
+\(a\).  Assume also that, on \(\OmegaGood\),
+\[
+  \|A(x)-A(y)\|_{1,*}
+     \le D\,(\sigma(x)+\sigma(y))\,\rho(x,y),
+\]
+and that
+\[
+  \sigma(x)\le S \qquad (x\in\OmegaGood).
+\]
+If \(a\ge0\), \(D\ge0\), \(\rho\ge0\) on \(\OmegaGood\), and
+\[
+  a\,D\,(2S)\le L,
+\]
+then \(x\mapsto \tau(A(x)^k)\) is \(L\)-Lipschitz on \(\OmegaGood\).
+\end{proposition}
+
+\begin{proof}
+For \(x,y\in\OmegaGood\), the size bound gives
+\[
+  \sigma(x)+\sigma(y)\le 2S.
+\]
+Multiplying by \(D\ge0\),
+\[
+  D(\sigma(x)+\sigma(y))\le D(2S).
+\]
+Thus
+\[
+ \|A(x)-A(y)\|_{1,*}
+    \le D(2S)\rho(x,y).
+\]
+The previous proposition applies with \(b=D(2S)\).
+\end{proof}
+
+\begin{proposition}[Operator-norm version with trace norm]
+Assume the following local matrix estimates on \(\OmegaGood\):
+\[
+ |\tau(A(x)^k)-\tau(A(y)^k)|
+ \le k\,
+   \max\{\|A(x)\|_{\mathrm{op}},\|A(y)\|_{\mathrm{op}}\}^{k-1}
+   \|A(x)-A(y)\|_{1,*},
+\]
+\[
+ \|A(x)\|_{\mathrm{op}}\le B,\qquad
+ \|A(x)\|_{\mathrm{op}}\ge0,
+\]
+\[
+ \|A(x)-A(y)\|_{1,*}
+    \le D(\sigma(x)+\sigma(y))\rho(x,y),
+\]
+and
+\[
+ \sigma(x)\le S.
+\]
+Assume moreover that \(\|Z\|_{1,*}\ge0\) for all \(Z\), that \(B\ge0\), that
+\(D\ge0\), and that
+\[
+   \bigl(k B^{k-1}\bigr)D(2S)\le L.
+\]
+Then \(x\mapsto \tau(A(x)^k)\) is \(L\)-Lipschitz on \(\OmegaGood\).
+\end{proposition}
+
+\begin{proof}
+For \(x,y\in\OmegaGood\),
+\[
+ \max\{\|A(x)\|_{\mathrm{op}},\|A(y)\|_{\mathrm{op}}\}\le B.
+\]
+The maximum is nonnegative, so monotonicity of powers gives
+\[
+ \max\{\|A(x)\|_{\mathrm{op}},\|A(y)\|_{\mathrm{op}}\}^{k-1}
+ \le B^{k-1}.
+\]
+Multiplying by \(k\ge0\), and then by the nonnegative difference norm, yields
+\[
+ k\max(\cdots)^{k-1}\|A(x)-A(y)\|_{1,*}
+ \le
+ kB^{k-1}\|A(x)-A(y)\|_{1,*}.
+\]
+Thus the trace perturbation estimate holds with coefficient \(a=kB^{k-1}\).
+The good-set size version then gives the conclusion.
+\end{proof}
+
+\begin{proposition}[Frobenius/operator-norm version]
+Let \(\|\cdot\|_{HS,*}\) be an abstract Frobenius or Hilbert--Schmidt norm.
+Assume the local trace-power perturbation estimate
+\[
+ |\tau(A(x)^k)-\tau(A(y)^k)|
+ \le
+ \Delta\, k\,
+ \max\{\|A(x)\|_{\mathrm{op}},\|A(y)\|_{\mathrm{op}}\}^{k-1}
+ \|A(x)-A(y)\|_{HS,*},
+\]
+where \(\Delta\ge0\) is the deterministic dimension factor coming, in the
+paper application, from an estimate of the form
+\[
+  |\Tr M|\le \Delta \|M\|_{HS}.
+\]
+Assume also
+\[
+ \|A(x)\|_{\mathrm{op}}\le B,\qquad
+ \|A(x)\|_{\mathrm{op}}\ge0,
+\]
+\[
+ \|A(x)-A(y)\|_{HS,*}
+    \le D(\sigma(x)+\sigma(y))\rho(x,y),
+\]
+\[
+ \sigma(x)\le S,
+\]
+with \(\|Z\|_{HS,*}\ge0\), \(B\ge0\), \(D\ge0\), and
+\[
+  \bigl(\Delta\,kB^{k-1}\bigr)D(2S)\le L.
+\]
+Then \(x\mapsto \tau(A(x)^k)\) is \(L\)-Lipschitz on \(\OmegaGood\).
+\end{proposition}
+
+\begin{proof}
+The proof is identical to the preceding one, except that the trace coefficient
+is
+\[
+  a=\Delta\,kB^{k-1}.
+\]
+The nonnegativity of \(\Delta\), \(k\), and \(B^{k-1}\) gives \(a\ge0\).
+The operator-norm bound replaces
+\[
+ \Delta\,k\max(\cdots)^{k-1}
+\]
+by \(\Delta\,kB^{k-1}\).  The good-set size bound then converts the
+Frobenius difference estimate into the Lipschitz bound
+\[
+ |\tau(A(x)^k)-\tau(A(y)^k)|\le L\rho(x,y).
+\]
+\end{proof}
+
+\begin{remark}
+This Frobenius version is the preferred deterministic route for the paper:
+it avoids making the formalization depend on a full Schatten trace-norm API.
+\end{remark}
+
+\section{Good-set probability bookkeeping}
+
+\begin{lemma}[Intersection good set]
+Let \(\OmegaGood=\Omega_1\cap\Omega_2\).  Write
+\[
+ p_\Omega=\bbP(\OmegaGood^c),\qquad
+ p_1=\bbP(\Omega_1^c),\qquad
+ p_2=\bbP(\Omega_2^c).
+\]
+If
+\[
+ p_\Omega\le p_1+p_2,\qquad p_1\le E,\qquad p_2\le E,
+\]
+then
+\[
+ p_\Omega\le 2E.
+\]
+\end{lemma}
+
+\begin{proof}
+Immediate:
+\[
+  p_\Omega\le p_1+p_2\le E+E=2E.
+\]
+\end{proof}
+
+\section{The Levy exponent scale}
+
+\begin{lemma}[Exponential monotonicity]
+If
+\[
+  c_2\,\frac{d^4\varepsilon^2}{k^2}
+  \le
+  \frac{n t^2}{4L^2},
+\]
+then
+\[
+  \exp\!\left(-\frac{n t^2}{4L^2}\right)
+  \le
+  \exp\!\left(-c_2\,\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+The exponential function is increasing.  The assumed inequality becomes, after
+multiplication by \(-1\),
+\[
+  -\frac{n t^2}{4L^2}
+  \le
+  -c_2\,\frac{d^4\varepsilon^2}{k^2}.
+\]
+Applying monotonicity of \(\exp\) gives the claim.
+\end{proof}
+
+\section{Median concentration}
+
+\begin{proposition}[Localized Levy plus the good-set estimate]
+Let \(M\) be a median reference value and let
+\[
+  \mathrm{Tail}_{\mathrm{med}}
+\]
+denote the corresponding median-centered deviation probability.  Suppose the
+localized Levy lemma gives
+\[
+ \mathrm{Tail}_{\mathrm{med}}
+ \le
+ 2\,\mathrm{bad}
+ +2\exp\!\left(-\frac{nt^2}{4L^2}\right),
+\]
+and suppose the bad-set estimate gives
+\[
+ \mathrm{bad}\le 2\exp(-c d^2).
+\]
+If
+\[
+ c_2\,\frac{d^4\varepsilon^2}{k^2}
+ \le
+ \frac{nt^2}{4L^2},
+\]
+then
+\[
+ \mathrm{Tail}_{\mathrm{med}}
+ \le
+ 4\exp(-c d^2)
+ +2\exp\!\left(-c_2\,\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+\end{proposition}
+
+\begin{proof}
+Insert the good-set bound into the localized Levy estimate:
+\[
+ 2\,\mathrm{bad}\le 4\exp(-c d^2).
+\]
+The previous exponential comparison bounds the Levy exponential by the target
+exponential.  Combining the two inequalities gives the displayed estimate.
+\end{proof}
+
+\section{Median-to-mean replacement}
+
+\begin{proposition}[Mean--median gap from an integrated tail]
+Let \((\Omega,\mu)\) be a probability space, let \(f:\Omega\to\R\) be
+integrable, and let
+\[
+  m=\int_\Omega f\,d\mu.
+\]
+Fix a reference number \(M\).  Assume that
+\[
+  |f(\omega)-M|\le R
+\]
+for \(\mu\)-almost every \(\omega\), and that
+\[
+ \int_{(0,R]}
+   \mu\{\omega:u\le |f(\omega)-M|\}\,du
+ \le G.
+\]
+Then
+\[
+  |m-M|\le G.
+\]
+\end{proposition}
+
+\begin{proof}
+By Jensen's inequality in the form
+\[
+ \left|\int_\Omega (f-M)\,d\mu\right|
+ \le
+ \int_\Omega |f-M|\,d\mu,
+\]
+we have
+\[
+  |m-M|\le \int_\Omega |f-M|\,d\mu.
+\]
+Since \(0\le |f-M|\le R\) almost everywhere, the layer-cake identity gives
+\[
+ \int_\Omega |f-M|\,d\mu
+ =
+ \int_{(0,R]}
+   \mu\{\omega:u\le |f(\omega)-M|\}\,du.
+\]
+The assumed integrated-tail bound therefore implies \(|m-M|\le G\).
+\end{proof}
+
+\begin{lemma}[Deterministic deviation inclusion]
+Let \(z,m,M,s\in\R\).  If
+\[
+ |m-M|\le \frac{s}{2}
+\]
+and
+\[
+ s\le |z-m|,
+\]
+then
+\[
+ \frac{s}{2}\le |z-M|.
+\]
+\end{lemma}
+
+\begin{proof}
+The triangle inequality gives
+\[
+ |z-m|
+ =
+ |(z-M)+(M-m)|
+ \le
+ |z-M|+|M-m|.
+\]
+Since \(|M-m|=|m-M|\le s/2\), the inequality \(s\le |z-m|\) implies
+\[
+ s\le |z-M|+\frac{s}{2},
+\]
+hence \(s/2\le |z-M|\).
+\end{proof}
+
+\begin{lemma}[Probability version of the inclusion]
+On any finite measure space, if \(|m-M|\le s/2\), then
+\[
+ \mu\{\omega:s\le |f(\omega)-m|\}
+ \le
+ \mu\{\omega:s/2\le |f(\omega)-M|\}.
+\]
+\end{lemma}
+
+\begin{proof}
+The deterministic lemma shows the first event is contained in the second
+event.  Monotonicity of measure gives the probability inequality.
+\end{proof}
+
+\begin{proposition}[Median-to-mean from integrated centering]
+Let \(m=\int f\,d\mu\), let \(f\) be integrable, and assume
+\[
+  |f-M|\le R
+\]
+almost everywhere.  If
+\[
+ \int_{(0,R]}
+   \mu\{\omega:u\le |f(\omega)-M|\}\,du
+ \le \frac{s}{2},
+\]
+then
+\[
+ \mu\{\omega:s\le |f(\omega)-m|\}
+ \le
+ \mu\{\omega:s/2\le |f(\omega)-M|\}.
+\]
+\end{proposition}
+
+\begin{proof}
+The integrated-tail estimate gives \(|m-M|\le s/2\) by the mean--median gap
+proposition.  Apply the probability version of the deterministic inclusion.
+\end{proof}
+
+\begin{definition}[Quantitative median--mean bound]
+The paper's displayed one-dimensional bound is encoded as
+\[
+  Q(R,\mathrm{bad},L,n)
+  :=
+  R\,\mathrm{bad}
+  +\frac{L}{\sqrt n}.
+\]
+The term \(R\,\mathrm{bad}\) is the contribution of the bad set on the
+deterministic range \(R\), and \(L/\sqrt n\) is the Gaussian integral scale
+coming from the Levy tail.
+\end{definition}
+
+\begin{proposition}[Quantitative median-to-mean reduction]
+If the integrated tail is bounded by
+\[
+ Q(R,\mathrm{bad},L,n)
+\]
+and
+\[
+ Q(R,\mathrm{bad},L,n)\le \frac{s}{2},
+\]
+then
+\[
+ \mu\{\omega:s\le |f(\omega)-m|\}
+ \le
+ \mu\{\omega:s/2\le |f(\omega)-M|\}.
+\]
+\end{proposition}
+
+\begin{proof}
+The two inequalities imply that the integrated tail is at most \(s/2\), so the
+previous proposition applies.
+\end{proof}
+
+\section{Mean-centered concentration}
+
+\begin{proposition}[Mean concentration from a centering input]
+Assume
+\[
+ \mathrm{Tail}_{\mathrm{mean}}
+ \le
+ \mathrm{Tail}_{\mathrm{med}},
+\]
+and assume the localized Levy estimate, the good-set bound, and the exponent
+comparison from the median concentration proposition.  Then
+\[
+ \mathrm{Tail}_{\mathrm{mean}}
+ \le
+ 4\exp(-c d^2)
+ +2\exp\!\left(-c_2\,\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+\end{proposition}
+
+\begin{proof}
+The median concentration proposition gives the displayed upper bound for
+\(\mathrm{Tail}_{\mathrm{med}}\).  Since
+\(\mathrm{Tail}_{\mathrm{mean}}\le\mathrm{Tail}_{\mathrm{med}}\), the same
+bound holds for the mean-centered tail.
+\end{proof}
+
+\begin{proposition}[Mean concentration from integrated centering]
+Let \(m=\int f\,d\mu\).  Suppose the integrated median tail is at most
+\(s/2\), so that
+\[
+ \mu\{\omega:s\le |f(\omega)-m|\}
+ \le
+ \mu\{\omega:s/2\le |f(\omega)-M|\}.
+\]
+Suppose also that the localized Levy lemma bounds the half-scale median tail:
+\[
+ \mu\{\omega:s/2\le |f(\omega)-M|\}
+ \le
+ 2\,\mathrm{bad}
+ +2\exp\!\left(-\frac{nt^2}{4L^2}\right).
+\]
+If
+\[
+ \mathrm{bad}\le 2\exp(-c d^2)
+\]
+and
+\[
+ c_2\,\frac{d^4\varepsilon^2}{k^2}
+ \le
+ \frac{nt^2}{4L^2},
+\]
+then
+\[
+ \mu\{\omega:s\le |f(\omega)-m|\}
+ \le
+ 4\exp(-c d^2)
+ +2\exp\!\left(-c_2\,\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+\end{proposition}
+
+\begin{proof}
+The integrated centering input gives the inclusion of the mean-centered event
+inside the half-scale median-centered event.  Therefore the mean-centered
+tail is bounded by the median tail appearing in the localized Levy estimate.
+The good-set and exponent comparisons then give the displayed estimate,
+exactly as in the median concentration proposition.
+\end{proof}
+
+\begin{lemma}[Absorbing numerical constants]
+Suppose
+\[
+  T\le 4E_1+2E_2,
+\]
+where \(E_1,E_2\ge0\).  If \(K\ge4\), then
+\[
+  T\le K E_1+K E_2.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(K\ge4\), also \(K\ge2\).  Hence
+\[
+  4E_1\le KE_1,\qquad 2E_2\le KE_2,
+\]
+and summing gives the claim.
+\end{proof}
+
+\begin{theorem}[Final abstract concentration theorem]
+Under the centering input, the localized Levy estimate, the good-set estimate,
+the exponent comparison, and \(K\ge4\),
+\[
+ \mathrm{Tail}_{\mathrm{mean}}
+ \le
+ K\exp(-c d^2)
+ +K\exp\!\left(-c_2\,\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+First prove the explicit estimate with coefficients \(4\) and \(2\).  Then
+use the absorption lemma with
+\[
+ E_1=\exp(-c d^2),
+ \qquad
+ E_2=\exp\!\left(-c_2\,\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+Both exponentials are nonnegative.
+\end{proof}
+
+\section{Paper-facing notation}
+
+The Lean file then introduces notation matching the manuscript.
+
+\begin{definition}[Sphere dimension]
+\[
+  N(d,s):=2d^2s.
+\]
+This is the real dimension of \(M_{d^2,s}(\mathbb C)\) viewed as a real
+Hilbert space.
+\end{definition}
+
+\begin{definition}[Natural deviation scale]
+For a moment order \(r\in\mathbb N\),
+\[
+  a_{d,\varepsilon,r}
+  :=
+  \frac{\varepsilon}{d^{2r-2}}.
+\]
+\end{definition}
+
+\begin{definition}[Local Lipschitz scale]
+For a constant \(C\) and moment parameter \(k\),
+\[
+  L_{C,k,d,r}
+  :=
+  \frac{Ck}{d^{2r-2}}.
+\]
+\end{definition}
+
+\begin{definition}[Levy and target exponents]
+\[
+  \mathcal L(n,t,L):=\frac{nt^2}{4L^2},
+\]
+and
+\[
+  \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)
+  :=
+  c_{\mathrm{loc}}\frac{d^4\varepsilon^2}{k^2}.
+\]
+\end{definition}
+
+\begin{definition}[Good-set and final paper tails]
+\[
+  G(c_{\mathrm{sph}},d):=\exp(-c_{\mathrm{sph}}d^2),
+\]
+\[
+  B_{\mathrm{med}}
+  :=
+  4G(c_{\mathrm{sph}},d)
+  +2\exp(-\mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)),
+\]
+and
+\[
+  B_{\mathrm{paper}}
+  :=
+  K G(c_{\mathrm{sph}},d)
+  +K\exp(-\mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)).
+\]
+\end{definition}
+
+\begin{lemma}[Paper notation for the event inclusion]
+If
+\[
+ |m-M|\le \frac{a_{d,\varepsilon,r}}{2}
+\]
+and
+\[
+ a_{d,\varepsilon,r}\le |z-m|,
+\]
+then
+\[
+ \frac{a_{d,\varepsilon,r}}{2}\le |z-M|.
+\]
+\end{lemma}
+
+\begin{proof}
+This is the deterministic deviation inclusion with
+\(s=a_{d,\varepsilon,r}\).
+\end{proof}
+
+\begin{lemma}[Paper notation for the good set]
+If
+\[
+ \mathrm{bad}\le \mathrm{bad}_1+\mathrm{bad}_2,\qquad
+ \mathrm{bad}_1\le G(c_{\mathrm{sph}},d),\qquad
+ \mathrm{bad}_2\le G(c_{\mathrm{sph}},d),
+\]
+then
+\[
+ \mathrm{bad}\le 2G(c_{\mathrm{sph}},d).
+\]
+\end{lemma}
+
+\begin{proof}
+This is the good-set intersection bound.
+\end{proof}
+
+\begin{proposition}[Paper notation for median concentration]
+If
+\[
+ \mathrm{Tail}_{\mathrm{med}}
+ \le
+ 2\,\mathrm{bad}
+ +2\exp(-\mathcal L(n,t,L)),
+\]
+\[
+ \mathrm{bad}\le 2G(c_{\mathrm{sph}},d),
+\]
+and
+\[
+ \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)\le \mathcal L(n,t,L),
+\]
+then
+\[
+ \mathrm{Tail}_{\mathrm{med}}\le B_{\mathrm{med}}.
+\]
+\end{proposition}
+
+\begin{proof}
+Unfolding the definitions gives exactly the median concentration proposition.
+\end{proof}
+
+\section{The scale computations}
+
+\begin{proposition}[Exact-scale exponent comparison]
+Assume
+\[
+  d\ne0,\qquad C\ne0,\qquad k\ne0,
+\]
+and
+\[
+  c_{\mathrm{loc}}\le \frac{c_{\mathrm{dim}}}{4C^2}.
+\]
+Then
+\[
+ \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)
+ \le
+ \mathcal L\!\left(
+     c_{\mathrm{dim}}d^4,\,
+     \frac{\varepsilon}{d^{2r-2}},\,
+     \frac{Ck}{d^{2r-2}}
+   \right).
+\]
+\end{proposition}
+
+\begin{proof}
+Set
+\[
+  q=d^{2r-2}.
+\]
+Since \(d\ne0\), \(q\ne0\).  Direct algebra gives
+\[
+\begin{aligned}
+ \mathcal L\!\left(
+     c_{\mathrm{dim}}d^4,\,
+     \frac{\varepsilon}{q},\,
+     \frac{Ck}{q}
+   \right)
+ &=
+ \frac{(c_{\mathrm{dim}}d^4)(\varepsilon/q)^2}
+      {4(Ck/q)^2} \\
+ &=
+ \frac{c_{\mathrm{dim}}}{4C^2}
+ \frac{d^4\varepsilon^2}{k^2}.
+\end{aligned}
+\]
+The factor \(d^4\varepsilon^2/k^2\) is nonnegative.  Multiplying the
+assumption
+\[
+ c_{\mathrm{loc}}\le \frac{c_{\mathrm{dim}}}{4C^2}
+\]
+by this nonnegative factor gives
+\[
+ c_{\mathrm{loc}}\frac{d^4\varepsilon^2}{k^2}
+ \le
+ \frac{c_{\mathrm{dim}}}{4C^2}\frac{d^4\varepsilon^2}{k^2},
+\]
+which is the desired comparison.
+\end{proof}
+
+\begin{proposition}[Half-scale exponent comparison]
+Assume
+\[
+  d\ne0,\qquad C\ne0,\qquad k\ne0,
+\]
+and
+\[
+  c_{\mathrm{loc}}\le \frac{c_{\mathrm{dim}}}{16C^2}.
+\]
+Then
+\[
+ \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)
+ \le
+ \mathcal L\!\left(
+     c_{\mathrm{dim}}d^4,\,
+     \frac{1}{2}\frac{\varepsilon}{d^{2r-2}},\,
+     \frac{Ck}{d^{2r-2}}
+   \right).
+\]
+\end{proposition}
+
+\begin{proof}
+Again put \(q=d^{2r-2}\).  Then
+\[
+\begin{aligned}
+ \mathcal L\!\left(
+     c_{\mathrm{dim}}d^4,\,
+     \frac{\varepsilon/q}{2},\,
+     \frac{Ck}{q}
+   \right)
+ &=
+ \frac{(c_{\mathrm{dim}}d^4)((\varepsilon/q)/2)^2}
+      {4(Ck/q)^2} \\
+ &=
+ \frac{c_{\mathrm{dim}}}{16C^2}
+ \frac{d^4\varepsilon^2}{k^2}.
+\end{aligned}
+\]
+Multiplying
+\[
+ c_{\mathrm{loc}}\le \frac{c_{\mathrm{dim}}}{16C^2}
+\]
+by the nonnegative factor \(d^4\varepsilon^2/k^2\) proves the claim.
+\end{proof}
+
+\section{Paper-facing final wrappers}
+
+\begin{theorem}[Appendix B with abstract paper inputs]
+Suppose the following data are given:
+\[
+ \mathrm{Tail}_{\mathrm{mean}},\quad
+ \mathrm{Tail}_{\mathrm{med}},\quad
+ \mathrm{bad},\quad
+ n,\quad t,\quad L,\quad
+ c_{\mathrm{sph}},\quad c_{\mathrm{loc}},\quad d,\quad
+ \varepsilon,\quad k,\quad K.
+\]
+Assume
+\[
+ \mathrm{Tail}_{\mathrm{mean}}\le \mathrm{Tail}_{\mathrm{med}},
+\]
+\[
+ \mathrm{Tail}_{\mathrm{med}}
+ \le
+ 2\,\mathrm{bad}
+ +2\exp(-\mathcal L(n,t,L)),
+\]
+\[
+ \mathrm{bad}\le 2G(c_{\mathrm{sph}},d),
+\]
+\[
+ \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)\le \mathcal L(n,t,L),
+\]
+and \(K\ge4\).  Then
+\[
+ \mathrm{Tail}_{\mathrm{mean}}
+ \le
+ B_{\mathrm{paper}}.
+\]
+\end{theorem}
+
+\begin{proof}
+Unfolding \(B_{\mathrm{paper}}\), \(G\), \(\mathcal T\), and \(\mathcal L\),
+this is exactly the final abstract concentration theorem.
+\end{proof}
+
+\begin{theorem}[Two-branch final wrapper]
+Assume \(\mathrm{Tail}_{\mathrm{mean}}\le1\).  Suppose that either
+\[
+ \mathrm{Tail}_{\mathrm{mean}}\le \mathrm{Tail}_{\mathrm{med}},
+\]
+or
+\[
+ 1\le B_{\mathrm{paper}}.
+\]
+Assume also the localized Levy estimate, the good-set estimate, the exponent
+comparison, and \(K\ge4\).  Then
+\[
+  \mathrm{Tail}_{\mathrm{mean}}\le B_{\mathrm{paper}}.
+\]
+\end{theorem}
+
+\begin{proof}
+There are two cases.
+
+In the first case,
+\(\mathrm{Tail}_{\mathrm{mean}}\le \mathrm{Tail}_{\mathrm{med}}\), the
+abstract paper-input theorem applies directly.
+
+In the second case, \(1\le B_{\mathrm{paper}}\).  Since
+\(\mathrm{Tail}_{\mathrm{mean}}\le1\), transitivity gives
+\[
+  \mathrm{Tail}_{\mathrm{mean}}\le1\le B_{\mathrm{paper}}.
+\]
+\end{proof}
+
+\begin{theorem}[Wrapper with displayed paper scales]
+Assume the mean-to-median centering input, the localized Levy estimate with
+\[
+ n=N(d,s),\qquad
+ t=a_{d,\varepsilon,r},\qquad
+ L=L_{C,k,d,r},
+\]
+the good-set estimate, the corresponding exponent comparison, and \(K\ge4\).
+Then
+\[
+ \mathrm{Tail}_{\mathrm{mean}}
+ \le
+ B_{\mathrm{paper}}.
+\]
+\end{theorem}
+
+\begin{proof}
+This is the abstract paper-input theorem with
+\[
+ n=N(d,s),\qquad
+ t=a_{d,\varepsilon,r},\qquad
+ L=L_{C,k,d,r}.
+\]
+\end{proof}
+
+\begin{theorem}[Wrapper from two good sets and exact scales]
+Assume
+\[
+ d\ne0,\qquad C\ne0,\qquad k\ne0,\qquad
+ c_{\mathrm{loc}}\le \frac{c_{\mathrm{dim}}}{4C^2}.
+\]
+Assume the centering input
+\[
+ \mathrm{Tail}_{\mathrm{mean}}\le \mathrm{Tail}_{\mathrm{med}},
+\]
+the two good-set bounds
+\[
+ \mathrm{bad}\le \mathrm{bad}_1+\mathrm{bad}_2,\qquad
+ \mathrm{bad}_1\le G(c_{\mathrm{sph}},d),\qquad
+ \mathrm{bad}_2\le G(c_{\mathrm{sph}},d),
+\]
+the localized Levy estimate with
+\[
+ n=c_{\mathrm{dim}}d^4,\qquad
+ t=a_{d,\varepsilon,r},\qquad
+ L=L_{C,k,d,r},
+\]
+and \(K\ge4\).  Then
+\[
+ \mathrm{Tail}_{\mathrm{mean}}\le B_{\mathrm{paper}}.
+\]
+\end{theorem}
+
+\begin{proof}
+The two one-set estimates and the union bound give
+\[
+  \mathrm{bad}\le 2G(c_{\mathrm{sph}},d).
+\]
+The exact-scale computation proves
+\[
+ \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)
+ \le
+ \mathcal L(c_{\mathrm{dim}}d^4,a_{d,\varepsilon,r},L_{C,k,d,r}).
+\]
+The abstract paper-input theorem then applies.
+\end{proof}
+
+\begin{theorem}[Strongest integrated-centering wrapper formalized in Lean]
+Let \((\Omega,\mu)\) be a probability space, let \(f:\Omega\to\R\), and put
+\[
+ m=\int_\Omega f\,d\mu.
+\]
+Fix a median reference value \(M\).  Assume
+\[
+ d\ne0,\qquad C\ne0,\qquad k\ne0,\qquad
+ c_{\mathrm{loc}}\le \frac{c_{\mathrm{dim}}}{16C^2}.
+\]
+Assume \(f\) is integrable, \(|f-M|\le R\) almost everywhere, and
+\[
+ \int_{(0,R]}
+   \mu\{\omega:u\le |f(\omega)-M|\}\,du
+ \le
+ \frac{a_{d,\varepsilon,r}}{2}.
+\]
+Assume the two good-set estimates
+\[
+ \mathrm{bad}\le \mathrm{bad}_1+\mathrm{bad}_2,\qquad
+ \mathrm{bad}_1\le G(c_{\mathrm{sph}},d),\qquad
+ \mathrm{bad}_2\le G(c_{\mathrm{sph}},d),
+\]
+and the localized Levy estimate at half scale:
+\[
+ \mu\left\{\omega:
+   \frac{a_{d,\varepsilon,r}}{2}\le |f(\omega)-M|
+ \right\}
+ \le
+ 2\,\mathrm{bad}
+ +2\exp\!\left(
+   -\mathcal L\left(
+       c_{\mathrm{dim}}d^4,\,
+       \frac{a_{d,\varepsilon,r}}{2},\,
+       L_{C,k,d,r}
+     \right)
+ \right).
+\]
+If \(K\ge4\), then
+\[
+ \mu\{\omega:a_{d,\varepsilon,r}\le |f(\omega)-m|\}
+ \le
+ B_{\mathrm{paper}}.
+\]
+\end{theorem}
+
+\begin{proof}
+First, the two good-set estimates imply
+\[
+  \mathrm{bad}\le 2G(c_{\mathrm{sph}},d).
+\]
+Second, the half-scale exponent computation gives
+\[
+ \mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)
+ \le
+ \mathcal L\left(
+       c_{\mathrm{dim}}d^4,\,
+       \frac{a_{d,\varepsilon,r}}{2},\,
+       L_{C,k,d,r}
+     \right).
+\]
+Third, the integrated-tail assumption gives
+\[
+ |m-M|\le \frac{a_{d,\varepsilon,r}}{2}.
+\]
+Therefore
+\[
+ \left\{\omega:a_{d,\varepsilon,r}\le |f(\omega)-m|\right\}
+ \subset
+ \left\{\omega:\frac{a_{d,\varepsilon,r}}{2}\le |f(\omega)-M|\right\}.
+\]
+The half-scale localized Levy estimate, the good-set bound, and the exponent
+comparison give the explicit estimate
+\[
+ \mu\{\omega:a_{d,\varepsilon,r}\le |f(\omega)-m|\}
+ \le
+ 4G(c_{\mathrm{sph}},d)
+ +2\exp(-\mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)).
+\]
+Finally, since \(K\ge4\) and both exponential terms are nonnegative, the
+absorption lemma converts this into
+\[
+ \mu\{\omega:a_{d,\varepsilon,r}\le |f(\omega)-m|\}
+ \le
+ K G(c_{\mathrm{sph}},d)
+ +K\exp(-\mathcal T(c_{\mathrm{loc}},d,\varepsilon,k)),
+\]
+which is \(B_{\mathrm{paper}}\).
+\end{proof}
+
+\section*{What remains analytic}
+
+The Lean proof, and therefore this translation, does not prove the following
+analytic ingredients.  They are supplied as hypotheses:
+\begin{enumerate}[label=\arabic*.]
+  \item The trace-power perturbation inequality and its concrete matrix-norm
+  realization.
+  \item The operator/Frobenius norm estimates defining the good set.
+  \item The two one-set probability bounds for \(\Omega_1^c\) and
+  \(\Omega_2^c\).
+  \item The localized Levy lemma on the Hilbert--Schmidt sphere.
+  \item The one-dimensional integrated-tail estimate used to pass from the
+  median to the mean.
+\end{enumerate}
+
+All remaining steps are deterministic or probability-bookkeeping steps, and
+are exactly the steps certified by the Lean file.
+
+\end{document}

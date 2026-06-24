@@ -1,0 +1,595 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Sym}{\mathfrak S}
+\newcommand{\cyc}{\#}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\g}{\gamma}
+\newcommand{\dd}{\delta}
+\newcommand{\ddp}{\delta_{+}}
+\newcommand{\ddm}{\delta_{-}}
+\newcommand{\rank}{\mathcal R}
+\newcommand{\Count}{\mathcal C}
+\newcommand{\Countp}{\mathcal C^{+}}
+\newcommand{\Env}{\mathcal E}
+\newcommand{\Loss}{Q}
+\newcommand{\Wish}{W}
+\newcommand{\PT}{\Gamma}
+
+\title{Bidefect Counting for the Aubrun Partial-Transpose Moment Expansion}
+\author{Kieran McShane}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Aubrun's moment expansion for the partial transpose of a random induced
+state is governed by two Cayley geodesic inequalities for the long cycle.
+The natural bookkeeping variable is therefore not a single total defect, but
+the ordered pair of defects associated with the two sides of the long cycle.
+We give a self-contained pure-math account of this bidefect reduction.  The
+rank loss is exactly the sum of the two oriented defects, the scalar sum is
+absorbed by two shifted analytic bases, and the required count is reduced to a
+one-sided genus enumeration for unicellular maps.  The latter is bounded by
+the planar noncrossing count and Chapuy's slicing recurrence.  The result is a
+clean combinatorial input to the balanced partial-transpose moment method once
+the standard Wick expansion has been written in its two-base cycle-count form.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+
+Let \(\Wish\) be a complex Wishart matrix acting on
+\(\C^d\otimes\C^d\), and let \(\Wish^\PT\) denote the partial transpose on
+one tensor factor.  The moment method for \(\Wish^\PT\) expands
+\(\mathbb E\tr((\Wish^\PT)^k)\) as a finite sum indexed by permutations.
+In the balanced regime \(s\asymp d^2\), the exponent of each Wick term is
+controlled by the cycle counts of a permutation and of its products with the
+long cycle.  This is the combinatorial core of Aubrun's analysis of the
+PPT threshold for random induced states
+\cite{aubrun_partial_2012,aubrun_entanglement_2014}.
+
+The point of this paper is a bookkeeping correction that becomes important
+when one wants a sharp, reusable estimate.  There are two Cayley geodesic
+inequalities, one involving the long cycle and one involving its inverse.
+Collapsing them into a single total defect loses the two-base structure of
+the analytic term.  Keeping them separate gives two defects, \(\ddp\) and
+\(\ddm\).  The plus defect is paid by one shifted base, the minus defect by
+the other.  The scalar sum then becomes an ordinary double binomial
+absorption.
+
+The reduction has three parts.
+
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+  \item The rank identity:
+  \[
+    \rank(\pi)+\ddp(\pi)+\ddm(\pi)=2n+2.
+  \]
+  This is an exact consequence of the two Cayley inequalities.
+  \item The scalar absorption:
+  \[
+    \sum_{a,b}\Count_m(a,b)d^{m+3-a}S^{m+1-b}
+    \le
+    4^{m+1}(d+\Loss_m)^{m+3}(S+\Loss_m)^{m+1}.
+  \]
+  \item The count estimate: the bidefect count follows from a one-sided
+  plus-defect count, and the latter follows from the unicellular-map genus
+  formula together with the planar count and Chapuy slicing.
+\end{enumerate}
+
+The statements below are written in the language of permutations, Cayley
+length, noncrossing partitions, and unicellular maps.
+
+We do not rederive the full Wishart Wick formula.  The matrix-model
+translation is isolated in Section~\ref{sec:moment-input}: the theorem there
+assumes the standard termwise two-base form and then inserts the bidefect
+count proved in the preceding sections.
+
+\section{Cayley Defects}
+
+Fix \(n\ge1\), write \(\Sym_n\) for the symmetric group on
+\(\{0,\ldots,n-1\}\), and let
+\[
+  \g=(0\,1\,\cdots\,n-1).
+\]
+For \(\sigma\in\Sym_n\), let \(\cyc(\sigma)\) be the number of cycles of
+\(\sigma\), fixed points included, and let
+\[
+  |\sigma|=n-\cyc(\sigma)
+\]
+be the Cayley length with respect to transpositions.
+
+\begin{definition}[Oriented Cayley defects]
+For \(\pi\in\Sym_n\), define
+\[
+  \ddp(\pi)=n+1-\cyc(\pi)-\cyc(\g\pi),
+  \qquad
+  \ddm(\pi)=n+1-\cyc(\pi)-\cyc(\pi\g^{-1}).
+\]
+\end{definition}
+
+\begin{lemma}[Defects are nonnegative]\label{lem:defects-nonnegative}
+For every \(\pi\in\Sym_n\),
+\[
+  \ddp(\pi)\ge0,
+  \qquad
+  \ddm(\pi)\ge0.
+\]
+\end{lemma}
+
+\begin{proof}
+The triangle inequality in the Cayley graph gives
+\[
+  |\pi|+|\pi^{-1}\g^{-1}|\ge |\g^{-1}|=n-1.
+\]
+Since \(\cyc(\pi^{-1}\g^{-1})=\cyc(\g\pi)\), this is
+\[
+  n-\cyc(\pi)+n-\cyc(\g\pi)\ge n-1,
+\]
+which is equivalent to \(\ddp(\pi)\ge0\).  The proof for \(\ddm\) is the
+same, using
+\[
+  |\pi|+|\pi^{-1}\g|\ge |\g|=n-1
+\]
+and the identities
+\[
+  \cyc(\pi^{-1}\g)=\cyc(\g^{-1}\pi)=\cyc(\pi\g^{-1}).
+\]
+\end{proof}
+
+\begin{lemma}[Support]\label{lem:defect-support}
+For every \(\pi\in\Sym_n\),
+\[
+  0\le \ddp(\pi)\le n-1,
+  \qquad
+  0\le \ddm(\pi)\le n-1.
+\]
+\end{lemma}
+
+\begin{proof}
+The lower bounds are Lemma~\ref{lem:defects-nonnegative}.  For the upper
+bounds, every permutation has at least one cycle.  Thus
+\[
+  \cyc(\pi)\ge1,\qquad
+  \cyc(\g\pi)\ge1,\qquad
+  \cyc(\pi\g^{-1})\ge1,
+\]
+and therefore
+\[
+  \ddp(\pi)=n+1-\cyc(\pi)-\cyc(\g\pi)\le n-1.
+\]
+The proof for \(\ddm\) is identical.
+\end{proof}
+
+\begin{definition}[Aubrun rank exponent]
+The permutation rank exponent is
+\[
+  \rank(\pi)=2\cyc(\pi)+\cyc(\g\pi)+\cyc(\pi\g^{-1}).
+\]
+\end{definition}
+
+\begin{proposition}[Rank identity]\label{prop:rank-identity}
+For every \(\pi\in\Sym_n\),
+\[
+  \rank(\pi)+\ddp(\pi)+\ddm(\pi)=2n+2.
+\]
+Consequently \(\rank(\pi)\le 2n+2\).
+\end{proposition}
+
+\begin{proof}
+Add the two definitions of the oriented defects:
+\[
+\begin{aligned}
+  \ddp(\pi)+\ddm(\pi)
+  &=
+  2n+2
+  -2\cyc(\pi)
+  -\cyc(\g\pi)
+  -\cyc(\pi\g^{-1})\\
+  &=2n+2-\rank(\pi).
+\end{aligned}
+\]
+The inequality follows from Lemma~\ref{lem:defects-nonnegative}.
+\end{proof}
+
+\section{Bidefect Slices and Scalar Absorption}
+
+From now on set \(n=m+1\).  The bidefect slice is
+\[
+  \Count_m(a,b)
+  =
+  \#\{\pi\in\Sym_{m+1}:\ddp(\pi)=a,\ \ddm(\pi)=b\}.
+\]
+We use the polynomial loss
+\[
+  \Loss_m=(4(m+1))^{36}.
+\]
+The exponent \(36\) is deliberately generous: the genus argument below needs
+only a fixed polynomial power, while the moment expansion around it may
+require additional harmless polynomial losses.  Nothing in the scalar
+argument depends on the precise value \(36\), only on using the same
+\(\Loss_m\) consistently.  For the counting theorem in this paper, any fixed
+power large enough to dominate \((2(m+1))^{3/2}\) per unit of plus defect
+would suffice.
+
+By Lemma~\ref{lem:defect-support}, the true support of the bidefect count is
+contained in \(0\le a,b\le m\).  The slightly larger rectangle in
+Definition~\ref{def:envelope} is the one used by the shifted-base binomial
+absorption; it contains the full support.
+
+\begin{remark}[Small cases]
+Direct enumeration gives the following first bidefect slices:
+\[
+\begin{array}{ccl}
+\toprule
+m & n=m+1 & \text{nonzero values of }\Count_m(a,b)\\
+\midrule
+0 & 1 & \Count_0(0,0)=1\\
+1 & 2 & \Count_1(0,0)=2\\
+2 & 3 & \Count_2(0,0)=4,\quad
+        \Count_2(2,0)=\Count_2(0,2)=1\\
+3 & 4 & \Count_3(0,0)=9,\quad
+        \Count_3(2,0)=\Count_3(0,2)=5,\quad
+        \Count_3(2,2)=5\\
+\bottomrule
+\end{array}
+\]
+The table is not used below.  It records the first instances of the
+two-defect support and makes visible why a single total defect is a coarser
+bookkeeping variable.
+\end{remark}
+
+\begin{definition}[Bidefect envelope]\label{def:envelope}
+For \(0\le a\le m+3\) and \(0\le b\le m+1\), set
+\[
+  \Env_m(a,b)
+  =
+  4^{m+1}
+  \binom{m+3}{a}
+  \binom{m+1}{b}
+  \Loss_m^{a+b}.
+\]
+\end{definition}
+
+\begin{theorem}[Scalar absorption]\label{thm:scalar-absorption}
+Assume that, for all \(0\le a\le m+3\) and \(0\le b\le m+1\),
+\[
+  \Count_m(a,b)\le \Env_m(a,b).
+\]
+Then for all \(d,S\ge0\),
+\[
+  \sum_{a=0}^{m+3}\sum_{b=0}^{m+1}
+    \Count_m(a,b)d^{m+3-a}S^{m+1-b}
+  \le
+  4^{m+1}(d+\Loss_m)^{m+3}(S+\Loss_m)^{m+1}.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the assumed bound term by term:
+\[
+\begin{aligned}
+&\sum_{a=0}^{m+3}\sum_{b=0}^{m+1}
+    \Count_m(a,b)d^{m+3-a}S^{m+1-b} \\
+&\quad\le
+4^{m+1}
+\sum_{a=0}^{m+3}\binom{m+3}{a}\Loss_m^a d^{m+3-a}
+\cdot
+\sum_{b=0}^{m+1}\binom{m+1}{b}\Loss_m^b S^{m+1-b}.
+\end{aligned}
+\]
+The displayed right side is a product of two binomial expansions, hence
+\[
+  4^{m+1}(d+\Loss_m)^{m+3}(S+\Loss_m)^{m+1}.
+\]
+\end{proof}
+
+\begin{remark}
+This is exactly why the two defects must not be collapsed.  A one-parameter
+defect estimate naturally produces a common base.  The partial-transpose
+moment term has two distinct analytic bases, and the bidefect count is the
+combinatorial form compatible with those bases.
+\end{remark}
+
+\section{The Plus-Defect Genus}
+
+The bidefect envelope follows from a one-sided count.  Define
+\[
+  \Countp_m(a)=\#\{\pi\in\Sym_{m+1}:\ddp(\pi)=a\}.
+\]
+Plainly \(\Count_m(a,b)\le \Countp_m(a)\).  We now bound
+\(\Countp_m(a)\) using the unicellular-map interpretation of \(\ddp\).
+
+\subsection{The map associated with a permutation}
+
+Let \(n=m+1\).  We use the standard permutation model for rooted orientable
+hypermaps: a triple
+\[
+  (\sigma_0,\sigma_1,\sigma_\infty)
+\]
+of permutations of \(\{0,\ldots,n-1\}\) with
+\(\sigma_0\sigma_1\sigma_\infty=\id\) encodes a connected oriented hypermap
+whenever the generated action is transitive.  The cycles of \(\sigma_0\) and
+\(\sigma_1\) give the two vertex colors, the cycles of \(\sigma_\infty\) give
+the faces, and the \(n\) labels are the darts.  The Euler characteristic is
+\[
+  \cyc(\sigma_0)+\cyc(\sigma_1)+\cyc(\sigma_\infty)-n=2-2g.
+\]
+
+To \(\pi\in\Sym_n\), associate the triple
+\[
+  \bigl(\pi^{-1},\,\g\pi,\,(\pi^{-1}\g\pi)^{-1}\bigr).
+\]
+The product of the three permutations is the identity.  The last permutation
+is \(\pi^{-1}\g^{-1}\pi\), conjugate to \(\g^{-1}\), and hence has one
+cycle.  Since this one face is an \(n\)-cycle on the dart labels, the group
+generated by the three permutations acts transitively on the darts.  Thus the
+associated hypermap is connected and unicellular.  The cycles of
+\(\pi^{-1}\) give one vertex color and the cycles of \(\g\pi\) give the
+other.
+
+\begin{proposition}[Euler formula]\label{prop:euler}
+The plus defect is twice the genus of this unicellular map:
+\[
+  \ddp(\pi)=2g(\pi).
+\]
+In particular \(\Countp_m(a)=0\) when \(a\) is odd.
+\end{proposition}
+
+\begin{proof}
+The associated hypermap has \(n\) darts, one face, and
+\[
+  V=\cyc(\pi^{-1})+\cyc(\g\pi)=\cyc(\pi)+\cyc(\g\pi)
+\]
+vertices.  Euler's formula for an orientable unicellular map gives
+\[
+  V-n+1=2-2g(\pi).
+\]
+Therefore
+\[
+  2g(\pi)=n+1-\cyc(\pi)-\cyc(\g\pi)=\ddp(\pi).
+\]
+\end{proof}
+
+\subsection{Planar count}
+
+\begin{lemma}[Planar plus-defect count]\label{lem:planar}
+For every \(m\ge0\),
+\[
+  \Countp_m(0)\le 4^{m+1}.
+\]
+\end{lemma}
+
+\begin{proof}
+The condition \(\ddp(\pi)=0\) is equality in the Cayley triangle inequality
+between \(\id\), \(\pi\), and \(\g^{-1}\).  Equivalently, \(\pi\) belongs to
+the Cayley interval \([\id,\g^{-1}]\).  By Biane's geodesic classification,
+this interval is in bijection with the noncrossing partitions of the
+\(n\)-gon \cite{biane_properties_1997}.  Its cardinality is the Catalan number
+\[
+  C_n=\frac{1}{n+1}\binom{2n}{n}.
+\]
+Since \(C_n\le 4^n=4^{m+1}\), the result follows.
+\end{proof}
+
+\subsection{Chapuy slicing}
+
+Let
+\[
+  G_m(g)=\#\{\pi\in\Sym_{m+1}:g(\pi)=g\}.
+\]
+By Proposition~\ref{prop:euler}, \(G_m(g)=\Countp_m(2g)\).
+
+\begin{lemma}[Chapuy slicing recurrence]\label{lem:slicing}
+For every \(m\ge0\) and \(g\ge0\),
+\[
+  G_m(g+1)\le (2(m+1))^3G_m(g).
+\]
+\end{lemma}
+
+\begin{proof}
+Chapuy's trisection decomposition for unicellular maps says that slicing a
+chosen trisection of a genus \(g+1\) unicellular map produces a genus \(g\)
+unicellular map with three distinguished corners, and that the inverse gluing
+operation recovers the original map with its chosen trisection
+\cite{chapuy_new_2011}.  In the present labeled hypermap model, labels are carried
+through the slicing and gluing operations, and unicellularity is preserved.
+Root the face tour at dart \(0\) and order corners by first appearance along
+the oriented boundary walk, breaking any remaining ties by the ordinary order
+of labels.  Choose, for each positive-genus map, the first trisection in this
+order.  Slicing that chosen trisection injects the objects counted by
+\(G_m(g+1)\) into genus \(g\) objects with three marked corners: if two maps
+had the same sliced map and the same three marked corners, the inverse gluing
+would recover the same original map and the same chosen trisection.
+
+The unicellular boundary tour uses \(2n\) oriented dart-sides, so there are at
+most \(2n\) possible corners in each marked position.  Hence the target set
+has cardinality at most \((2n)^3G_m(g)\), proving the recurrence.
+\end{proof}
+
+\begin{theorem}[Plus-defect envelope]\label{thm:plus-envelope}
+For every \(m\ge0\) and \(a\ge0\),
+\[
+  \Countp_m(a)\le 4^{m+1}\Loss_m^a.
+\]
+\end{theorem}
+
+\begin{proof}
+If \(a\) is odd, the left side is zero by Proposition~\ref{prop:euler}.
+Write \(a=2g\).  Iterating Lemma~\ref{lem:slicing} and using
+Lemma~\ref{lem:planar} gives
+\[
+  \Countp_m(2g)=G_m(g)
+  \le
+  (2(m+1))^{3g}G_m(0)
+  \le
+  4^{m+1}(2(m+1))^{3g}.
+\]
+Since \(g=a/2\) and \(\Loss_m=(4(m+1))^{36}\ge(2(m+1))^{3/2}\), we have
+\[
+  (2(m+1))^{3g}=(2(m+1))^{3a/2}\le \Loss_m^a.
+\]
+\end{proof}
+
+\begin{corollary}[Bidefect count]\label{cor:bidefect-count}
+For \(0\le a\le m+3\) and \(0\le b\le m+1\),
+\[
+  \Count_m(a,b)\le \Env_m(a,b).
+\]
+\end{corollary}
+
+\begin{proof}
+Forgetting the minus defect gives
+\[
+  \Count_m(a,b)\le \Countp_m(a).
+\]
+Theorem~\ref{thm:plus-envelope} yields
+\[
+  \Count_m(a,b)\le 4^{m+1}\Loss_m^a.
+\]
+Since \(\binom{m+3}{a}\ge1\), \(\binom{m+1}{b}\ge1\), and
+\(\Loss_m^b\ge1\), the right side is at most \(\Env_m(a,b)\).
+\end{proof}
+
+\begin{theorem}[Bidefect scalar bound]\label{thm:main}
+For all \(m\ge0\) and all \(d,S\ge0\),
+\[
+  \sum_{a=0}^{m+3}\sum_{b=0}^{m+1}
+    \Count_m(a,b)d^{m+3-a}S^{m+1-b}
+  \le
+  4^{m+1}(d+\Loss_m)^{m+3}(S+\Loss_m)^{m+1}.
+\]
+\end{theorem}
+
+\begin{proof}
+Combine Corollary~\ref{cor:bidefect-count} with
+Theorem~\ref{thm:scalar-absorption}.
+\end{proof}
+
+\section{Consequence for the Partial-Transpose Moment Expansion}
+\label{sec:moment-input}
+
+We now state precisely what Theorem~\ref{thm:main} supplies to the
+random-matrix estimate.  The precise normalization of a Wishart matrix varies
+across the literature; the statement therefore abstracts the termwise
+cycle-count input and does not claim to rederive the full Wick formula.
+
+\begin{definition}[Two-base Wick form]
+Fix \(k=m+1\) and set \(S=\sqrt{s}\).  A partial-transpose moment expansion
+has the two-base bidefect form at length \(k\) if, after extracting the
+normalization factor independent of \(\pi\), the magnitude of the term indexed
+by \(\pi\in\Sym_k\) is bounded by
+\[
+  d^{m+3-\ddp(\pi)}S^{m+1-\ddm(\pi)}.
+\]
+Equivalently, the two cycle-count combinations appearing in the Wick exponent
+are
+\[
+  \cyc(\pi)+\cyc(\g\pi)=k+1-\ddp(\pi),
+  \qquad
+  \cyc(\pi)+\cyc(\pi\g^{-1})=k+1-\ddm(\pi),
+\]
+with the model-dependent fixed offsets already absorbed into the exponents
+\(m+3\) and \(m+1\).
+\end{definition}
+
+\begin{remark}
+The definition is an explicit hypothesis on the chosen normalization of the
+Wishart expansion.  In the usual Aubrun partial-transpose cycle-count formula
+the \(\pi\)-dependent parts are precisely the two combinations displayed
+above; trace normalization and the choice of \(S=\sqrt{s}\) account for the
+fixed shifts in the powers \(m+3\) and \(m+1\)
+\cite{aubrun_partial_2012,aubrun_entanglement_2014}.  Before using
+Theorem~\ref{thm:aubrun-input} in another normalization, these fixed offsets
+must be checked directly from the corresponding Wick formula.
+\end{remark}
+
+\begin{theorem}[Combinatorial input under the two-base Wick form]\label{thm:aubrun-input}
+Let \(k=m+1\).  Suppose the length-\(k\) partial-transpose moment expansion
+has the two-base bidefect form.  Then the full permutation sum, after the
+normalization factor independent of \(\pi\) has been extracted, is bounded by
+\[
+  4^k(d+\Loss_{k-1})^{k+2}(S+\Loss_{k-1})^k,
+  \qquad S=\sqrt{s}.
+\]
+Here the loss is polynomial in \(k\):
+\[
+  \Loss_{k-1}=(4k)^{36}.
+\]
+\end{theorem}
+
+\begin{proof}
+Group the terms by \(a=\ddp(\pi)\) and \(b=\ddm(\pi)\).  By the two-base
+form, the normalized contribution of the \((a,b)\)-slice is bounded by
+\[
+  \Count_m(a,b)d^{m+3-a}S^{m+1-b}.
+\]
+Summing over the bidefect support and applying Theorem~\ref{thm:main} gives
+\[
+  4^{m+1}(d+\Loss_m)^{m+3}(S+\Loss_m)^{m+1}.
+\]
+Since \(k=m+1\), this is the displayed bound.
+\end{proof}
+
+\begin{remark}
+The theorem is intentionally not stated as a full PPT threshold theorem.  The
+analytic normalization, centering, and conversion from moment bounds to
+spectral statements are external to the bidefect count.  The contribution of
+this paper is the two-defect combinatorial estimate that the moment method
+uses after the standard Wick expansion has supplied the termwise two-base
+form.
+\end{remark}
+
+\section{Why Total Defect Is the Wrong Variable}
+
+It is tempting to work only with
+\[
+  \dd(\pi)=\ddp(\pi)+\ddm(\pi).
+\]
+That variable is sufficient for the rank identity, but insufficient for the
+scalar estimate.  If one only knows the total defect \(r\), the natural bound
+has the form
+\[
+  \sum_{r}\#\{\dd=r\}D^{2m+4-r},
+\]
+where \(D\) must dominate both analytic bases.  In the exact square case this
+may be harmless, but away from a common base it creates an artificial
+max-base problem.  The bidefect decomposition avoids this: it preserves the
+two pieces of information needed by the two binomial expansions
+\[
+  (d+\Loss_m)^{m+3},
+  \qquad
+  (S+\Loss_m)^{m+1}.
+\]
+The bookkeeping is therefore not cosmetic.  It is the combinatorial form in
+which the analytic estimate is naturally true.
+
+\bibliographystyle{alpha}
+\bibliography{references.zotero}
+
+\end{document}

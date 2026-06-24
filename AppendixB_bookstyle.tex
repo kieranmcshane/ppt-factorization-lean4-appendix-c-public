@@ -1,0 +1,1703 @@
+\documentclass[11pt,oneside]{book}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  urlcolor=blue!55!black,
+  citecolor=blue!55!black
+}
+
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Var}{Var}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\GammaPT}{\Gamma}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\sphere}{\mathbb S}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\given}{\,:\,}
+
+\title{Appendix B: A Reader-First Mathematical Rewrite}
+\author{A book-style translation of the formal Appendix B}
+\date{\today}
+
+\begin{document}
+\frontmatter
+\maketitle
+
+\chapter*{Preface}
+
+This manuscript rewrites Appendix B as ordinary mathematics.  The goal is to
+give a self-contained proof that a reader can follow from the definitions,
+without relying on hidden bookkeeping or unnamed background objects.
+
+The central object is the normalized induced random state
+\[
+  \rho=XX^*,\qquad X\in M_{d^2,s}(\C),\qquad \norm{X}_{\HS}=1,
+\]
+and its partial transpose \(\rho^{\GammaPT}\).  For fixed \(k\) we study
+\[
+  f_k(X)=\Tr\bigl((\rho^{\GammaPT})^k\bigr).
+\]
+The main result is a local-Lipschitz concentration estimate at the natural
+scale \(d^{-(2k-2)}\), using the full spherical dimension \(2d^2s\), which is
+of order \(d^4\) when \(s\sim\lambda d^2\).
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{The Model and the Norms}
+
+\section{Finite Hilbert spaces}
+
+Let \(P,Q,\Sigma\) be finite sets.  In the balanced specialization one takes
+\[
+  P=Q=\{1,\ldots,d\},\qquad \Sigma=\{1,\ldots,s\}.
+\]
+Write
+\[
+  I=P\times Q,\qquad D=\card I,\qquad S=\card \Sigma .
+\]
+Thus \(D=d^2\) in the balanced case.  We use the complex Hilbert spaces
+\(\C^I\) and \(\C^\Sigma\), both with their standard Hermitian inner products:
+\[
+  \ip{x}{y}_{\C^I}=\sum_{i\in I}x_i\overline{y_i},
+  \qquad
+  \ip{u}{v}_{\C^\Sigma}=\sum_{\alpha\in\Sigma}u_\alpha\overline{v_\alpha}.
+\]
+
+When an asymptotic estimate involves a parameter \(\lambda\), we specialize
+further to a sequence \(s=s_d\) satisfying
+\[
+  \frac{s_d}{d^2}\longrightarrow \lambda\in(0,\infty).
+\]
+In that regime \(D=d^2\) and \(S=s_d\).  Constants written \(C_\lambda\) may
+depend on \(\lambda\), but not on \(d\).
+
+The sample matrix space is
+\[
+  \mathcal X=M_{I,\Sigma}(\C)\simeq \C^{I\times\Sigma}.
+\]
+We view \(G\in\mathcal X\) both as an array \((G_{i\alpha})\) and as a linear
+map \(G:\C^\Sigma\to\C^I\).
+
+\begin{definition}[Operator, Hilbert--Schmidt, and trace norms]
+Let \(T:E\to F\) be a linear map between finite-dimensional complex Hilbert
+spaces.
+
+The operator norm is
+\[
+  \norm{T}_{\op}
+  =
+  \sup\{\norm{Tv}_2:\ v\in E,\ \norm v_2=1\}.
+\]
+Equivalently, \(\norm{T}_{\op}\) is the largest singular value of \(T\).
+
+The Hilbert--Schmidt norm is
+\[
+  \norm{T}_{\HS}^2=\Tr(T^*T).
+\]
+In orthonormal bases this is
+\[
+  \norm{T}_{\HS}^2=\sum_{a,b}|T_{ab}|^2.
+\]
+
+The trace norm, or Schatten \(1\)-norm, is
+\[
+  \norm{T}_1=\Tr\bigl((T^*T)^{1/2}\bigr),
+\]
+the sum of the singular values of \(T\).
+\end{definition}
+
+For a sample matrix \(G\in\mathcal X\), this gives
+\[
+  \norm{G}_{\HS}^2
+  =
+  \sum_{i\in I}\sum_{\alpha\in\Sigma}|G_{i\alpha}|^2.
+\]
+For \(A\in M_I(\C)\), regarded as an operator on \(\C^I\), the same definitions
+give \(\norm A_{\op}\), \(\norm A_{\HS}\), and \(\norm A_1\).  If \(A\) is
+Hermitian with eigenvalues \(\lambda_1,\ldots,\lambda_D\), then
+\[
+  \norm A_{\op}=\max_j|\lambda_j|,
+  \qquad
+  \norm A_1=\sum_{j=1}^D|\lambda_j|,
+  \qquad
+  \norm A_{\HS}
+  =
+  \left(\sum_{j=1}^D|\lambda_j|^2\right)^{1/2}.
+\]
+
+\section{Partial transpose}
+
+The index set \(I=P\times Q\) records the tensor decomposition
+\(\C^I\simeq\C^P\otimes\C^Q\).  For \(A\in M_I(\C)\), its partial transpose
+along the second tensor factor is the matrix \(A^{\GammaPT}\) defined by
+\[
+  A^{\GammaPT}_{(p,q),(p',q')}
+  =
+  A_{(p,q'),(p',q)}.
+\]
+Only the \(Q\)-coordinates are transposed.
+
+\begin{lemma}[Basic norm facts]
+For every \(A\in M_I(\C)\),
+\[
+  \norm{A^{\GammaPT}}_{\HS}=\norm A_{\HS},
+  \qquad
+  \norm A_{\op}\le \norm A_{\HS},
+  \qquad
+  \norm A_1\le \sqrt D\,\norm A_{\HS}.
+\]
+If \(A\) is Hermitian and \(m\) is even, then
+\[
+  \norm A_{\op}^m\le \Tr(A^m).
+\]
+\end{lemma}
+
+\begin{proof}
+The first identity holds because partial transpose only permutes matrix
+coordinates.  The inequalities \(\norm A_{\op}\le\norm A_{\HS}\) and
+\(\norm A_1\le\sqrt D\,\norm A_{\HS}\) are the elementary inequalities
+\(\ell^\infty\le\ell^2\) and \(\ell^1\le\sqrt D\,\ell^2\) applied to the
+singular values of \(A\).
+
+If \(A\) is Hermitian, diagonalize it.  For even \(m\),
+\[
+  \Tr(A^m)=\sum_j\lambda_j^m=\sum_j|\lambda_j|^m
+  \ge \max_j|\lambda_j|^m=\norm A_{\op}^m.
+\]
+\end{proof}
+
+\chapter{Gaussian Vectors and Polar Coordinates}
+
+\section{The standard complex Gaussian}
+
+A standard complex Gaussian is a random variable
+\[
+  g=\frac{X+iY}{\sqrt2},
+\]
+where \(X,Y\) are independent real \(N(0,1)\) variables.  Then
+\[
+  \E g=0,\qquad \E |g|^2=1,
+\]
+and \(|g|^2\) has exponential distribution with mean \(1\).
+
+Let \(G=(G_{i\alpha})\in\mathcal X\) have independent standard complex Gaussian
+entries.  Its law is denoted by \(\gamma\).  The density of \(\gamma\) with
+respect to Lebesgue measure on the real vector space underlying \(\mathcal X\)
+is
+\[
+  \pi^{-DS}\exp(-\norm G_{\HS}^2).
+\]
+Consequently,
+\[
+  \norm G_{\HS}^2
+  =
+  \sum_{i\in I}\sum_{\alpha\in\Sigma}|G_{i\alpha}|^2
+\]
+has Gamma distribution with shape parameter \(DS\) and scale parameter \(1\).
+
+For each \(i\in I\),
+\[
+  \sum_{\alpha\in\Sigma}|G_{i\alpha}|^2
+\]
+has Gamma distribution with shape parameter \(S\) and scale parameter \(1\).
+This is the source of the diagonal Gamma estimates later.
+
+\section{Wishart matrices and normalized states}
+
+The unnormalized Wishart matrix is
+\[
+  GG^*\in M_I(\C).
+\]
+We also use the normalized Wishart matrix
+\[
+  W=\frac1S GG^*.
+\]
+The normalized induced state is obtained by radial normalization:
+\[
+  \rho(G)=
+  \begin{cases}
+    GG^*/\Tr(GG^*),&G\ne0,\\
+    0,&G=0.
+  \end{cases}
+\]
+Since \(\Tr(GG^*)=\norm G_{\HS}^2\), if
+\[
+  R(G)=\norm G_{\HS},
+  \qquad
+  \Theta(G)=\frac{G}{\norm G_{\HS}}\quad(G\ne0),
+\]
+then
+\[
+  \rho(G)=\Theta(G)\Theta(G)^*.
+\]
+The value of \(\Theta(0)\) may be chosen arbitrarily on the unit sphere,
+because \(\gamma\{0\}=0\).
+
+\section{The polar law}
+
+Let
+\[
+  \sphere(\mathcal X)=\{X\in\mathcal X:\norm X_{\HS}=1\}
+\]
+and let \(\sigma_{\mathcal X}\) be the normalized surface measure on this
+sphere.
+
+\begin{theorem}[Gaussian polar law]
+If \(G\) is a standard complex Gaussian vector in \(\mathcal X\), then
+\[
+  \Theta(G)=\frac{G}{\norm G_{\HS}}
+\]
+is distributed according to \(\sigma_{\mathcal X}\).  Moreover
+\(R(G)=\norm G_{\HS}\) and \(\Theta(G)\) are independent.
+\end{theorem}
+
+\begin{proof}
+The real dimension of \(\mathcal X\) is \(2DS\).  In polar coordinates
+\[
+  G=r\theta,\qquad r>0,\quad \theta\in\sphere(\mathcal X),
+\]
+Lebesgue measure factors as
+\[
+  \dd G=r^{2DS-1}\,\dd r\,\dd\sigma_{\mathcal X}(\theta)
+\]
+up to the normalizing surface-area constant.  The Gaussian density is radial:
+\[
+  \pi^{-DS}e^{-\norm G_{\HS}^2}
+  =
+  \pi^{-DS}e^{-r^2}.
+\]
+Thus the joint law of \((R,\Theta)\) has density proportional to
+\[
+  e^{-r^2}r^{2DS-1}\,\dd r\,\dd\sigma_{\mathcal X}(\theta).
+\]
+This is a product measure.  Hence \(R\) and \(\Theta\) are independent, and
+the angular marginal is \(\sigma_{\mathcal X}\).
+\end{proof}
+
+\begin{remark}
+Equivalently, the direction law is characterized as the unique probability
+measure on the sphere invariant under the unitary group \(U(\mathcal X)\).
+The Gaussian measure is unitary invariant, the normalization map
+\(G\mapsto G/\norm G_{\HS}\) commutes with unitary transformations, and the
+unitary group acts transitively on the sphere.  This gives the same
+identification with surface measure.
+\end{remark}
+
+\begin{corollary}[Radial rescalings]
+For \(G\ne0\),
+\[
+  GG^*=R(G)^2\Theta(G)\Theta(G)^*,
+  \qquad
+  (GG^*)^{\GammaPT}
+  =
+  R(G)^2(\Theta(G)\Theta(G)^*)^{\GammaPT}.
+\]
+Consequently,
+\[
+  \norm G_{\op}=R(G)\norm{\Theta(G)}_{\op},
+\]
+and
+\[
+  \norm{(GG^*)^{\GammaPT}}_{\op}
+  =
+  R(G)^2\norm{(\Theta(G)\Theta(G)^*)^{\GammaPT}}_{\op}.
+\]
+\end{corollary}
+
+\chapter{Spherical Concentration and Localization}
+
+\section{Medians}
+
+Let \((\Omega,\mu)\) be a probability space and \(f:\Omega\to\R\) measurable.
+
+\begin{definition}[Median]
+A real number \(m\) is a median of \(f\) if
+\[
+  \mu\{f\le m\}\ge\frac12,
+  \qquad
+  \mu\{f\ge m\}\ge\frac12.
+\]
+\end{definition}
+
+\begin{lemma}[Changing the center]
+Let \(m\) be a median of \(f\).  For every \(a\in\R\) and every \(t>0\),
+\[
+  \mu\{|f-m|\ge t\}
+  \le
+  2\,\mu\{|f-a|\ge t/2\}.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(|m-a|<t/2\), then \(|f-m|\ge t\) implies \(|f-a|\ge t/2\).  If
+\(|m-a|\ge t/2\), then one of the two median half-spaces,
+\(\{f\ge m\}\) or \(\{f\le m\}\), lies inside \(\{|f-a|\ge t/2\}\).  Hence
+that latter event has probability at least \(1/2\), so twice its probability
+is at least \(1\).
+\end{proof}
+
+\begin{lemma}[Median controlled by the mean]
+If \(f\ge0\), then every median \(m\) of \(f\) satisfies
+\[
+  m\le 2\E f.
+\]
+\end{lemma}
+
+\begin{proof}
+By the median property, \(\mu\{f\ge m\}\ge1/2\).  Therefore
+\[
+  \E f\ge \int_{\{f\ge m\}} f\,\dd\mu
+  \ge m\,\mu\{f\ge m\}
+  \ge \frac m2.
+\]
+\end{proof}
+
+\section{Levy's lemma on the Euclidean sphere}
+
+Let \(\sphere^{N-1}\subset\R^N\) be the Euclidean unit sphere, equipped with
+normalized surface measure \(\sigma_{N-1}\).
+
+\begin{theorem}[Spherical Levy inequality]
+Let \(g:\sphere^{N-1}\to\R\) be \(L\)-Lipschitz, with \(L>0\).  Then \(g\)
+has a median \(M_g\) such that for every \(t>0\),
+\[
+  \sigma_{N-1}\{|g-M_g|\ge t\}
+  \le
+  2\exp\left(-\frac{Nt^2}{4L^2}\right).
+\]
+\end{theorem}
+
+This is the only geometric concentration theorem needed.  The constants are
+not optimized; what matters below is the dependence on \(Nt^2/L^2\).
+
+\section{Localized Levy lemma}
+
+\begin{theorem}[Localized Levy lemma]
+Let \(\Omega_0\subset\sphere^{N-1}\) be measurable and let
+\(\sigma_{N-1}(\Omega_0)\ge3/4\).  Let \(f:\sphere^{N-1}\to\R\) be measurable.
+Assume that \(f\) is \(L\)-Lipschitz on \(\Omega_0\).  If \(m_f\) is a median
+of \(f\), then for every \(t>0\),
+\[
+  \sigma_{N-1}\{|f-m_f|\ge t\}
+  \le
+  2\sigma_{N-1}(\Omega_0^c)
+  +
+  4\exp\left(-\frac{Nt^2}{16L^2}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Extend \(f|_{\Omega_0}\) to an \(L\)-Lipschitz function on the whole sphere by
+McShane's formula
+\[
+  F(x)=\inf_{y\in\Omega_0}\bigl(f(y)+L\norm{x-y}_2\bigr).
+\]
+Then \(F=f\) on \(\Omega_0\).  If \(M_F\) is a median of \(F\), Levy's lemma
+gives
+\[
+  \sigma_{N-1}\{|F-M_F|\ge u\}
+  \le
+  2\exp\left(-\frac{Nu^2}{4L^2}\right).
+\]
+Since \(F=f\) on \(\Omega_0\),
+\[
+  \sigma_{N-1}\{|f-M_F|\ge u\}
+  \le
+  \sigma_{N-1}(\Omega_0^c)
+  +
+  2\exp\left(-\frac{Nu^2}{4L^2}\right).
+\]
+Apply the center-changing lemma with \(a=M_F\) and \(u=t/2\):
+\[
+  \sigma_{N-1}\{|f-m_f|\ge t\}
+  \le
+  2\sigma_{N-1}\{|f-M_F|\ge t/2\}.
+\]
+This is the desired inequality.
+\end{proof}
+
+\section{From medians to means}
+
+\begin{lemma}[Layer-cake mean estimate]
+Assume that \(|f-m|\le R\) almost surely.  Let
+\(\Phi:[0,R]\to[0,\infty)\) be Borel measurable with finite integral, and
+assume that
+\[
+  \mu\{|f-m|\ge t\}\le \Phi(t)
+  \qquad(0\le t\le R).
+\]
+Then
+\[
+  |\E f-m|
+  \le
+  \int_0^R\Phi(t)\,\dd t.
+\]
+\end{lemma}
+
+\begin{proof}
+The layer-cake identity gives
+\[
+  \E|f-m|
+  =
+  \int_0^\infty \mu\{|f-m|\ge t\}\,\dd t
+  =
+  \int_0^R \mu\{|f-m|\ge t\}\,\dd t.
+\]
+Finally, \(|\E f-m|\le\E|f-m|\).
+\end{proof}
+
+\chapter{Deterministic Lipschitz Calculus}
+
+\section{Trace powers}
+
+\begin{lemma}[Telescoping identity]
+For \(A,B\in M_D(\C)\) and \(k\ge1\),
+\[
+  A^k-B^k
+  =
+  \sum_{j=0}^{k-1}A^j(A-B)B^{k-1-j}.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the sum.  Consecutive terms cancel, leaving \(A^k-B^k\).
+\end{proof}
+
+\begin{proposition}[Trace-power perturbation]
+For \(A,B\in M_D(\C)\) and \(k\ge1\),
+\[
+  |\Tr(A^k)-\Tr(B^k)|
+  \le
+  k\max(\norm A_{\op},\norm B_{\op})^{k-1}\norm{A-B}_1.
+\]
+\end{proposition}
+
+\begin{proof}
+The nontrivial norm input is the finite-dimensional ideal property of the
+trace norm:
+\[
+  \norm{RST}_1\le \norm R_{\op}\,\norm S_1\,\norm T_{\op}.
+\]
+Indeed, by duality between the trace norm and the operator norm,
+\[
+  \norm M_1=\sup_{\norm U_{\op}\le1}|\Tr(UM)|.
+\]
+Thus
+\[
+\begin{aligned}
+  \norm{RST}_1
+  &=
+  \sup_{\norm U_{\op}\le1}|\Tr(URST)|  \\
+  &=
+  \sup_{\norm U_{\op}\le1}|\Tr(TURS)|  \\
+  &\le
+  \sup_{\norm U_{\op}\le1}\norm{TUR}_{\op}\,\norm S_1 \\
+  &\le
+  \norm T_{\op}\,\norm R_{\op}\,\norm S_1 .
+\end{aligned}
+\]
+We also use \(\norm{A^j}_{\op}\le\norm A_{\op}^j\), by submultiplicativity of
+the operator norm.
+
+Now use the telescoping identity:
+\[
+  A^k-B^k=\sum_{j=0}^{k-1}M_j,
+  \qquad
+  M_j=A^j(A-B)B^{k-1-j}.
+\]
+By linearity of the trace, the triangle inequality, and
+\(|\Tr M|\le\norm M_1\),
+\[
+\begin{aligned}
+|\Tr(A^k)-\Tr(B^k)|
+&=
+\left|\sum_{j=0}^{k-1}\Tr(M_j)\right|\\
+&\le
+\sum_{j=0}^{k-1}|\Tr(M_j)|\\
+&\le
+\sum_{j=0}^{k-1}\norm{M_j}_1.
+\end{aligned}
+\]
+Therefore
+\[
+\begin{aligned}
+|\Tr(A^k)-\Tr(B^k)|
+&\le
+\sum_{j=0}^{k-1}\norm{A^j(A-B)B^{k-1-j}}_1\\
+&\le
+\sum_{j=0}^{k-1}
+\norm A_{\op}^j\,\norm{A-B}_1\,\norm B_{\op}^{k-1-j}\\
+&\le
+k\max(\norm A_{\op},\norm B_{\op})^{k-1}\norm{A-B}_1.
+\end{aligned}
+\]
+\end{proof}
+
+\section{The partial-transpose moment map}
+
+For \(X\in\sphere(\mathcal X)\), put
+\[
+  A_X=(XX^*)^{\GammaPT}.
+\]
+The function of interest is
+\[
+  f_k(X)=\Tr(A_X^k).
+\]
+
+\begin{proposition}[Deterministic Lipschitz estimate]
+For \(X,Y\in\sphere(\mathcal X)\),
+\[
+\begin{aligned}
+|f_k(X)-f_k(Y)|
+&\le
+k\sqrt D\,
+\max(\norm{A_X}_{\op},\norm{A_Y}_{\op})^{k-1}\\
+&\qquad\qquad
+\times
+(\norm X_{\op}+\norm Y_{\op})\,\norm{X-Y}_{\HS}.
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{proof}
+The trace-power perturbation gives
+\[
+  |f_k(X)-f_k(Y)|
+  \le
+  k\max(\norm{A_X}_{\op},\norm{A_Y}_{\op})^{k-1}
+  \norm{A_X-A_Y}_1.
+\]
+Now
+\[
+  \norm{A_X-A_Y}_1
+  \le
+  \sqrt D\,\norm{A_X-A_Y}_{\HS}
+  =
+  \sqrt D\,\norm{XX^*-YY^*}_{\HS},
+\]
+because partial transpose is Hilbert--Schmidt isometric.  Finally
+\[
+  XX^*-YY^*
+  =
+  (X-Y)X^*+Y(X-Y)^*,
+\]
+so
+\[
+  \norm{XX^*-YY^*}_{\HS}
+  \le
+  (\norm X_{\op}+\norm Y_{\op})\norm{X-Y}_{\HS}.
+\]
+\end{proof}
+
+\begin{corollary}[Lipschitz scale on the good set]
+Assume \(D=d^2\).  On the set
+\[
+  \Omega(a,b)
+  =
+  \left\{
+    X\in\sphere(\mathcal X):
+    \norm X_{\op}\le\frac ad,\quad
+    \norm{(XX^*)^{\GammaPT}}_{\op}\le\frac b{d^2}
+  \right\},
+\]
+the function \(f_k\) is Lipschitz with constant
+\[
+  L_k\le 2kab^{k-1}\,d^{-(2k-2)}.
+\]
+\end{corollary}
+
+\begin{proof}
+Insert the two good-set bounds and \(\sqrt D=d\) into the deterministic
+estimate.
+\end{proof}
+
+\chapter{The Wick Expansion and Aubrun Counting}
+
+The off-diagonal estimate is the only genuinely combinatorial part of the
+argument.  This chapter explains the objects being counted.  The point is not
+that the formulas are pretty; the point is that after the Gaussian expansion,
+everything reduces to counting how many choices remain after a finite list of
+equality constraints has been imposed.
+
+\section{Complex Wick formula}
+
+Let \(z_\eta\), \(\eta\in\Xi\), be independent standard complex Gaussian
+variables.
+
+\begin{theorem}[Complex Wick formula]
+For words \(h=(h_0,\ldots,h_{r-1})\) and
+\(\bar h=(\bar h_0,\ldots,\bar h_{s-1})\) in \(\Xi\),
+\[
+  \E\prod_{a=0}^{r-1}z_{h_a}
+    \prod_{b=0}^{s-1}\overline{z_{\bar h_b}}
+  =
+  0
+\]
+unless \(r=s\).  If \(r=s\), then the expectation is
+\[
+  \card\{\pi\in\mathfrak S_r:\ h_a=\bar h_{\pi(a)}
+       \text{ for every }a\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Group the factors by the coordinate \(\eta\).  For a fixed coordinate, a
+nonzero expectation requires the same number of \(z_\eta\)'s and
+\(\overline z_\eta\)'s, and the value is the factorial of that number.
+Multiplying over coordinates counts precisely the bijective matchings between
+holomorphic and anti-holomorphic positions that preserve the coordinate.
+\end{proof}
+
+\section{Closed walks and edge variables}
+
+Let
+\[
+  Z=W^{\GammaPT}-\diag(W^{\GammaPT})
+\]
+be the off-diagonal part of the partially transposed Wishart matrix.  Since
+\[
+  W_{ij}=\frac1S\sum_{\alpha\in\Sigma}G_{i\alpha}\overline{G_{j\alpha}},
+\]
+the partially transposed entry is
+\[
+  (W^{\GammaPT})_{(p,q),(p',q')}
+  =
+  \frac1S\sum_{\alpha\in\Sigma}
+  G_{(p,q'),\alpha}\,
+  \overline{G_{(p',q),\alpha}}.
+\]
+
+Expanding \(\Tr(Z^m)\) gives a sum over closed walks
+\[
+  i_0,i_1,\ldots,i_m=i_0,
+  \qquad
+  i_r=(p_r,q_r)\in P\times Q,
+\]
+and over sample labels
+\[
+  \alpha_0,\ldots,\alpha_{m-1}\in\Sigma.
+\]
+For the edge from \(i_r\) to \(i_{r+1}\), the holomorphic Gaussian coordinate
+is
+\[
+  \bigl((p_r,q_{r+1}),\alpha_r\bigr),
+\]
+and the anti-holomorphic coordinate is
+\[
+  \bigl((p_{r+1},q_r),\alpha_r\bigr).
+\]
+These crossed \(Q\)-coordinates are exactly where the partial transpose enters.
+The off-diagonal projection means that the edge is discarded unless
+\[
+  i_r\ne i_{r+1}.
+\]
+
+\begin{definition}[Surviving Wick permutation]
+Fix a closed walk \(i_0,\ldots,i_m=i_0\) and sample labels
+\(\alpha_0,\ldots,\alpha_{m-1}\).  A permutation
+\(\pi\in\mathfrak S_m\) is surviving if, for every edge \(r\),
+\[
+  (p_r,q_{r+1},\alpha_r)
+  =
+  (p_{\pi(r)+1},q_{\pi(r)},\alpha_{\pi(r)}),
+\]
+where the edge indices are read cyclically.  Equivalently,
+\[
+  p_r=p_{\pi(r)+1},\qquad
+  q_{r+1}=q_{\pi(r)},\qquad
+  \alpha_r=\alpha_{\pi(r)}.
+\]
+\end{definition}
+
+The definition simply says that the holomorphic variable on edge \(r\) is
+paired by Wick's formula with the anti-holomorphic variable on edge
+\(\pi(r)\).
+
+\begin{proposition}[Moment expansion after Wick's formula]
+For every \(m\ge1\),
+\[
+  \E\Tr(Z^m)
+\]
+is the sum, over closed walks and sample labels satisfying the off-diagonal
+condition, of the number of surviving Wick permutations, multiplied by the
+normalizing factor \(S^{-m}\).
+\end{proposition}
+
+\begin{proof}
+Expand the trace, expand \(W=S^{-1}GG^*\), and apply the complex Wick formula.
+Each term in the expansion contains \(m\) Gaussian variables and \(m\)
+conjugate Gaussian variables.  Wick's formula says that its expectation is the
+number of permutations matching each holomorphic coordinate with an equal
+anti-holomorphic coordinate.  Those are exactly the surviving permutations
+defined above.
+\end{proof}
+
+\section{Relations generated by a surviving permutation}
+
+Fix a Wick permutation \(\pi\).  Its equalities generate three equivalence
+relations on the set of edge positions:
+\[
+  \sim_L,\qquad \sim_R,\qquad \sim_\Sigma.
+\]
+They are generated by
+\[
+  p_r=p_{\pi(r)+1},\qquad
+  q_{r+1}=q_{\pi(r)},\qquad
+  \alpha_r=\alpha_{\pi(r)}.
+\]
+Let
+\[
+  \ell_L(\pi),\qquad \ell_R(\pi),\qquad \ell_\Sigma(\pi)
+\]
+be the numbers of equivalence classes.  Once one value is chosen for each
+class, all coordinates in that class are forced.  Therefore the number of
+assignments compatible with \(\pi\) is at most
+\[
+  |P|^{\ell_L(\pi)}
+  |Q|^{\ell_R(\pi)}
+  |\Sigma|^{\ell_\Sigma(\pi)}.
+\]
+In the balanced case \(|P|=|Q|=d\), this becomes
+\[
+  d^{\ell_L(\pi)+\ell_R(\pi)}
+  S^{\ell_\Sigma(\pi)}.
+\]
+
+\begin{definition}[Profile of a Wick permutation]
+The profile of \(\pi\) is the pair
+\[
+  (u,v)
+  =
+  \bigl(\ell_L(\pi)+\ell_R(\pi),\,\ell_\Sigma(\pi)\bigr).
+\]
+Let \(N_m(u,v)\) be the number of Wick permutations of length \(m\) with
+profile \((u,v)\).
+\end{definition}
+
+The whole combinatorial problem is now concentrated in the numbers
+\(N_m(u,v)\).  The weighted relation sum has the form
+\[
+  \sum_{u,v} N_m(u,v)\,d^u\,S^v.
+\]
+The formal development proves the exact regrouping identity behind this
+formula before applying Aubrun's bounds.
+
+\section{Aubrun's tilde words and innovations}
+
+Aubrun's combinatorial proof repackages the same equality constraints into
+three words
+\[
+  \widetilde a,\qquad \widetilde b,\qquad \widetilde c,
+\]
+and two lists, traditionally called list (3) and list (7).  List (3) records
+the labels directly seen along the walk.  List (7) records the labels after
+the Wick permutation and the partial-transpose crossing have been applied.
+In the notation above, these lists are just a different coordinate system for
+the same \(P\)-, \(Q\)-, and \(\Sigma\)-labels.
+
+There are three kinds of conditions.
+
+\begin{enumerate}[label=(\roman*)]
+\item The Wishart matching condition says that paired Gaussian variables have
+matching sample labels.
+\item The triple matching condition says that the left, right, and sample
+labels match in the crossed pattern dictated by partial transpose.
+\item The nonrepetition condition on \((\widetilde a,\widetilde b)\) encodes
+the off-diagonal projection.
+\end{enumerate}
+
+An innovation is the first occurrence of a new equivalence class while the
+lists are scanned from left to right.  If a position is not an innovation,
+its label has already appeared and is forced by the previous class
+representative.  A compatibility defect measures how many apparent choices
+are lost when the \(A\)- and \(C\)-relations must both be compatible with the
+same Wick relation.
+
+\begin{lemma}[Aubrun Lemma 3.6]
+Fix an innovation pattern with \(U\) innovations.  In the canonical model with
+alphabet size at most \(k\), the number of compatible tilde-word assignments
+is at most
+\[
+  k^{3U}.
+\]
+\end{lemma}
+
+\begin{proof}
+At each innovation one may choose at most one new value for each of the three
+words \(\widetilde a,\widetilde b,\widetilde c\).  Each choice has at most
+\(k\) possibilities.  Noninnovative positions are forced by the previously
+chosen class representatives and by the matching conditions.  Therefore each
+innovation contributes at most \(k^3\), giving \(k^{3U}\).
+\end{proof}
+
+\begin{lemma}[Fixed-defect class count]
+For a fixed defect value \(\Delta\), the number of compatible relation classes
+is bounded by
+\[
+  2^k(2k)^{36\Delta}.
+\]
+\end{lemma}
+
+\begin{proof}
+The innovation data are lifted from the edge positions to the vertex positions.
+The compatibility defect controls the number of additional identifications
+forced by the simultaneous \(A\)- and \(C\)-constraints.  Combining the
+innovation count with the compatibility loss yields the displayed
+fixed-defect bound.
+\end{proof}
+
+\begin{theorem}[Aubrun graduate relation counting]
+There is a polynomial \(Q\), independent of \(d\) and \(S\), such that for
+every \(m\ge1\) the weighted relation sum satisfies
+\[
+  \sum_{u,v}N_m(u,v)\,d^u\,S^v
+  \le
+  2^m(d+Q(m))^{m+2}(\sqrt S+Q(m))^m.
+\]
+\end{theorem}
+
+\begin{proof}
+Partition the Wick permutations by their profile and by their defect.  Lemma
+3.6 controls the choices associated with innovations.  The fixed-defect class
+count controls how many compatible relation classes occur at a given defect.
+When the defect is small, the number of free classes is close to the maximal
+one and the corresponding term is absorbed by the powers of \(d\) and
+\(\sqrt S\).  When the defect is large, the factor \((2k)^{36\Delta}\) is
+absorbed into the polynomial correction \(Q(m)\).  Summing over all profiles
+gives the displayed bound.
+\end{proof}
+
+\chapter{Aubrun's Off-Diagonal Moment Estimate}
+
+\section{The trace-moment envelope}
+
+Let
+\[
+  W=\frac1S GG^*,\qquad
+  Y=W^{\GammaPT},\qquad
+  Z=Y-\diag(Y).
+\]
+
+\begin{theorem}[Off-diagonal moment bound]
+There is an explicit polynomial \(Q\) such that for every \(m\ge1\),
+\[
+  \left|\E\Tr(Z^m)\right|
+  \le
+  \left(\frac2S\right)^m
+  (d+Q(m))^{m+2}(\sqrt S+Q(m))^m
+\]
+in the balanced specialization \(D=d^2\).
+\end{theorem}
+
+\begin{proof}
+Write a cyclic word in the bipartite index set \(I=P\times Q\) as
+\[
+  w=(i_0,i_1,\ldots,i_m),\qquad i_m=i_0,
+\]
+and write \(i_r=(p_r,q_r)\).  Expanding the trace gives
+\[
+  \Tr(Z^m)
+  =
+  \sum_{w}
+  \prod_{r=0}^{m-1} Z_{i_r,i_{r+1}} .
+\]
+For an off-diagonal edge \(i_r\ne i_{r+1}\), the partial transpose of
+\(W=S^{-1}GG^*\) has entry
+\[
+  Z_{i_r,i_{r+1}}
+  =
+  \frac1S
+  \sum_{\alpha_r\in\Sigma}
+  G_{(p_r,q_{r+1}),\alpha_r}\,
+  \overline{G_{(p_{r+1},q_r),\alpha_r}}.
+\]
+For a diagonal edge \(i_r=i_{r+1}\), the corresponding entry of \(Z\) is
+zero.  Thus, after expanding the \(m\) sample sums,
+\[
+  \E\Tr(Z^m)
+  =
+  S^{-m}
+  \sum_w \mathbf 1_{\mathrm{off}}(w)
+  \sum_{\alpha_0,\ldots,\alpha_{m-1}\in\Sigma}
+  \E\prod_{r=0}^{m-1}
+  G_{(p_r,q_{r+1}),\alpha_r}\,
+  \overline{G_{(p_{r+1},q_r),\alpha_r}},
+\]
+where \(\mathbf 1_{\mathrm{off}}(w)\) is \(1\) when all edges are
+off-diagonal and \(0\) otherwise.
+
+Apply the complex Wick formula to the expectation in the last line.  A Wick
+permutation \(\pi\in\mathfrak S_m\) survives precisely when, for every
+edge \(r\),
+\[
+  (p_r,q_{r+1},\alpha_r)
+  =
+  (p_{\pi(r)+1},q_{\pi(r)},\alpha_{\pi(r)}),
+\]
+with the indices read cyclically.  Hence
+\[
+  \E\Tr(Z^m)
+  =
+  S^{-m}
+  \sum_{\pi\in\mathfrak S_m}
+  \sum_{(w,\alpha)\in\mathcal F_\pi}
+  \mathbf 1_{\mathrm{off}}(w).
+\]
+Taking absolute values and using \(0\le\mathbf 1_{\mathrm{off}}\le1\),
+\[
+  \left|\E\Tr(Z^m)\right|
+  \le
+  S^{-m}\sum_{\pi\in\mathfrak S_m}\card\mathcal F_\pi.
+\]
+
+Now regroup the surviving pairs by profile.  If \(\pi\) has profile
+\((u,v)\), then the fiber bound gives
+\[
+  \card\mathcal F_\pi\le d^uS^v,
+\]
+because one chooses one \(P\)- and one \(Q\)-coordinate for each free
+left/right class and one sample label for each free sample class.  Therefore
+\[
+  \sum_{\pi\in\mathfrak S_m}\card\mathcal F_\pi
+  \le
+  \sum_{u,v}N_m(u,v)d^uS^v.
+\]
+The relation-counting theorem gives
+\[
+  \sum_{u,v}N_m(u,v)d^uS^v
+  \le
+  2^m(d+Q(m))^{m+2}(\sqrt S+Q(m))^m.
+\]
+Multiplying by \(S^{-m}\) gives
+\[
+  \left|\E\Tr(Z^m)\right|
+  \le
+  S^{-m}\,2^m(d+Q(m))^{m+2}(\sqrt S+Q(m))^m
+  =
+  \left(\frac2S\right)^m
+  (d+Q(m))^{m+2}(\sqrt S+Q(m))^m.
+\]
+\end{proof}
+
+\section{From moments to operator norm}
+
+\begin{lemma}[Even-moment extraction]
+If \(Z\) is Hermitian and \(m\) is even, then
+\[
+  \E\norm Z_{\op}
+  \le
+  \bigl(\E\Tr(Z^m)\bigr)^{1/m}.
+\]
+\end{lemma}
+
+\begin{proof}
+Pointwise, \(\norm Z_{\op}^m\le\Tr(Z^m)\).  Taking expectations and then the
+\(m\)-th root gives the result.
+\end{proof}
+
+\begin{theorem}[Off-diagonal expectation bound]
+Assume \(S/d^2\to\lambda>0\).  Then there is a constant \(C_\lambda\) such
+that
+\[
+  \E\norm{W^{\GammaPT}-\diag(W^{\GammaPT})}_{\op}
+  \le
+  C_\lambda
+\]
+for all sufficiently large \(d\).
+\end{theorem}
+
+\begin{proof}
+Choose even integers \(m=m(d)\) tending to infinity slowly enough that
+\[
+  Q(m)=o(d),
+  \qquad
+  \frac{\log d}{m}\to0.
+\]
+Applying the even-moment extraction to the moment envelope gives
+\[
+  \E\norm Z_{\op}
+  \le
+  \frac2S(d+Q(m))^{1+2/m}(\sqrt S+Q(m)).
+\]
+Since \(S\sim\lambda d^2\), the right side is bounded by a constant depending
+only on \(\lambda\).
+\end{proof}
+
+\chapter{Diagonal Gamma Bounds and Wishart Expectations}
+
+\section{Gamma tails}
+
+The diagonal entries of \(W^{\GammaPT}\) are the same as those of \(W\):
+\[
+  (W^{\GammaPT})_{ii}
+  =
+  W_{ii}
+  =
+  \frac1S\sum_{\alpha\in\Sigma}|G_{i\alpha}|^2.
+\]
+Thus each \(W_{ii}\) is the average of \(S\) independent exponential random
+variables of mean \(1\).
+
+\begin{lemma}[Gamma tail for one average]
+If
+\[
+  \xi=\frac1S\sum_{\alpha=1}^S E_\alpha,
+\]
+where the \(E_\alpha\) are independent exponential variables of mean \(1\),
+then for every \(u\ge0\),
+\[
+  \Prob\left\{\xi\ge1+2\sqrt{\frac uS}+2\frac uS\right\}
+  \le e^{-u}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+  Y=S\xi=\sum_{\alpha=1}^S E_\alpha .
+\]
+For \(0\le\theta<1\),
+\[
+  \E e^{\theta Y}
+  =
+  \prod_{\alpha=1}^S \E e^{\theta E_\alpha}
+  =
+  (1-\theta)^{-S},
+\]
+because each \(E_\alpha\) has density \(e^{-x}\mathbf 1_{x\ge0}\).  Put
+\[
+  y=\sqrt{\frac uS}.
+\]
+If \(u=0\), the desired bound is just a probability bound by \(1\).  Assume
+\(u>0\) and choose
+\[
+  \theta=\frac{y}{1+y}.
+\]
+Then \(0<\theta<1\).  Markov's inequality gives
+\[
+  \Prob\{\xi\ge 1+2y+2y^2\}
+  =
+  \Prob\{Y\ge S(1+2y+2y^2)\}
+  \le
+  \exp\{-S\theta(1+2y+2y^2)\}(1-\theta)^{-S}.
+\]
+Since \(1-\theta=(1+y)^{-1}\), the exponent is
+\[
+  -S\bigl(\theta(1+2y+2y^2)-\log(1+y)\bigr).
+\]
+Finally,
+\[
+  \theta(1+2y+2y^2)-y^2
+  =
+  y+\frac{y^3}{1+y}
+  \ge y
+  \ge \log(1+y),
+\]
+so
+\[
+  \theta(1+2y+2y^2)-\log(1+y)\ge y^2=\frac uS.
+\]
+Therefore the probability is at most \(e^{-u}\).
+\end{proof}
+
+\begin{lemma}[Maximum of the diagonal]
+For every \(u\ge0\),
+\[
+  \Prob\left\{
+    \max_{i\in I}W_{ii}
+    \ge
+    1+2\sqrt{\frac{u+\log D}{S}}
+      +2\frac{u+\log D}{S}
+  \right\}
+  \le e^{-u}.
+\]
+\end{lemma}
+
+\begin{proof}
+For each fixed \(i\), the previous lemma with \(u+\log D\) gives
+\[
+  \Prob\left\{
+    W_{ii}\ge
+    1+2\sqrt{\frac{u+\log D}{S}}
+      +2\frac{u+\log D}{S}
+  \right\}
+  \le e^{-u-\log D}=\frac{e^{-u}}{D}.
+\]
+The event for the maximum is contained in the union of these \(D\) events.
+The union bound therefore gives \(D(e^{-u}/D)=e^{-u}\).
+\end{proof}
+
+\begin{theorem}[Diagonal expectation bound]
+If \(D=d^2\) and \(S/d^2\to\lambda>0\), then
+\[
+  \E\norm{\diag(W^{\GammaPT})}_{\op}\le C_\lambda
+\]
+for all sufficiently large \(d\).
+\end{theorem}
+
+\begin{proof}
+Let \(M=\norm{\diag(W^{\GammaPT})}_{\op}=\max_i W_{ii}\).  The deterministic
+offset is
+\[
+  a=1+2\sqrt{\frac{\log D}{S}}+2\frac{\log D}{S}.
+\]
+Since \(\sqrt{u+\log D}\le\sqrt u+\sqrt{\log D}\), the maximum tail implies
+\[
+  \Prob\left\{
+    M\ge a+2\sqrt{\frac uS}+2\frac uS
+  \right\}\le e^{-u}
+  \qquad (u\ge0).
+\]
+By the layer-cake formula applied to \((M-a)_+\),
+\[
+  \E(M-a)_+
+  =
+  \int_0^\infty \Prob\{(M-a)_+\ge y\}\,\dd y .
+\]
+With
+\[
+  h(u)=2\sqrt{\frac uS}+2\frac uS,
+\]
+the change of variables \(y=h(u)\) gives
+\[
+  \E(M-a)_+
+  \le
+  \int_0^\infty e^{-u}h'(u)\,\dd u
+  =
+  \frac{\sqrt\pi}{\sqrt S}+\frac2S.
+\]
+Thus
+\[
+  \E M
+  \le
+  1+2\sqrt{\frac{\log D}{S}}+2\frac{\log D}{S}
+  +\frac{\sqrt\pi}{\sqrt S}+\frac2S.
+\]
+If \(D=d^2\) and \(S/d^2\to\lambda>0\), this upper bound is uniformly bounded
+for all sufficiently large \(d\).
+\end{proof}
+
+\section{The full partially transposed Wishart expectation}
+
+\begin{theorem}[Wishart-gamma expectation bound]
+If \(D=d^2\) and \(S/d^2\to\lambda>0\), then
+\[
+  \E\norm{W^{\GammaPT}}_{\op}\le C_\lambda
+\]
+for all sufficiently large \(d\).
+\end{theorem}
+
+\begin{proof}
+Use
+\[
+  W^{\GammaPT}
+  =
+  \diag(W^{\GammaPT})
+  +
+  \bigl(W^{\GammaPT}-\diag(W^{\GammaPT})\bigr)
+\]
+and the triangle inequality.  The diagonal term is bounded by the Gamma
+estimate; the off-diagonal term is bounded by Aubrun's moment estimate.
+\end{proof}
+
+\chapter{Normalized Operator-Norm Inputs}
+
+\section{Two Gaussian estimates}
+
+We use two elementary estimates for the Gaussian matrix \(G\).  They are
+included here because they are exactly what turns the Gaussian bounds into
+normalized spherical bounds.
+
+\begin{lemma}[Gaussian operator norm]
+There is a universal constant \(C\) such that, for every
+\(G\in M_{I,\Sigma}(\C)\) with independent standard complex Gaussian entries,
+\[
+  \E\norm G_{\op}\le C(\sqrt D+\sqrt S).
+\]
+\end{lemma}
+
+\begin{proof}
+We give a finite-net proof.  For unit vectors \(u\in\C^I\) and
+\(v\in\C^\Sigma\), write
+\[
+  X_{u,v}
+  =
+  \sum_{i,\alpha}G_{i\alpha}v_\alpha\overline{u_i}
+  =
+  \ip{u}{Gv}.
+\]
+Since the entries of \(G\) are independent standard complex Gaussians,
+\(X_{u,v}\) is a centered complex Gaussian with variance
+\[
+  \E|X_{u,v}|^2
+  =
+  \sum_{i,\alpha}|u_i|^2|v_\alpha|^2
+  =
+  \norm u_2^2\norm v_2^2
+  =
+  1.
+\]
+Thus \(|X_{u,v}|^2\) is exponential with mean \(1\), and for every \(r\ge0\),
+\[
+  \Prob\{|X_{u,v}|\ge r\}=e^{-r^2}.
+\]
+
+Let \(N_I\) be a \(1/4\)-net of the unit sphere of \(\C^I\), and let
+\(N_\Sigma\) be a \(1/4\)-net of the unit sphere of \(\C^\Sigma\).  Viewing
+\(\C^I\) and \(\C^\Sigma\) as real Euclidean spaces of dimensions \(2D\) and
+\(2S\), the elementary volume argument gives
+\[
+  |N_I|\le 9^{2D},\qquad |N_\Sigma|\le 9^{2S}.
+\]
+Indeed, take a maximal \(1/4\)-separated subset; the balls of radius \(1/8\)
+around its points are disjoint and lie in the ball of radius \(9/8\).
+
+We next pass from the net to the full operator norm.  Let
+\[
+  M=\max_{u\in N_I,\ v\in N_\Sigma}|\ip{u}{Gv}|.
+\]
+For arbitrary unit \(u,v\), choose \(u_0\in N_I\), \(v_0\in N_\Sigma\) with
+\(\norm{u-u_0}_2\le1/4\) and \(\norm{v-v_0}_2\le1/4\).  Then
+\[
+\begin{aligned}
+  |\ip{u}{Gv}|
+  &\le
+  |\ip{u_0}{Gv_0}|
+  +
+  |\ip{u-u_0}{Gv}|
+  +
+  |\ip{u_0}{G(v-v_0)}|        \\
+  &\le
+  M+\frac14\norm G_{\op}+\frac14\norm G_{\op}.
+\end{aligned}
+\]
+Taking the supremum over unit \(u,v\) gives
+\[
+  \norm G_{\op}\le 2M.
+\]
+
+By the union bound and the scalar tail above,
+\[
+  \Prob\{M\ge r\}
+  \le
+  |N_I||N_\Sigma|e^{-r^2}
+  \le
+  \exp\{2(D+S)\log 9-r^2\}.
+\]
+Set
+\[
+  a=\sqrt{2(D+S)\log 9}.
+\]
+Using \(\E M=\int_0^\infty\Prob\{M\ge r\}\,\dd r\),
+\[
+\begin{aligned}
+  \E M
+  &\le
+  a+\int_a^\infty e^{a^2-r^2}\,\dd r       \\
+  &=
+  a+\int_0^\infty e^{-2at-t^2}\,\dd t
+  \le
+  a+\frac1{2a}.
+\end{aligned}
+\]
+Since \(D,S\ge1\), the last term is bounded by a universal constant times
+\(\sqrt D+\sqrt S\).  Finally,
+\[
+  \E\norm G_{\op}\le 2\E M\le C(\sqrt D+\sqrt S)
+\]
+for a universal constant \(C\).
+\end{proof}
+
+\begin{lemma}[Radius estimates]
+For the standard Gaussian \(G\in\mathcal X\),
+\[
+  R(G)^2=\norm G_{\HS}^2
+\]
+has Gamma distribution with shape \(DS\) and scale \(1\).  In particular
+\[
+  \E R(G)^2=DS,
+  \qquad
+  \E R(G)\ge c\sqrt{DS}
+\]
+for a universal constant \(c>0\).
+\end{lemma}
+
+\begin{proof}
+The Gamma law was proved from the coordinate description of the standard
+complex Gaussian.  The identity \(\E R^2=DS\) is the mean of a Gamma variable
+with shape \(DS\).  For the lower bound, use the Paley--Zygmund inequality on
+\(R^2\), or equivalently the elementary Gamma estimate
+\[
+  \E\sqrt Z\ge c\sqrt n
+  \qquad
+  (Z\sim\Gamma(n,1)).
+\]
+The constant is universal because the ratio
+\(\Gamma(n+1/2)/(\Gamma(n)\sqrt n)\) is bounded below for \(n\ge1\).
+\end{proof}
+
+\section{Expectation bounds on the sphere}
+
+Let \(X\) be uniform on the Hilbert--Schmidt unit sphere
+\(\sphere(\mathcal X)\).  Equivalently, one may start with a standard complex
+Gaussian matrix \(G\) in \(\mathcal X\), discard the null event \(G=0\), and
+set
+\[
+  R=\norm G_{\HS},\qquad \Theta=\frac{G}{R}.
+\]
+The polar law says that \(\Theta\) is uniform on \(\sphere(\mathcal X)\) and
+independent of \(R\).  Thus \(X\) may be realized as \(\Theta\), and on this
+realization \(G=RX\).
+
+\begin{theorem}[First normalized expectation]
+If \(D=d^2\) and \(S/d^2\to\lambda>0\), then
+\[
+  \E\norm X_{\op}\le \frac{C_\lambda}{d}.
+\]
+\end{theorem}
+
+\begin{proof}
+Using the polar realization just described, \(G=RX\) with \(R\) independent
+of \(X\), and therefore
+\[
+  \E\norm G_{\op}=(\E R)\E\norm X_{\op}.
+\]
+The Gaussian operator-norm lemma gives
+\[
+  \E\norm G_{\op}\le C(\sqrt D+\sqrt S).
+\]
+Also \(R^2\) has Gamma distribution with shape \(DS\), so the radius estimate
+gives
+\[
+  \E R\ge c\sqrt{DS}=c\,d\sqrt S.
+\]
+Therefore
+\[
+  \E\norm X_{\op}
+  \le
+  \frac{C(d+\sqrt S)}{c\,d\sqrt S}
+  \le
+  \frac{C_\lambda}{d}.
+\]
+\end{proof}
+
+\begin{theorem}[Second normalized expectation]
+If \(D=d^2\) and \(S/d^2\to\lambda>0\), then
+\[
+  \E\norm{(XX^*)^{\GammaPT}}_{\op}
+  \le
+  \frac{C_\lambda}{d^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+The radial identity gives
+\[
+  (GG^*)^{\GammaPT}
+  =
+  R^2(XX^*)^{\GammaPT}.
+\]
+Since \(R\) and \(X\) are independent,
+\[
+  \E\norm{(GG^*)^{\GammaPT}}_{\op}
+  =
+  (\E R^2)\,
+  \E\norm{(XX^*)^{\GammaPT}}_{\op}.
+\]
+Now \(\E R^2=DS=d^2S\), and
+\[
+  (GG^*)^{\GammaPT}=S W^{\GammaPT}.
+\]
+The Wishart-gamma expectation bound says
+\[
+  \E\norm{W^{\GammaPT}}_{\op}\le C_\lambda.
+\]
+Thus
+\[
+  \E\norm{(XX^*)^{\GammaPT}}_{\op}
+  =
+  \frac{S\,\E\norm{W^{\GammaPT}}_{\op}}{d^2S}
+  \le
+  \frac{C_\lambda}{d^2}.
+\]
+\end{proof}
+
+\section{High-probability good sets}
+
+\begin{theorem}[Good operator-norm sets]
+There exist \(a,b,c>0\), depending only on \(\lambda\), such that for all
+sufficiently large \(d\),
+\[
+  \sigma_{\mathcal X}
+  \left\{X:\norm X_{\op}>\frac ad\right\}
+  \le e^{-cd^2},
+\]
+and
+\[
+  \sigma_{\mathcal X}
+  \left\{X:\norm{(XX^*)^{\GammaPT}}_{\op}>\frac b{d^2}\right\}
+  \le e^{-cd^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+For the first event, the map \(X\mapsto\norm X_{\op}\) is \(1\)-Lipschitz on
+the Hilbert--Schmidt sphere.  Its median is at most twice its expectation, so
+the expectation bound places the median at scale \(d^{-1}\).  Spherical Levy
+concentration then gives an \(e^{-cd^2}\) tail, since the real dimension is
+\(2DS\asymp d^4\) and the deviation is of size \(d^{-1}\).
+
+For the second event, set
+\[
+  g(X)=\norm{(XX^*)^{\GammaPT}}_{\op}.
+\]
+The deterministic estimate
+\[
+  |g(X)-g(Y)|
+  \le
+  (\norm X_{\op}+\norm Y_{\op})\norm{X-Y}_{\HS}
+\]
+shows that \(g\) is \(2a/d\)-Lipschitz on the first good set.  The median of
+\(g\) is at most twice its expectation, hence is at scale \(d^{-2}\).  Applying
+the localized Levy lemma on the first good set gives the stated
+\(e^{-cd^2}\) tail.
+\end{proof}
+
+\chapter{The Local Lipschitz Concentration Theorem}
+
+\section{Statement}
+
+Assume \(D=d^2\), \(S=s_d\), and
+\[
+  \frac{s_d}{d^2}\longrightarrow \lambda>0.
+\]
+Let \(X\) be uniform on the Hilbert--Schmidt unit sphere in
+\(M_{d^2,s_d}(\C)\), and set
+\[
+  f_k(X)=\Tr\left(\left((XX^*)^{\GammaPT}\right)^k\right).
+\]
+
+\begin{theorem}[Local Lipschitz concentration]
+Fix \(k\ge1\).  There are constants \(c,C>0\), depending only on \(k\) and
+\(\lambda\), such that for all sufficiently large \(d\) and all
+\(\eps>0\),
+\[
+  \Prob\left\{
+    \abs{f_k(X)-\E f_k(X)}
+    \ge
+    \frac{\eps}{d^{2k-2}}
+  \right\}
+  \le
+  C e^{-cd^2}
+  +
+  C\exp\left(-c\frac{d^4\eps^2}{k^2}\right).
+\]
+\end{theorem}
+
+\section{Proof}
+
+\begin{proof}
+Let
+\[
+  \Omega
+  =
+  \left\{
+    X:\norm X_{\op}\le \frac ad,\quad
+    \norm{(XX^*)^{\GammaPT}}_{\op}\le \frac b{d^2}
+  \right\}.
+\]
+The good-set theorem gives
+\[
+  \Prob(\Omega^c)\le C e^{-cd^2}.
+\]
+On \(\Omega\), the deterministic Lipschitz estimate gives
+\[
+  |f_k(X)-f_k(Y)|
+  \le
+  \frac{Ck}{d^{2k-2}}\norm{X-Y}_{\HS}.
+\]
+Thus \(f_k\) is locally Lipschitz on \(\Omega\) with constant
+\[
+  L_k=\frac{Ck}{d^{2k-2}}.
+\]
+
+The real dimension of the sphere is
+\[
+  N=2d^2s_d\asymp d^4.
+\]
+Apply the localized Levy lemma with
+\[
+  t=\frac u{d^{2k-2}}.
+\]
+For a median \(M_k\) of \(f_k\), this gives
+\[
+  \Prob\left\{
+    |f_k(X)-M_k|\ge\frac u{d^{2k-2}}
+  \right\}
+  \le
+  C e^{-cd^2}
+  +
+  C\exp\left(-c\frac{d^4u^2}{k^2}\right).
+\]
+
+It remains to replace the median by the mean.  First note that
+\[
+  \norm{(XX^*)^{\GammaPT}}_{\HS}
+  =
+  \norm{XX^*}_{\HS}
+  \le
+  \norm{XX^*}_1
+  =
+  \norm X_{\HS}^2
+  =
+  1.
+\]
+Thus the eigenvalues \(\alpha_j\) of \((XX^*)^{\GammaPT}\) satisfy
+\[
+  \sum_j|\alpha_j|^2\le1.
+\]
+For \(k=1\), \(f_1(X)=\Tr(XX^*)=1\).  For \(k\ge2\),
+\[
+  |f_k(X)|
+  =
+  \left|\sum_j\alpha_j^k\right|
+  \le
+  \sum_j|\alpha_j|^k
+  \le
+  \left(\sum_j|\alpha_j|^2\right)^{k/2}
+  \le1.
+\]
+So \(|f_k|\le1\).
+
+Integrating the median-centered tail gives
+\[
+  |\E f_k-M_k|
+  \le
+  C e^{-cd^2}
+  +
+  C\frac{k}{d^{2k}}.
+\]
+If this is at most \(\eps/(2d^{2k-2})\), then
+\[
+  \{|f_k-\E f_k|\ge \eps d^{-(2k-2)}\}
+  \subset
+  \{|f_k-M_k|\ge \tfrac12\eps d^{-(2k-2)}\},
+\]
+and the desired bound follows from the median tail.
+
+If the mean-median gap is larger than \(\eps/(2d^{2k-2})\), then the displayed
+bound on the gap forces
+\[
+  \eps\le Ckd^{-2}
+\]
+for all large \(d\).  In that case the exponential
+\[
+  \exp\left(-c\frac{d^4\eps^2}{k^2}\right)
+\]
+is bounded below by a positive constant, so after enlarging \(C\) the right
+hand side of the desired estimate is at least \(1\).  The probability bound is
+then trivial.
+\end{proof}
+
+\chapter{Final Form}
+
+The preceding theorem is the normalized concentration result for partial
+transpose moments.  It is stronger than the older unnormalized polynomial
+concentration route in the regime relevant to the induced model.
+
+\begin{theorem}[Appendix B concentration package]
+Fix \(k\ge1\) and \(\lambda>0\), and let \(s_d/d^2\to\lambda\).  If
+\[
+  X\sim\sigma_{\mathcal X}
+  \quad\text{on}\quad
+  \{X\in M_{d^2,s_d}(\C):\norm X_{\HS}=1\},
+\]
+then, with
+\[
+  \rho=XX^*,
+  \qquad
+  f_k(X)=\Tr((\rho^{\GammaPT})^k),
+\]
+there are constants \(c,C>0\), depending only on \(k\) and \(\lambda\), such
+that for all sufficiently large \(d\) and all \(\eps>0\),
+\[
+  \Prob\left\{
+    \abs{\Tr((\rho^{\GammaPT})^k)
+      -\E\Tr((\rho^{\GammaPT})^k)}
+    \ge
+    \eps\,d^{-(2k-2)}
+  \right\}
+  \le
+  C e^{-cd^2}
+  +
+  C\exp\left(-c\frac{d^4\eps^2}{k^2}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+This is exactly the local Lipschitz concentration theorem applied to
+\(\rho=XX^*\).
+\end{proof}
+
+\backmatter
+
+\chapter{Reader's Map}
+
+The proof has five conceptual inputs.
+
+\begin{enumerate}
+\item The Gaussian polar law identifies the normalized Gaussian direction with
+surface measure on the Hilbert--Schmidt sphere and proves independence from
+the radius.
+\item Spherical Levy concentration becomes useful only after localization,
+because the moment map is not globally Lipschitz at the optimal scale.
+\item The deterministic matrix calculus shows that the moment map is
+Lipschitz on the set where both \(\norm X_{\op}\) and
+\(\norm{(XX^*)^{\GammaPT}}_{\op}\) are controlled.
+\item Aubrun's Wick-counting argument supplies the off-diagonal expectation
+bound for the partially transposed Wishart matrix.
+\item The diagonal Gamma estimate, polar factorization, and spherical
+concentration turn the Gaussian/Wishart estimates into high-probability
+operator-norm bounds on the normalized sphere.
+\end{enumerate}
+
+The chapters above present these inputs in reader order: first the model and
+the geometric normalization, then the local concentration mechanism, then the
+Wick-counting estimate, and finally the normalized concentration theorem.
+
+\end{document}

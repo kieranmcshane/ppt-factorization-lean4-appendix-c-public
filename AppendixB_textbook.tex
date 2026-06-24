@@ -1,0 +1,2231 @@
+\documentclass[11pt,oneside]{book}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{array,longtable,booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  urlcolor=blue!55!black,
+  citecolor=blue!55!black
+}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\med}{med}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Mass}{Mass}
+\DeclareMathOperator{\Haar}{Haar}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Hom}{Hom}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Sphere}{\mathbb S}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pt}{\Gamma}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\given}{\,:\,}
+\newcommand{\leanfile}[1]{\begingroup\scriptsize\texttt{#1}\endgroup}
+
+\title{Appendix B Formal Concordance Draft}
+\author{An audit-oriented translation of the formalized Appendix B}
+\date{\today}
+
+\begin{document}
+\frontmatter
+\maketitle
+
+\chapter*{Preface}
+
+This document is now kept as an audit-oriented concordance draft for the
+formalized Appendix B.  It records the mathematical blocks exposed by the
+formal development and keeps them close to the structure of the proof scripts:
+finite index bookkeeping, normalizations, measurability, null sets, medians,
+radial--spherical factorizations, Wick pairings, defect counts, and the final
+concentration assembly.
+
+It is not the reader-first manuscript.  The polished mathematical exposition is
+the separate file \texttt{AppendixB\_bookstyle.tex}.  The present file remains
+useful as a bridge between the formal modules and the expository rewrite.  In
+particular, the following three facts are treated as closed mathematical
+theorems here because they are closed in the formal development:
+\[
+  \text{polar law},\qquad
+  \text{radius--direction independence},\qquad
+  \text{strong global surface Levy concentration}.
+\]
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{The Finite Model}
+
+\section{Finite index sets and matrix spaces}
+
+Let \(P,Q,\Sigma\) be finite sets.  The intended balanced specialization is
+\[
+  P=Q=\{1,\ldots,d\},\qquad \Sigma=\{1,\ldots,s\},
+\]
+but most of the argument is carried out for arbitrary finite sets.  Write
+\[
+  I=P\times Q,\qquad D=\card I=\card P\,\card Q,\qquad S=\card\Sigma .
+\]
+Whenever an asymptotic estimate contains a parameter \(\lambda\), we are in
+the balanced asymptotic regime
+\[
+  P=Q=\{1,\ldots,d\},\qquad \Sigma=\{1,\ldots,s_d\},\qquad
+  \frac{s_d}{d^2}\longrightarrow \lambda\in(0,\infty).
+\]
+Thus \(D=d^2\) and \(S=s_d\).  Constants denoted \(C_\lambda\), \(c_\lambda\),
+or similar may depend on \(\lambda\), but not on \(d\).
+
+The Hilbert space of sample matrices is
+\[
+  \mathcal X=\C^{I\times \Sigma},
+\]
+which we identify with the space of linear maps
+\(\C^\Sigma\to\C^I\).  Both \(\C^I\) and \(\C^\Sigma\) carry their standard
+Hermitian inner products:
+\[
+  \ip{x}{y}=\sum_i x_i\overline{y_i}.
+\]
+
+\begin{definition}[Matrix norms]
+Let \(E\) and \(F\) be finite-dimensional complex Hilbert spaces and let
+\(T:E\to F\) be linear.  The operator norm of \(T\) is
+\[
+  \norm T_{\op}=\sup_{\norm v_2=1}\norm{Tv}_2.
+\]
+Equivalently, it is the largest singular value of \(T\).
+
+The Hilbert--Schmidt norm is
+\[
+  \norm T_{\HS}^2=\Tr(T^*T),
+\]
+or, in orthonormal bases,
+\[
+  \norm T_{\HS}^2=\sum_{a,b}|T_{ab}|^2.
+\]
+The trace norm, also called the nuclear norm or Schatten \(1\)-norm, is
+\[
+  \norm T_1=\Tr\bigl((T^*T)^{1/2}\bigr),
+\]
+the sum of the singular values of \(T\).
+\end{definition}
+
+Thus for \(G\in\mathcal X=\C^{I\times\Sigma}\),
+\[
+  \norm{G}_{\HS}^2=\sum_{i\in I}\sum_{\alpha\in\Sigma}|G_{i\alpha}|^2.
+\]
+The bipartite matrix algebra is \(M_I(\C)\), acting on \(\C^I\).  For
+\(A\in M_I(\C)\), the same definitions give
+\[
+  \norm A_{\op},\qquad \norm A_1,\qquad \norm A_{\HS}.
+\]
+If \(A\) is Hermitian with eigenvalues \((\lambda_j)\), then these become
+\[
+  \norm A_{\op}=\max_j|\lambda_j|,\qquad
+  \norm A_1=\sum_j|\lambda_j|,\qquad
+  \norm A_{\HS}=\left(\sum_j|\lambda_j|^2\right)^{1/2}.
+\]
+
+\begin{definition}[Partial transpose]
+For \(i=(p,q)\) and \(j=(p',q')\) in \(I=P\times Q\), the partial transpose of
+\(A\in M_I(\C)\) along the second tensor factor is
+\[
+  (A^\pt)_{(p,q),(p',q')}=A_{(p,q'),(p',q)} .
+\]
+\end{definition}
+
+\begin{lemma}[Elementary norm facts]
+For every \(A\in M_I(\C)\),
+\[
+  \norm{A^\pt}_{\HS}=\norm A_{\HS},\qquad
+  \norm A_{\op}\le \norm A_{\HS},\qquad
+  \norm A_1\le \sqrt D\,\norm A_{\HS}.
+\]
+If \(A\) is Hermitian and \(m\) is even, then
+\[
+  \norm A_{\op}^m\le \Tr(A^m).
+\]
+\end{lemma}
+
+\begin{proof}
+The first identity is only a permutation of matrix coordinates:
+\[
+  \norm{A^\pt}_{\HS}^2
+  =
+  \sum_{i,j}|(A^\pt)_{ij}|^2
+  =
+  \sum_{i,j}|A_{ij}|^2
+  =
+  \norm A_{\HS}^2 .
+\]
+Let \(s_1,\ldots,s_D\) be the singular values of \(A\).  By definition,
+\[
+  \norm A_{\op}=\max_i s_i,\qquad
+  \norm A_{\HS}=\left(\sum_i s_i^2\right)^{1/2},\qquad
+  \norm A_1=\sum_i s_i .
+\]
+Therefore
+\[
+  \norm A_{\op}
+  =
+  \max_i s_i
+  \le
+  \left(\sum_i s_i^2\right)^{1/2}
+  =
+  \norm A_{\HS}.
+\]
+Cauchy's inequality gives
+\[
+  \norm A_1
+  =
+  \sum_i s_i
+  \le
+  \left(\sum_i1^2\right)^{1/2}
+  \left(\sum_i s_i^2\right)^{1/2}
+  =
+  \sqrt D\,\norm A_{\HS}.
+\]
+If \(A\) is Hermitian, diagonalize it in an orthonormal basis:
+\[
+  A=U^*\diag(\lambda_1,\ldots,\lambda_D)U,\qquad \lambda_i\in\R.
+\]
+Then the singular values are \(|\lambda_i|\), and
+\[
+  \norm A_{\op}^m=\max_i |\lambda_i|^m\le \sum_i |\lambda_i|^m
+  =\sum_i \lambda_i^m=\Tr(A^m),
+\]
+because \(m\) is even.
+\end{proof}
+
+\section{Gaussian, Wishart, density, and direction}
+
+Let \(\gamma\) be the standard complex Gaussian probability measure on
+\(\mathcal X\).  Thus all coordinates \(G_{i\alpha}\) are independent standard
+complex Gaussians, normalized so that
+\[
+  \E |G_{i\alpha}|^2=1.
+\]
+Concretely, a standard complex Gaussian is
+\[
+  g=\frac{X+iY}{\sqrt2},
+\]
+where \(X\) and \(Y\) are independent real \(N(0,1)\) variables.  With this
+normalization, \(|g|^2\) is an exponential random variable of mean \(1\).
+We use the following convention: a Gamma random variable with shape \(r>0\)
+and scale \(1\) has density
+\[
+  \frac{x^{r-1}e^{-x}}{\Gamma(r)}\,\1_{\{x>0\}}.
+\]
+With this convention, a sum of \(r\) independent exponential variables of mean
+\(1\), for integer \(r\), has Gamma distribution with shape \(r\) and scale
+\(1\).  Hence
+for each fixed \(i\in I\),
+\[
+  \sum_{\alpha\in\Sigma}|G_{i\alpha}|^2
+\]
+has the Gamma distribution with shape parameter \(S=\card\Sigma\) and scale
+parameter \(1\).  Also
+\[
+  R(G)^2=\sum_{i\in I}\sum_{\alpha\in\Sigma}|G_{i\alpha}|^2
+\]
+has Gamma distribution with shape parameter \(DS\) and scale parameter \(1\).
+The Gaussian radius and normalized direction are
+\[
+  R(G)=\norm G_{\HS},\qquad
+  \Theta(G)=
+  \begin{cases}
+    G/\norm G_{\HS},&G\ne 0,\\
+    x_0,&G=0,
+  \end{cases}
+\]
+where \(x_0\) is any fixed point of the unit sphere
+\[
+  \Sphere(\mathcal X)=\set{X\in\mathcal X\given \norm X_{\HS}=1}.
+\]
+The value at \(0\) is immaterial because the Gaussian has no atom at \(0\).
+The Gaussian direction law is
+\[
+  \nu_{\mathrm{dir}}=\Theta_*\gamma .
+\]
+The raw Wishart matrix, normalized Wishart matrix, and density matrix are
+\[
+  \mathcal W_{\mathrm{raw}}(G)=GG^*,\qquad
+  W(G)=\frac1S GG^*,\qquad
+  \rho(G)=
+  \begin{cases}
+    GG^*/\Tr(GG^*),&G\ne0,\\
+    0,&G=0.
+  \end{cases}
+\]
+Since \(\Tr(GG^*)=R(G)^2\), for \(G\ne0\),
+\[
+  \rho(G)=\Theta(G)\Theta(G)^* .
+\]
+The partially transposed density is \(\rho^\pt(G)=(\rho(G))^\pt\).
+
+\begin{lemma}[Radial rescalings]
+For \(G\ne0\),
+\[
+  GG^*=R(G)^2\,\Theta(G)\Theta(G)^*,\qquad
+  (GG^*)^\pt=R(G)^2\,(\Theta(G)\Theta(G)^*)^\pt.
+\]
+Consequently
+\[
+  \norm{G}_{\op}=R(G)\norm{\Theta(G)}_{\op},\qquad
+  \norm{(GG^*)^\pt}_{\op}
+  =R(G)^2\norm{(\Theta(G)\Theta(G)^*)^\pt}_{\op}.
+\]
+\end{lemma}
+
+\begin{proof}
+The identities follow from \(G=R(G)\Theta(G)\) and homogeneity of matrix
+multiplication, partial transpose, and the operator norm.
+\end{proof}
+
+\chapter{Medians, Local Extensions, and Local Levy Reduction}
+
+\section{Medians and center replacement}
+
+Let \((\Omega,\mu)\) be a probability space and \(f:\Omega\to\R\) be
+measurable.
+
+\begin{definition}[Median]
+A number \(m\in\R\) is a median of \(f\) if
+\[
+  \mu\{f\le m\}\ge \frac12,\qquad
+  \mu\{m\le f\}\ge \frac12.
+\]
+\end{definition}
+
+\begin{lemma}[Median far from a test center]
+Let \(m\) be a median of \(f\).  For every \(a\in\R\) and every \(t>0\), if
+\(|m-a|\ge t\), then
+\[
+  \mu\{|f-a|\ge t\}\ge \frac12.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(m\ge a+t\), then \(\{f\ge m\}\subset\{|f-a|\ge t\}\), and this set has
+measure at least \(1/2\).  If \(m\le a-t\), use \(\{f\le m\}\) instead.
+\end{proof}
+
+\begin{lemma}[Median tail from any center]
+Let \(m\) be a median of \(f\).  For every \(a\in\R\) and \(t>0\),
+\[
+  \mu\{|f-m|\ge t\}\le 2\,\mu\{|f-a|\ge t/2\}.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(|m-a|<t/2\), then \(|f-m|\ge t\) implies \(|f-a|\ge t/2\).  If
+\(|m-a|\ge t/2\), the previous lemma says that the right hand side is at
+least \(1\), while the left hand side is a probability and is therefore at
+most \(1\).
+\end{proof}
+
+\section{Local Lipschitz functions}
+
+\begin{definition}[Local Lipschitz property]
+Let \(E\) be a metric space, \(\Omega_0\subset E\), and \(f:E\to\R\).  The
+restriction of \(f\) to \(\Omega_0\) is \(L\)-Lipschitz if
+\[
+  |f(x)-f(y)|\le L\,\dist(x,y)\qquad(x,y\in\Omega_0).
+\]
+\end{definition}
+
+\begin{lemma}[McShane extension, clipped form]
+Assume \(\Omega_0\) is nonempty, \(L,M\ge0\), \(f\) is \(L\)-Lipschitz on
+\(\Omega_0\), and \(|f|\le M\) on \(\Omega_0\).  Then there exists an
+\(L\)-Lipschitz function
+\(\widetilde f:E\to[-M,M]\) such that \(\widetilde f=f\) on \(\Omega_0\).
+\end{lemma}
+
+\begin{proof}
+Define
+\[
+  F(x)=\inf_{y\in\Omega_0}\bigl(f(y)+L\,\dist(x,y)\bigr)
+\]
+for \(x\in E\).  Because \(\Omega_0\) is nonempty and \(|f|\le M\) on
+\(\Omega_0\), the infimum is finite.  Indeed, for any fixed \(y_0\in\Omega_0\),
+\[
+  F(x)\le f(y_0)+L\dist(x,y_0)<\infty,
+\]
+and for every \(y\in\Omega_0\),
+\[
+  f(y)+L\dist(x,y)
+  \ge
+  -M.
+\]
+Thus \(F(x)\in\R\).
+
+If \(x,x'\in E\), then for each \(y\in\Omega_0\),
+\[
+  f(y)+L\dist(x,y)
+  \le
+  f(y)+L\dist(x',y)+L\dist(x,x').
+\]
+Taking the infimum over \(y\) gives
+\[
+  F(x)\le F(x')+L\dist(x,x').
+\]
+Interchanging \(x\) and \(x'\) gives \(|F(x)-F(x')|\le L\dist(x,x')\).
+
+If \(x\in\Omega_0\), then using \(y=x\) gives \(F(x)\le f(x)\).  Conversely,
+the \(L\)-Lipschitz condition on \(\Omega_0\) gives
+\[
+  f(x)\le f(y)+L\dist(x,y)\qquad(y\in\Omega_0),
+\]
+so \(f(x)\le F(x)\).  Hence \(F=f\) on \(\Omega_0\).
+
+Finally the clipping map \(c(u)=\max(-M,\min(M,u))\) is \(1\)-Lipschitz:
+projection onto an interval cannot increase distances.  Therefore
+\[
+  \widetilde f=c\circ F
+\]
+is \(L\)-Lipschitz, takes values in \([-M,M]\), and equals \(f\) on
+\(\Omega_0\), since \(f(\Omega_0)\subset[-M,M]\).
+\end{proof}
+
+\begin{theorem}[Localized Levy reduction]
+Let \((S,\dist,\mu)\) be a probability metric space, let \(n>0\), and let
+\(L>0\).  Assume that \(S\) satisfies the following global concentration
+inequality: for every \(L\)-Lipschitz measurable function \(g:S\to\R\), every
+median \(M_g\) of \(g\), and every \(t>0\),
+\[
+  \mu\{|g-M_g|\ge t\}\le
+  2\exp\!\left(-\frac{n t^2}{4L^2}\right)
+  .
+\]
+Let
+\(\Omega_0\subset S\) be a nonempty measurable set, let
+\(\mu(\Omega_0^c)\le b\), and suppose that \(f:S\to\R\) is measurable and
+\(L\)-Lipschitz on \(\Omega_0\).  If \(m_f\) is a median of \(f\), then for
+every \(t>0\),
+\[
+  \mu\{|f-m_f|\ge t\}
+  \le
+  2b+4\exp\!\left(-\frac{n t^2}{16L^2}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Extend \(f|_{\Omega_0}\) to an \(L\)-Lipschitz function \(F\) on the whole
+space \(S\).  For any median \(M_F\),
+\[
+  \mu\{|f-M_F|\ge u\}
+  \le b+2\exp\!\left(-\frac{n u^2}{4L^2}\right).
+\]
+Apply the center-replacement lemma with \(u=t/2\):
+\[
+  \mu\{|f-m_f|\ge t\}
+  \le 2\mu\{|f-M_F|\ge t/2\}.
+\]
+This gives the stated bound.
+\end{proof}
+
+\section{Median to mean}
+
+\begin{lemma}[Mean--median gap from an integrated tail]
+Let \(f:\Omega\to\R\) be measurable and integrable, let \(m\in\R\), and let
+\(R\ge0\).  Assume \(|f-m|\le R\) almost surely.  Let
+\(\Phi:[0,R]\to[0,\infty)\) be Borel measurable with finite integral, and
+assume
+\[
+  \mu\{|f-m|\ge t\}\le \Phi(t)\qquad(0\le t\le R).
+\]
+Then
+\[
+  |\E f-m|\le\int_0^R \Phi(t)\,\dd t.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(Y=|f-m|\).  Since \(Y\ge0\),
+\[
+  Y(\omega)=\int_0^\infty \1_{\{t\le Y(\omega)\}}\,\dd t
+\]
+for every \(\omega\).  Tonelli's theorem applies because the integrand is
+nonnegative, so
+\[
+  \E|f-m|
+  =
+  \int_\Omega\int_0^\infty \1_{\{t\le |f-m|\}}\,\dd t\,\dd\mu
+  =
+  \int_0^\infty \mu\{|f-m|\ge t\}\,\dd t.
+\]
+The almost sure bound \(|f-m|\le R\) makes the integrand vanish for \(t>R\),
+hence
+\[
+  \E|f-m|
+  =
+  \int_0^R \mu\{|f-m|\ge t\}\,\dd t
+  \le
+  \int_0^R\Phi(t)\,\dd t.
+\]
+Since \(|\E f-m|\le\E|f-m|\), the claim follows.
+\end{proof}
+
+\begin{lemma}[Mean deviation from median deviation]
+Let \(f:\Omega\to\R\) be measurable and integrable.  If
+\(|\E f-m|\le a\), then for every \(u>a\),
+\[
+  \{|f-\E f|\ge u\}\subset \{|f-m|\ge u-a\}.
+\]
+In particular, if \(a\le u/2\), then
+\[
+  \Prob\{|f-\E f|\ge u\}\le \Prob\{|f-m|\ge u/2\}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(x\in\Omega\) be such that \(|f(x)-\E f|\ge u\).  By the triangle
+inequality,
+\[
+  |f(x)-m|
+  =
+  |(f(x)-\E f)+(\E f-m)|
+  \ge
+  |f(x)-\E f|-|\E f-m|.
+\]
+Using the hypothesis \(|\E f-m|\le a\), we get
+\[
+  |f(x)-m|\ge u-a.
+\]
+This proves
+\[
+  \{|f-\E f|\ge u\}\subset \{|f-m|\ge u-a\}.
+\]
+If \(a\le u/2\), then \(u-a\ge u/2\), hence
+\[
+  \{|f-\E f|\ge u\}\subset \{|f-m|\ge u/2\}.
+\]
+Taking probabilities gives the final inequality.
+\end{proof}
+
+\chapter{Deterministic Matrix Lipschitz Calculus}
+
+\section{Trace powers}
+
+\begin{lemma}[Telescoping identity]
+For two elements \(A,B\) of an associative algebra and \(k\ge1\),
+\[
+  A^k-B^k=\sum_{j=0}^{k-1}A^j(A-B)B^{k-1-j}.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the right hand side.  Consecutive terms cancel, leaving \(A^k-B^k\).
+\end{proof}
+
+\begin{proposition}[Trace-power perturbation]
+Let \(A,B\in M_D(\C)\), \(k\ge1\).  Then
+\[
+  |\Tr(A^k)-\Tr(B^k)|
+  \le k\max(\norm A_{\op},\norm B_{\op})^{k-1}\norm{A-B}_1.
+\]
+\end{proposition}
+
+\begin{proof}
+We shall use the finite-dimensional ideal property of the trace norm:
+for all composable matrices \(R,S,T\),
+\[
+  \norm{RST}_1\le \norm R_{\op}\,\norm S_1\,\norm T_{\op}.
+\]
+Here is the finite-dimensional duality used in the proof.  We claim that
+\[
+  \norm M_1=\sup_{\norm U_{\op}\le1}|\Tr(UM)|.
+\]
+For the upper bound, let \(M=V|M|\) be the polar decomposition, where
+\(|M|=(M^*M)^{1/2}\).  If \(\norm U_{\op}\le1\), then
+\[
+  |\Tr(UM)|
+  =
+  |\Tr(UV|M|)|
+  \le
+  \norm{UV}_{\op}\Tr|M|
+  \le
+  \norm M_1.
+\]
+For the reverse inequality, take \(U=V^*\) on the range of \(|M|\), extended
+by \(0\) on its orthogonal complement.  Then \(\norm U_{\op}\le1\) and
+\[
+  \Tr(UM)=\Tr(V^*V|M|)=\Tr|M|=\norm M_1.
+\]
+This proves the dual formula.
+
+Therefore
+\[
+\begin{aligned}
+  \norm{RST}_1
+  &=
+  \sup_{\norm U_{\op}\le1}|\Tr(URST)|  \\
+  &=
+  \sup_{\norm U_{\op}\le1}|\Tr(TURS)|  \\
+  &\le
+  \sup_{\norm U_{\op}\le1}\norm{TUR}_{\op}\,\norm S_1 \\
+  &\le
+  \norm T_{\op}\,\norm R_{\op}\,\norm S_1 .
+\end{aligned}
+\]
+We also use submultiplicativity of the operator norm, so
+\(\norm{A^j}_{\op}\le\norm A_{\op}^j\) and
+\(\norm{B^{k-1-j}}_{\op}\le\norm B_{\op}^{k-1-j}\).
+
+Now apply the telescoping identity:
+\[
+  A^k-B^k=\sum_{j=0}^{k-1}M_j,
+  \qquad
+  M_j=A^j(A-B)B^{k-1-j}.
+\]
+By linearity of the trace, the triangle inequality, and
+\(|\Tr M|\le\norm M_1\), we have
+\[
+\begin{aligned}
+|\Tr(A^k)-\Tr(B^k)|
+&=
+\left|\sum_{j=0}^{k-1}\Tr(M_j)\right|\\
+&\le
+\sum_{j=0}^{k-1}|\Tr(M_j)|\\
+&\le
+\sum_{j=0}^{k-1}\norm{M_j}_1.
+\end{aligned}
+\]
+Therefore
+\[
+\begin{aligned}
+|\Tr(A^k)-\Tr(B^k)|
+&\le \sum_{j=0}^{k-1}
+  \norm{A^j(A-B)B^{k-1-j}}_1\\
+&\le \sum_{j=0}^{k-1}
+  \norm A_{\op}^j\norm{A-B}_1\norm B_{\op}^{k-1-j}\\
+&\le k\max(\norm A_{\op},\norm B_{\op})^{k-1}\norm{A-B}_1.
+\end{aligned}
+\]
+\end{proof}
+
+\begin{proposition}[Partial-transpose moment Lipschitz bound]
+Let \(k\ge1\).  For \(X,Y\in\Sphere(\mathcal X)\), put
+\[
+  A_X=(XX^*)^\pt,\qquad A_Y=(YY^*)^\pt .
+\]
+Then
+\[
+\begin{aligned}
+&|\Tr(A_X^k)-\Tr(A_Y^k)|\\
+&\quad\le
+  k\,D^{1/2}\,
+  \max(\norm{A_X}_{\op},\norm{A_Y}_{\op})^{k-1}
+  (\norm X_{\op}+\norm Y_{\op})\,\norm{X-Y}_{\HS}.
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{proof}
+The trace-power perturbation gives
+\[
+  |\Tr(A_X^k)-\Tr(A_Y^k)|
+  \le
+  k\max(\norm{A_X}_{\op},\norm{A_Y}_{\op})^{k-1}\norm{A_X-A_Y}_1.
+\]
+Since partial transpose is Hilbert--Schmidt isometric,
+\[
+  \norm{A_X-A_Y}_1
+  \le D^{1/2}\norm{A_X-A_Y}_{\HS}
+  =D^{1/2}\norm{XX^*-YY^*}_{\HS}.
+\]
+Now
+\[
+  XX^*-YY^*=(X-Y)X^*+Y(X-Y)^*,
+\]
+and the Hilbert--Schmidt ideal inequality gives
+\[
+  \norm{XX^*-YY^*}_{\HS}
+  \le(\norm X_{\op}+\norm Y_{\op})\norm{X-Y}_{\HS}.
+\]
+\end{proof}
+
+\begin{corollary}[Good-set Lipschitz scale]
+Let \(k\ge1\), \(a,b\ge0\), and \(d\ge1\).  Suppose that for every
+\(X\in\Omega_0\subset\Sphere(\mathcal X)\) one has
+\[
+  \norm X_{\op}\le \frac a d,\qquad
+  \norm{(XX^*)^\pt}_{\op}\le \frac b{d^2},
+\]
+and \(D=d^2\), then
+\[
+  X\mapsto \Tr\left(\left((XX^*)^\pt\right)^k\right)
+\]
+is \(L\)-Lipschitz on \(\Omega_0\), with
+\[
+  L\le 2kab^{k-1}d^{-(2k-2)}.
+\]
+\end{corollary}
+
+\begin{proof}
+Substitute the two good-set bounds and \(D^{1/2}=d\) into the preceding
+proposition.
+\end{proof}
+
+\chapter{Complex Gaussian Wick Expansion}
+
+\section{Monomials and pairings}
+
+Let \(\Xi\) be a finite set, and let \(\{z_\eta\}_{\eta\in\Xi}\) be
+independent standard complex Gaussian variables.  A monomial is encoded by
+two finite words
+\[
+  h=(h_0,\ldots,h_{r-1}),\qquad
+  \bar h=(\bar h_0,\ldots,\bar h_{s-1})
+\]
+in \(\Xi\), representing
+\[
+  z_{h_0}\cdots z_{h_{r-1}}
+  \overline{z_{\bar h_0}}\cdots\overline{z_{\bar h_{s-1}}}.
+\]
+
+\begin{theorem}[Complex Wick formula]
+The expectation of the monomial is zero unless \(r=s\).  If \(r=s\), then
+\[
+  \E\prod_{a=0}^{r-1}z_{h_a}
+    \prod_{b=0}^{r-1}\overline{z_{\bar h_b}}
+  =
+  \card\{\pi\in\mathfrak S_r:\ h_a=\bar h_{\pi(a)}
+       \text{ for every }a\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Group the factors by coordinate label.  Since the coordinates are
+independent, the expectation factors over labels \(\eta\in J\).  Suppose that
+the label \(\eta\) appears \(a_\eta\) times among
+\(h_0,\ldots,h_{r-1}\) and \(b_\eta\) times among
+\(\bar h_0,\ldots,\bar h_{r-1}\).  The \(\eta\)-factor is
+\[
+  \E z_\eta^{a_\eta}\overline{z_\eta}^{\,b_\eta}.
+\]
+Write \(z_\eta=Re^{i\Theta}\) in polar coordinates.  The angle \(\Theta\) is
+uniform on \([0,2\pi]\), so this expectation contains the angular integral
+\[
+  \frac1{2\pi}\int_0^{2\pi} e^{i(a_\eta-b_\eta)\theta}\,\dd\theta.
+\]
+This integral is \(0\) unless \(a_\eta=b_\eta\).  If
+\(a_\eta=b_\eta=s_\eta\), the same coordinate contributes
+\[
+  \E |z_\eta|^{2s_\eta}.
+\]
+For a standard complex Gaussian, \(|z_\eta|^2\) has density \(e^{-x}\1_{x\ge0}\),
+so
+\[
+  \E |z_\eta|^{2s_\eta}
+  =
+  \int_0^\infty x^{s_\eta}e^{-x}\,\dd x
+  =
+  s_\eta!.
+\]
+Thus the whole expectation is zero unless every coordinate appears equally
+often holomorphically and anti-holomorphically.  In the nonzero case it is
+\[
+  \prod_{\eta\in J}s_\eta!.
+\]
+But \(\prod_\eta s_\eta!\) is exactly the number of bijections from the
+holomorphic positions to the anti-holomorphic positions that preserve the
+coordinate label: for each label \(\eta\), one may match the
+\(s_\eta\) holomorphic occurrences with the \(s_\eta\) anti-holomorphic
+occurrences in \(s_\eta!\) ways, independently over \(\eta\).  This is the
+cardinality displayed in the theorem.
+\end{proof}
+
+\section{Closed walks and surviving contractions}
+
+For \(m\ge0\), a closed walk of length \(m+1\) in \(I\) is a tuple
+\[
+  w=(i_0,i_1,\ldots,i_m,i_{m+1}),\qquad i_{m+1}=i_0.
+\]
+Equivalently, it is a base point and a word in \(I\).  A sample word is
+\(\alpha:\{0,\ldots,m\}\to\Sigma\).
+
+Each edge \(e\) contributes a holomorphic Gaussian coordinate and an
+anti-holomorphic Gaussian coordinate.  Because the matrix has been partially
+transposed, the two coordinates use crossed \(P,Q\)-components.
+Writing \(i_e=(p_e,q_e)\), these two coordinates are
+\[
+  (p_e,q_{e+1},\alpha(e)),
+  \qquad
+  (p_{e+1},q_e,\alpha(e)).
+\]
+
+\begin{definition}[Wick permutation]
+For a monomial containing \(m+1\) holomorphic Gaussian factors and \(m+1\)
+anti-holomorphic Gaussian factors, a Wick permutation is a permutation
+\(\pi\in\mathfrak S_{m+1}\).  It records the Wick contraction in which the
+holomorphic factor at edge \(e\) is paired with the anti-holomorphic factor at
+edge \(\pi(e)\).
+\end{definition}
+
+A Wick permutation survives a given closed walk and sample word if every
+holomorphic edge coordinate at \(e\) equals the anti-holomorphic edge
+coordinate at \(\pi(e)\).
+
+\begin{definition}[Surviving closed-walk pairing]
+For a closed walk \(w\) and sample word \(\alpha\), the set
+\(\mathcal S(w,\alpha)\) consists of all permutations \(\pi\in\mathfrak S_{m+1}\)
+such that, for every edge \(e\),
+\[
+  (p_e,q_{e+1},\alpha(e))
+  =
+  (p_{\pi(e)+1},q_{\pi(e)},\alpha(\pi(e))),
+\]
+with edge indices read cyclically.  Equivalently, the holomorphic coordinate
+on edge \(e\) is exactly the anti-holomorphic coordinate on edge \(\pi(e)\).
+\end{definition}
+
+\begin{proposition}[Moment as a surviving-pairing sum]
+Let \(Z=W^\pt-\diag(W^\pt)\).  For every \(m\),
+\[
+  \E\Tr(Z^{m+1})
+  =
+  \sum_{w}\sum_{\alpha}
+  c(w,\alpha)\,\card\mathcal S(w,\alpha),
+\]
+where \(w\) ranges over closed walks of length \(m+1\), \(\alpha\) ranges over
+sample words, and \(c(w,\alpha)\) is the product of the off-diagonal edge
+coefficients.
+\end{proposition}
+
+\begin{proof}
+Expand the trace as a sum over closed walks, expand each matrix entry in
+sample coordinates, then apply the complex Wick formula to each monomial.  The
+off-diagonal projection kills any path containing a diagonal edge, and the
+surviving Wick permutations are exactly the permutations counted by
+\(\mathcal S(w,\alpha)\).
+\end{proof}
+
+\chapter{Aubrun's Combinatorial Counting Layer}
+
+\section{Equivalence relations associated with a Wick permutation}
+
+Fix \(m\) and \(\pi\in\mathfrak S_{m+1}\).  The survival constraints generate
+three equivalence relations:
+\[
+  \sim_L,\qquad \sim_R,\qquad \sim_\Sigma
+\]
+on the edge positions.  They identify, respectively, left coordinates, right
+coordinates, and sample-column coordinates that must agree for \(\pi\) to
+survive.  Let
+\[
+  \ell(\pi),\quad r(\pi),\quad c(\pi)
+\]
+be the numbers of equivalence classes.  The weighted rank is
+\[
+  \rho(\pi)=\ell(\pi)+r(\pi)+c(\pi),
+\]
+and the defect is the gap between the naive \(3(m+1)\) degrees of freedom and
+the surviving degrees of freedom after the Wick equalities.
+
+For this section, the fiber \(\mathcal F_\pi\) is the set of pairs
+\((w,\alpha)\) such that the Wick permutation \(\pi\) survives the closed walk
+\(w\) and sample word \(\alpha\).
+
+\begin{proposition}[Fiber cardinality bound]
+For a fixed Wick permutation \(\pi\), the number of triples
+\((w,\alpha,\pi)\) satisfying the survival constraints is bounded by the
+product of the powers of the three ambient cardinalities attached to the class
+counts:
+\[
+  \card \mathcal F_\pi
+  \le
+  |P|^{\ell(\pi)}|Q|^{r(\pi)}|\Sigma|^{c(\pi)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Choose one coordinate for each equivalence class.  All other coordinates are
+then forced by the relation.  The left, right, and sample coordinates may be
+chosen independently from \(P,Q,\Sigma\), respectively.
+\end{proof}
+
+\section{Tilde words and Aubrun's lists}
+
+The original paper reorganizes the same data into three words
+\[
+  \widetilde a,\qquad \widetilde b,\qquad \widetilde c
+\]
+and two lists, conventionally called list (3) and list (7).  In the formal
+development these are abstracted as follows.
+
+\begin{definition}[Aubrun tilde words]
+Let \(A,B,C\) be finite sets.  An Aubrun word of length \(m+1\) is a triple
+\[
+  (\widetilde a,\widetilde b,\widetilde c)
+  \in A^{m+1}\times B^{m+1}\times C^{m+1}.
+\]
+List (3) is the edge list
+\[
+  ((\widetilde a_e,\widetilde b_e,\widetilde c_e))_{e=0}^m,
+\]
+and list (7) is the Wick-matched list obtained by applying the Wick
+permutation and the partial-transpose crossing to the same positions.
+\end{definition}
+
+\begin{definition}[Matching and nonrepetition conditions]
+The Wishart matching condition says that the column labels on matched
+holomorphic and anti-holomorphic variables agree.  The triple matching
+condition says that the left, right, and column labels agree in the crossed
+pattern dictated by partial transpose.  The pair
+\((\widetilde a,\widetilde b)\) is nonrepetitive if no adjacent edge repeats
+the same ordered pair; this records the off-diagonal projection.
+\end{definition}
+
+\begin{definition}[Innovations and compatibility]
+An innovation is a first occurrence of a new equivalence class while scanning
+the word.  The compatibility defect counts how many apparent choices are lost
+when the \(A\)- and \(C\)-relations are required to be simultaneously
+compatible with the Wick relation.  If \(U\) denotes the number of innovations,
+then the relevant class-count loss is at least the compatibility defect.
+\end{definition}
+
+A defect profile records the finite data used in this last count: the number
+\(U\) of innovations, the defect \(\Delta\), and the resulting class counts.
+For fixed \(m\), there are only finitely many possible defect profiles.
+
+\begin{lemma}[Aubrun Lemma 3.6]
+For fixed innovation pattern with \(U\) innovations, the number of compatible
+tilde-word assignments is at most
+\[
+  k^{3U}.
+\]
+\end{lemma}
+
+\begin{proof}
+At each innovation one may choose at most one new value in each of the three
+coordinate alphabets \(A,B,C\).  Each such choice has at most \(k\) options in
+the canonical finite model.  Noninnovative positions are forced by previous
+equivalence-class representatives and the matching constraints.  Thus every
+innovation contributes at most \(k^3\), giving \(k^{3U}\).
+\end{proof}
+
+\begin{lemma}[Aubrun Lemma 7.4]
+Fix the word length \(m+1\), an innovation count \(U\), and a defect
+\(\Delta\).  The number \(N_\Delta\) of compatible equivalence-class data with
+that defect is bounded by
+\[
+  N_{\Delta}\le C(m)\,k^{3U-\Delta}.
+\]
+Here \(k\) is the common upper bound for the finite alphabets being chosen
+from, and \(C(m)\) depends only on the word length.
+\end{lemma}
+
+\begin{proof}
+Lift the innovation set from \(m\) edge positions to \(m+1\) vertex positions.
+There are only \(C_1(m)\) ways to choose the finite combinatorial pattern
+recording where the innovations and forced identifications occur.  Once that
+pattern is fixed, Lemma 3.6 gives at most \(k^{3U}\) raw choices.  A defect
+\(\Delta\) means that \(\Delta\) of these apparent choices are not genuinely
+free: each such lost degree of freedom replaces one free \(k\)-choice by a
+forced equality with a previously chosen representative.  Therefore the
+choice count for the fixed pattern is at most \(k^{3U-\Delta}\).  Multiplying
+by the number \(C_1(m)\) of possible finite patterns gives the asserted
+bound, with \(C(m)=C_1(m)\).
+\end{proof}
+
+\begin{lemma}[Aubrun Lemma 7.5]
+For each fixed \(m\), there is a polynomial \(P_m\), depending only on \(m\),
+such that the total surviving relation count satisfies
+\[
+  \sum_{\pi\in\mathfrak S_{m+1}}\card\mathcal F_\pi
+  \le P_m(k).
+\]
+\end{lemma}
+
+\begin{proof}
+Partition the Wick permutations by their defect profile.  Lemma 7.4 bounds
+each profile class by \(C(m)k^{3U-\Delta}\).  For fixed \(m\), the parameters
+\(U\) and \(\Delta\), and the auxiliary equivalence-relation pattern, range
+over a finite set depending only on \(m\).  Hence the sum of all profile
+bounds is a finite sum of monomials in \(k\), with coefficients depending only
+on \(m\).  This finite sum is a polynomial \(P_m(k)\).  The profile-sum
+identity identifies the sum of the profile counts with
+\(\sum_{\pi\in\mathfrak S_{m+1}}\card\mathcal F_\pi\), proving the displayed
+bound.
+\end{proof}
+
+\begin{theorem}[Aubrun relation-count bound]
+Fix \(m\ge0\).  For \(u,v\in\N\), let \(N_m(u,v)\) be the number of surviving
+Wick permutations \(\pi\in\mathfrak S_{m+1}\) for which
+\[
+  u=\ell(\pi)+r(\pi),
+  \qquad
+  v=c(\pi).
+\]
+Thus \(u\) counts the free left/right classes and \(v\) counts the free
+sample-column classes.  There is a polynomial \(Q\), depending only on the
+Wick length and not on the dimensions \(d\) and \(s\), such that for all
+\(d,s\ge1\),
+\[
+  \sum_{u,v} N_m(u,v)\,d^u\,s^v
+  \le
+  2^{m+1}
+  \bigl(d+Q(m+1)\bigr)^{m+3}
+  \bigl(\sqrt s+Q(m+1)\bigr)^{m+1}.
+\]
+\end{theorem}
+
+\begin{proof}
+After Wick's formula, the moment is a finite sum over surviving permutations.
+For a permutation with profile \((u,v)\), the fiber-cardinality bound above
+shows that its contribution is controlled by \(d^u s^v\): one chooses one
+left/right coordinate for each of the \(u\) free left/right classes and one
+sample label for each of the \(v\) free column classes.
+
+It remains to count how many permutations have each profile.  The tilde-word
+analysis does this by grouping permutations according to their defect.  Lemma
+3.6 bounds the choices made at innovation positions.  Lemma 7.4 bounds the
+number of compatible equivalence classes at fixed defect.  Lemma 7.5 then sums
+over the finitely many defect profiles.  The resulting correction is absorbed
+into the polynomial \(Q\), which depends only on \(m\).  Substituting this
+profile count into the weighted profile sum gives the displayed bound.
+\end{proof}
+
+\chapter{Aubrun Moment Inputs}
+
+\section{Off-diagonal moment envelope}
+
+Let
+\[
+  Z=W^\pt-\diag(W^\pt).
+\]
+The off-diagonal trace moment is
+\[
+  M_m=\E\Tr(Z^m).
+\]
+The Wick expansion and the relation-count bound from the previous chapter
+imply a concrete envelope
+\[
+  |M_m|
+  \le
+  \left(\frac2S\right)^m
+  (d+Q(m))^{m+2}(\sqrt S+Q(m))^m,
+\]
+for a polynomial function \(Q\) independent of \(d\) and \(S\).
+
+\begin{theorem}[Aubrun off-diagonal moment bound]
+For every \(m\ge1\), there is a polynomial \(Q\), independent of \(d\) and
+\(S\), such that the off-diagonal partially transposed Wishart moment satisfies
+\[
+  |M_m|
+  \le
+  \left(\frac2S\right)^m
+  (d+Q(m))^{m+2}(\sqrt S+Q(m))^m.
+\]
+\end{theorem}
+
+\begin{proof}
+Write a cyclic word in \(I=P\times Q\) as
+\[
+  w=(i_0,i_1,\ldots,i_m),\qquad i_m=i_0,
+\]
+and write \(i_r=(p_r,q_r)\).  Expanding the trace gives
+\[
+  \Tr(Z^m)
+  =
+  \sum_w\prod_{r=0}^{m-1}Z_{i_r,i_{r+1}}.
+\]
+For an off-diagonal edge \(i_r\ne i_{r+1}\), the partial-transposed Wishart
+entry is
+\[
+  Z_{i_r,i_{r+1}}
+  =
+  \frac1S
+  \sum_{\alpha_r\in\Sigma}
+  G_{(p_r,q_{r+1}),\alpha_r}\,
+  \overline{G_{(p_{r+1},q_r),\alpha_r}}.
+\]
+For a diagonal edge \(i_r=i_{r+1}\), the entry of \(Z\) is zero.  Therefore
+\[
+  M_m
+  =
+  S^{-m}
+  \sum_w\mathbf 1_{\mathrm{off}}(w)
+  \sum_{\alpha_0,\ldots,\alpha_{m-1}\in\Sigma}
+  \E\prod_{r=0}^{m-1}
+  G_{(p_r,q_{r+1}),\alpha_r}\,
+  \overline{G_{(p_{r+1},q_r),\alpha_r}}.
+\]
+By the complex Wick formula, the expectation is the number of Wick
+permutations \(\pi\in\mathfrak S_m\) such that, for every \(r\),
+\[
+  (p_r,q_{r+1},\alpha_r)
+  =
+  (p_{\pi(r)+1},q_{\pi(r)},\alpha_{\pi(r)}),
+\]
+with indices read cyclically.  Thus
+\[
+  M_m
+  =
+  S^{-m}
+  \sum_{\pi\in\mathfrak S_m}
+  \sum_{(w,\alpha)\in\mathcal F_\pi}
+  \mathbf 1_{\mathrm{off}}(w).
+\]
+Since \(0\le \mathbf 1_{\mathrm{off}}\le1\),
+\[
+  |M_m|
+  \le
+  S^{-m}\sum_{\pi\in\mathfrak S_m}\card\mathcal F_\pi.
+\]
+If \(\pi\) has profile \((u,v)\), the fiber-cardinality bound gives
+\(\card\mathcal F_\pi\le d^uS^v\).  Regrouping by profile,
+\[
+  \sum_{\pi\in\mathfrak S_m}\card\mathcal F_\pi
+  \le
+  \sum_{u,v}N_m(u,v)d^uS^v.
+\]
+The relation-count bound from the previous chapter gives
+\[
+  \sum_{u,v}N_m(u,v)d^uS^v
+  \le
+  2^m(d+Q(m))^{m+2}(\sqrt S+Q(m))^m.
+\]
+Multiplying by \(S^{-m}\) yields
+\[
+  |M_m|
+  \le
+  \left(\frac2S\right)^m
+  (d+Q(m))^{m+2}(\sqrt S+Q(m))^m.
+\]
+\end{proof}
+
+\section{From moments to operator norm expectation}
+
+\begin{lemma}[Even moment to operator norm]
+Let \(Z\) be a random Hermitian matrix and let \(m\ge2\) be even.  Assume
+\(\E\Tr(Z^m)<\infty\).  Then
+\[
+  \E\norm Z_{\op}\le \bigl(\E\Tr(Z^m)\bigr)^{1/m}.
+\]
+\end{lemma}
+
+\begin{proof}
+Pointwise, \(\norm Z_{\op}^m\le\Tr(Z^m)\).  Therefore
+\[
+  \E\norm Z_{\op}^m\le \E\Tr(Z^m).
+\]
+Since the underlying measure is a probability measure, Holder's inequality
+with exponents \(m\) and \(m/(m-1)\) gives
+\[
+  \E\norm Z_{\op}
+  =
+  \E(\norm Z_{\op}\cdot 1)
+  \le
+  \bigl(\E\norm Z_{\op}^m\bigr)^{1/m}(\E 1)^{(m-1)/m}
+  =
+  \bigl(\E\norm Z_{\op}^m\bigr)^{1/m},
+\]
+and the two inequalities combine.
+\end{proof}
+
+\begin{theorem}[Off-diagonal expectation bound]
+Fix \(\lambda>0\) and assume \(D=d^2\) and \(S=s_d\) with
+\(s_d/d^2\to\lambda\).  Then there exists \(C_\lambda\) such that
+\[
+  \E\norm{W^\pt-\diag(W^\pt)}_{\op}\le C_\lambda .
+\]
+\end{theorem}
+
+\begin{proof}
+Choose an even \(m=m(d)\) tending to infinity slowly enough that
+\[
+  Q(m)=o(d),\qquad \frac{\log d}{m}\to0.
+\]
+Apply the even-moment lemma to \(Z=W^\pt-\diag(W^\pt)\), and then insert the
+moment envelope:
+\[
+  \E\norm Z_{\op}
+  \le \bigl(\E\Tr(Z^m)\bigr)^{1/m}
+  \le
+  \frac2S(d+Q(m))^{1+2/m}(\sqrt S+Q(m)).
+\]
+Rewrite the right hand side as
+\[
+  2\,\frac d{\sqrt S}\,
+  d^{2/m}
+  \left(1+\frac{Q(m)}d\right)^{1+2/m}
+  \left(1+\frac{Q(m)}{\sqrt S}\right).
+\]
+Because \(S\sim\lambda d^2\), the first factor \(d/\sqrt S\) tends to
+\(\lambda^{-1/2}\).  The condition \(\log d/m\to0\) gives
+\(d^{2/m}=\exp(2\log d/m)\to1\).  The condition \(Q(m)=o(d)\) gives
+\(Q(m)/d\to0\), and also \(Q(m)/\sqrt S\to0\).  Hence the displayed product is
+bounded uniformly in \(d\).
+\end{proof}
+
+\chapter{Diagonal Gamma and Wishart Expectations}
+
+\section{Diagonal part}
+
+The diagonal entries of \(W^\pt\) are the diagonal entries of \(W\):
+\[
+  (W^\pt)_{ii}=W_{ii}=\frac1S\sum_{\alpha\in\Sigma}|G_{i\alpha}|^2.
+\]
+Thus the diagonal operator norm is the maximum of \(D\) averages of \(S\)
+independent exponential variables.
+
+\begin{lemma}[Gamma maximum tail]
+Assume \(D\ge1\) and \(S\ge1\).  For every \(u\ge0\),
+\[
+  \Prob\left\{
+    \max_{i\in I}W_{ii}
+    \ge 1+2\sqrt{\frac{u+\log D}{S}}
+       +2\frac{u+\log D}{S}
+  \right\}\le e^{-u}.
+\]
+\end{lemma}
+
+\begin{proof}
+First prove the one-coordinate tail.  Let
+\[
+  \xi=\frac1S\sum_{\alpha=1}^S E_\alpha,
+\]
+where the \(E_\alpha\) are independent exponential variables of mean \(1\).
+For \(0\le\theta<1\),
+\[
+  \E e^{\theta S\xi}
+  =
+  \prod_{\alpha=1}^S\E e^{\theta E_\alpha}
+  =
+  (1-\theta)^{-S},
+\]
+because \(\E e^{\theta E_\alpha}=\int_0^\infty e^{\theta x}e^{-x}\,\dd x
+=(1-\theta)^{-1}\).  Put \(y=\sqrt{v/S}\).  If \(v=0\), the desired
+one-coordinate estimate is just a probability bound by \(1\).  If \(v>0\),
+choose \(\theta=y/(1+y)\).  Markov's inequality gives
+\[
+  \Prob\{\xi\ge1+2y+2y^2\}
+  \le
+  \exp\{-S\theta(1+2y+2y^2)\}(1-\theta)^{-S}.
+\]
+Since \(1-\theta=(1+y)^{-1}\), the exponent equals
+\[
+  -S\bigl(\theta(1+2y+2y^2)-\log(1+y)\bigr).
+\]
+Now
+\[
+  \theta(1+2y+2y^2)-y^2
+  =
+  y+\frac{y^3}{1+y}
+  \ge y
+  \ge\log(1+y),
+\]
+so the exponent is at most \(-Sy^2=-v\).  Hence
+\[
+  \Prob\left\{\xi\ge1+2\sqrt{v/S}+2v/S\right\}\le e^{-v}.
+\]
+Apply this with \(v=u+\log D\).  For each fixed \(i\),
+\[
+  \Prob\left\{W_{ii}\ge
+    1+2\sqrt{\frac{u+\log D}{S}}
+       +2\frac{u+\log D}{S}
+  \right\}
+  \le e^{-u-\log D}=\frac{e^{-u}}{D}.
+\]
+The event that the maximum exceeds the displayed threshold is contained in
+the union of these \(D\) one-coordinate events.  The finite union bound gives
+\[
+  \Prob\left\{\max_{i\in I}W_{ii}\ge
+    1+2\sqrt{\frac{u+\log D}{S}}
+       +2\frac{u+\log D}{S}
+  \right\}
+  \le
+  D\cdot\frac{e^{-u}}{D}=e^{-u}.
+\]
+\end{proof}
+
+\begin{theorem}[Diagonal expectation bound]
+Fix \(\lambda>0\) and assume \(D=d^2\) and \(S=s_d\) with
+\(s_d/d^2\to\lambda\).  Then
+\[
+  \E\norm{\diag(W^\pt)}_{\op}\le C_\lambda.
+\]
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  M=\norm{\diag(W^\pt)}_{\op}=\max_{i\in I}W_{ii}
+\]
+and set
+\[
+  a=1+2\sqrt{\frac{\log D}{S}}+2\frac{\log D}{S}.
+\]
+Since \(\sqrt{u+\log D}\le \sqrt u+\sqrt{\log D}\), the previous lemma gives,
+for every \(u\ge0\),
+\[
+  \Prob\left\{
+    M\ge a+2\sqrt{\frac uS}+2\frac uS
+  \right\}
+  \le e^{-u}.
+\]
+Put
+\[
+  h(u)=2\sqrt{\frac uS}+2\frac uS.
+\]
+For the nonnegative random variable \((M-a)_+\), Tonelli's theorem gives
+\[
+  (M-a)_+=\int_0^\infty \1_{\{y\le (M-a)_+\}}\,\dd y
+\]
+pointwise, and therefore
+\[
+  \E(M-a)_+=\int_0^\infty \Prob\{(M-a)_+\ge y\}\,\dd y .
+\]
+Changing variables \(y=h(u)\), which is increasing on \([0,\infty)\), yields
+\[
+  \E(M-a)_+
+  \le
+  \int_0^\infty e^{-u}h'(u)\,\dd u
+  =
+  \frac1{\sqrt S}\int_0^\infty u^{-1/2}e^{-u}\,\dd u
+  +\frac2S\int_0^\infty e^{-u}\,\dd u .
+\]
+The two integrals are \(\Gamma(1/2)=\sqrt\pi\) and \(1\), respectively, so
+\[
+  \E M
+  \le
+  1+2\sqrt{\frac{\log D}{S}}+2\frac{\log D}{S}
+  +\frac{\sqrt\pi}{\sqrt S}+\frac2S.
+\]
+In the balanced regime \(D=d^2\) and \(S\sim\lambda d^2\), the right hand side
+is bounded uniformly in \(d\); indeed all correction terms tend to \(0\).
+\end{proof}
+
+\section{Full expectation}
+
+\begin{theorem}[Wishart-gamma expectation bound]
+Fix \(\lambda>0\) and assume \(D=d^2\) and \(S=s_d\) with
+\(s_d/d^2\to\lambda\).  Then
+\[
+  \E\norm{W^\pt}_{\op}\le C_\lambda.
+\]
+\end{theorem}
+
+\begin{proof}
+Use the decomposition
+\[
+  W^\pt=\diag(W^\pt)+(W^\pt-\diag(W^\pt))
+\]
+and the operator-norm triangle inequality:
+\[
+  \norm{W^\pt}_{\op}
+  \le
+  \norm{\diag(W^\pt)}_{\op}
+  +
+  \norm{W^\pt-\diag(W^\pt)}_{\op}.
+\]
+Taking expectations and applying the diagonal and off-diagonal expectation
+bounds gives
+\[
+  \E\norm{W^\pt}_{\op}
+  \le C_\lambda^{\mathrm{diag}}+C_\lambda^{\mathrm{off}}.
+\]
+Rename the sum of the two constants \(C_\lambda\).
+\end{proof}
+
+\chapter{High-Probability Bounds}
+
+\section{Gaussian quadratic Bernstein}
+
+Let \(g\) be a standard complex Gaussian vector in \(\C^n\), and let \(A\) be
+a fixed Hermitian matrix.  The centered quadratic form
+\[
+  \ip{Ag}{g}-\E\ip{Ag}{g}
+\]
+has sub-exponential tails governed by \(\norm A_{\HS}\) and
+\(\norm A_{\op}\).
+
+\begin{theorem}[Quadratic-form Bernstein]
+Let \(A=A^*\in M_n(\C)\).  If \(A\ne0\), then, for every \(t\ge0\),
+\[
+  \Prob\{|\ip{Ag}{g}-\Tr A|\ge t\}
+  \le
+  2\exp\left(
+    -\frac18\min\left(\frac{t^2}{\norm A_{\HS}^2},
+                \frac{t}{\norm A_{\op}}\right)
+  \right).
+\]
+If \(A=0\), the centered quadratic form is identically zero.
+\end{theorem}
+
+\begin{proof}
+We prove the estimate directly from the scalar moment-generating functions.
+
+The case \(t=0\) is immediate, so assume \(t>0\).  Diagonalize the Hermitian
+matrix \(A\) in an orthonormal basis: choose a unitary \(U\) and real
+eigenvalues \(\lambda_1,\ldots,\lambda_n\) such that
+\[
+  A=U^*\diag(\lambda_1,\ldots,\lambda_n)U .
+\]
+The standard complex Gaussian law has density \(\pi^{-n}e^{-\norm z_2^2}\)
+with respect to Lebesgue measure on \(\C^n\simeq\R^{2n}\).  Since \(U\)
+preserves \(\norm z_2\) and has real Jacobian \(1\), the vector
+\(\zeta=Ug\) is again standard complex Gaussian.  Its coordinates are
+independent standard complex Gaussians, and therefore
+\[
+  X:=\ip{Ag}{g}-\Tr A
+   =\sum_{j=1}^n \lambda_j\bigl(|\zeta_j|^2-1\bigr).
+\]
+For one standard complex Gaussian coordinate \(\zeta_j\), the variable
+\(R_j=|\zeta_j|^2\) is exponential with mean \(1\).  Hence, for every
+real \(b<1\),
+\[
+  \E e^{b(R_j-1)}
+  = e^{-b}\int_0^\infty e^{br}e^{-r}\,\dd r
+  = \frac{e^{-b}}{1-b}.
+\]
+Consequently, if \(\theta\in\R\) satisfies
+\(|\theta|\le(2\norm A_{\op})^{-1}\), then
+\(|\theta\lambda_j|\le1/2\) for all \(j\), and independence gives
+\[
+  \E e^{\theta X}
+  =
+  \prod_{j=1}^n
+  \frac{\exp(-\theta\lambda_j)}{1-\theta\lambda_j}.
+\]
+We now bound each scalar factor.  The elementary inequality
+\(\log y\le y-1\) for \(y>0\) follows by applying calculus to
+\(y-1-\log y\), whose minimum is \(0\) at \(y=1\).  With
+\(y=(1-b)^{-1}\) and \(|b|\le1/2\), this gives
+\[
+  -\log(1-b)\le \frac{b}{1-b},
+\]
+and hence
+\[
+  -b-\log(1-b)
+  \le -b+\frac{b}{1-b}
+  =\frac{b^2}{1-b}
+  \le 2b^2.
+\]
+Applying this with \(b=\theta\lambda_j\) and multiplying the factors,
+\[
+  \E e^{\theta X}
+  \le
+  \prod_{j=1}^n \exp\bigl(2\theta^2\lambda_j^2\bigr)
+  =
+  \exp\bigl(2\theta^2\norm A_{\HS}^2\bigr).
+\]
+
+Write
+\[
+  V=\norm A_{\HS}^2,\qquad L=\norm A_{\op}.
+\]
+Since \(A\ne0\), both \(V\) and \(L\) are positive.  Markov's inequality,
+applied to the nonnegative random variable \(e^{\theta X}\), says that for
+\(\theta\ge0\),
+\[
+  \Prob\{X\ge t\}
+  =
+  \Prob\{e^{\theta X}\ge e^{\theta t}\}
+  \le e^{-\theta t}\E e^{\theta X}.
+\]
+Choose
+\[
+  \theta=\min\left(\frac{t}{4V},\frac1{2L}\right).
+\]
+Then \(\theta\ge0\) and \(\theta\le(2L)^{-1}\), so the MGF bound applies and
+\[
+  \Prob\{X\ge t\}
+  \le
+  \exp\{-\theta t+2\theta^2V\}.
+\]
+It remains only to record the elementary optimization.  If
+\(\theta=t/(4V)\), then
+\[
+  \theta t-2\theta^2V=\frac{t^2}{8V}
+  \ge \frac18\min\left(\frac{t^2}{V},\frac{t}{L}\right).
+\]
+If \(\theta=(2L)^{-1}\), then \(t/(4V)\ge(2L)^{-1}\), hence
+\(tL\ge2V\), and
+\[
+  \theta t-2\theta^2V
+  =\frac{t}{2L}-\frac{V}{2L^2}
+  \ge \frac{t}{4L}
+  \ge \frac18\min\left(\frac{t^2}{V},\frac{t}{L}\right).
+\]
+Thus
+\[
+  \Prob\{X\ge t\}
+  \le
+  \exp\left\{
+    -\frac18\min\left(\frac{t^2}{\norm A_{\HS}^2},
+                      \frac{t}{\norm A_{\op}}\right)
+  \right\}.
+\]
+The same argument applied to \(-X\) gives the identical bound for
+\(\Prob\{X\le -t\}\), because the MGF estimate was proved for positive and
+negative \(\theta\) in the same range.  Finally,
+\[
+  \{|X|\ge t\}\subset \{X\ge t\}\cup\{X\le -t\},
+\]
+and the union bound gives the displayed factor \(2\).
+\end{proof}
+
+\section{Nets and operator norms}
+
+\begin{lemma}[Quadratic net lifting]
+Let \(T\) be a Hermitian operator on a Hilbert space, and let \(N\) be a
+\(1/4\)-net of the unit sphere.  If
+\[
+  |\ip{Tu}{u}|\le B\qquad(u\in N),
+\]
+then
+\[
+  \norm T_{\op}\le 2B.
+\]
+\end{lemma}
+
+\begin{proof}
+For any unit vector \(x\), choose \(u\in N\) with \(\norm{x-u}\le1/4\).  The
+identity
+\[
+  \ip{Tx}{x}-\ip{Tu}{u}
+  =
+  \ip{T(x-u)}{x}+\ip{Tu}{x-u}
+\]
+and Cauchy's inequality give
+\[
+  |\ip{Tx}{x}-\ip{Tu}{u}|
+  \le
+  \norm T_{\op}\norm{x-u}\norm x
+  +
+  \norm T_{\op}\norm u\norm{x-u}
+  =
+  2\norm T_{\op}\norm{x-u}.
+\]
+Since \(T\) is Hermitian,
+\[
+  \norm T_{\op}=\sup_{\norm x=1}|\ip{Tx}{x}|.
+\]
+Taking the supremum over unit \(x\) gives
+\[
+  \norm T_{\op}\le B+\frac12\norm T_{\op}.
+\]
+Moving the last term to the left gives \(\norm T_{\op}\le2B\).
+\end{proof}
+
+\begin{lemma}[Net cardinality]
+The unit sphere in a real vector space of dimension \(n\) has a \(1/4\)-net
+with at most \(9^n\) points.  In the complex \(N\)-dimensional case this is
+at most \(81^N\), and \(81^N\le e^{7N}\).
+\end{lemma}
+
+\begin{proof}
+Take a maximal \(1/4\)-separated subset \(N\) of the unit sphere.  Maximality
+means that \(N\) is a \(1/4\)-net: if a unit vector were farther than \(1/4\)
+from every point of \(N\), it could be added to \(N\), contradicting
+maximality.
+
+The open Euclidean balls \(B(u,1/8)\), \(u\in N\), are pairwise disjoint,
+because the centers are at distance at least \(1/4\).  They are all contained
+in the ball \(B(0,9/8)\), since \(\norm u=1\).  Comparing \(n\)-dimensional
+Lebesgue volumes gives
+\[
+  |N|\left(\frac18\right)^n\vol B(0,1)
+  \le
+  \left(\frac98\right)^n\vol B(0,1).
+\]
+Thus \(|N|\le9^n\).  A complex \(N\)-dimensional Hilbert space has real
+dimension \(2N\), so the bound is \(9^{2N}=81^N\).  Finally,
+\(81\le e^7\), hence \(81^N\le e^{7N}\).
+\end{proof}
+
+\begin{theorem}[Concrete high-probability bounds]
+There are constants \(C,C',c>0\) such that the following events have Gaussian
+probability at least \(1-\exp(-cD)\):
+\[
+  \norm G_{\op}\le C(\sqrt D+\sqrt S),
+\]
+\[
+  \norm{W^\pt}_{\op}\le C',
+\]
+and
+\[
+  R(G)^2\ge cDS.
+\]
+After normalization by \(R(G)\), these become
+\[
+  \norm{\Theta(G)}_{\op}\le \frac a d,\qquad
+  \norm{(\Theta(G)\Theta(G)^*)^\pt}_{\op}\le \frac b{d^2}
+\]
+with bad probability bounded by \(\exp(-d^2/12)\) in the paper scale.
+\end{theorem}
+
+\begin{proof}
+The first estimate is obtained by applying the fixed-vector Gaussian tail and
+the net-cardinality lemma to a \(1/4\)-net in the sample-index sphere, and
+then applying the quadratic net-lifting lemma to pass from the net to the
+operator norm.  The second estimate is obtained in the same way, but the
+fixed-vector tail is the quadratic-form Bernstein bound proved above, applied
+to the Hermitian quadratic forms representing the Wishart and
+partial-transpose Wishart observables.  The third estimate is the lower tail
+for
+\[
+  R(G)^2=\sum_{i,\alpha}|G_{i\alpha}|^2,
+\]
+a sum of \(DS\) independent mean-one exponential variables; its Chernoff proof
+is the lower-tail analogue of the Gamma calculation in the diagonal section.
+The normalized events follow by the deterministic radial rescaling inequalities:
+\[
+  \norm{\Theta(G)}_{\op}=\frac{\norm G_{\op}}{R(G)},\qquad
+  \norm{(\Theta\Theta^*)^\pt}_{\op}
+  =\frac{\norm{(GG^*)^\pt}_{\op}}{R(G)^2}.
+\]
+Splitting the bad event into a mass lower-tail failure and a Gaussian/Wishart
+upper-tail failure gives the final union bound.  The numerical absorption
+uses \(12\log2\le d^2\) and \(e^{-D}\le e^{-d^2/12}\) when \(D=d^2\).
+\end{proof}
+
+\chapter{Surface Measure, Polar Law, and Independence}
+
+\section{Canonical surface measure}
+
+Let \(U(\mathcal X)\) be the unitary group of the complex Hilbert space
+\(\mathcal X\).  It is compact and acts continuously on the unit sphere
+\(\Sphere(\mathcal X)\).  The action is transitive.
+
+\begin{definition}[Surface law]
+The canonical surface law \(\sigma_{\mathcal X}\) is the normalized
+Hausdorff/Haar surface probability measure on \(\Sphere(\mathcal X)\).
+\end{definition}
+
+\begin{lemma}[Surface-law invariance]
+For every unitary \(U\in U(\mathcal X)\),
+\[
+  U_*\sigma_{\mathcal X}=\sigma_{\mathcal X}.
+\]
+\end{lemma}
+
+\begin{proof}
+The unnormalized surface measure is the restriction of the appropriate
+Hausdorff measure to the sphere.  Hausdorff measure is defined from covers by
+sets of small diameter.  A real isometry preserves all distances, hence
+preserves the diameter of every set and sends admissible covers of \(E\) to
+admissible covers of \(U(E)\) with the same total diameter cost.  Therefore it
+preserves Hausdorff measure.  A unitary map is a real isometry and maps the
+unit sphere onto itself.  Hence it preserves the unnormalized surface measure
+of every Borel subset of the sphere.  Dividing by the total surface measure
+preserves the equality, so the normalized surface law is invariant.
+\end{proof}
+
+\begin{theorem}[Uniqueness of invariant probability measure]
+Let a compact topological group \(K\) act continuously and transitively on a
+compact Hausdorff space \(Y\).  If \(\mu\) and \(\nu\) are \(K\)-invariant
+probability measures on \(Y\), then \(\mu=\nu\).
+\end{theorem}
+
+\begin{proof}
+Let \(m_K\) be normalized Haar measure on the compact group \(K\), so \(m_K\)
+is a probability measure and is invariant under left multiplication.  For a
+continuous function \(f\) and any \(y\in Y\), the averaged value
+\[
+  A_f(y)=\int_K f(k\cdot y)\,\dd m_K(k)
+\]
+is constant in \(y\), by transitivity and left invariance of Haar measure.
+If \(\mu\) is invariant, then
+\[
+  \int_Y f\,\dd\mu
+  =
+  \int_Y\int_K f(k\cdot y)\,\dd m_K(k)\,\dd\mu(y)
+  =A_f.
+\]
+The same holds for \(\nu\).  Thus the two measures have the same integrals
+against all continuous functions.
+
+It remains to recall why this determines the measure.  If two finite Borel
+measures on a compact Hausdorff space differ, then by regularity there is a
+closed set \(F\) and an open set \(O\supset F\) on which their masses differ
+after an arbitrarily small enlargement.  Urysohn's lemma gives a continuous
+function \(0\le h\le1\) with \(h=1\) on \(F\) and \(h=0\) outside \(O\).  The
+integrals of \(h\) then separate the two measures, contradicting equality of
+all continuous integrals.  Therefore \(\mu=\nu\).
+\end{proof}
+
+\section{Gaussian direction law}
+
+\begin{lemma}[The Gaussian direction law is a probability on the sphere]
+\[
+  \nu_{\mathrm{dir}}(\Sphere(\mathcal X))=1.
+\]
+\end{lemma}
+
+\begin{proof}
+The only possible failure of \(\Theta(G)\in\Sphere(\mathcal X)\) occurs at
+\(G=0\), depending on the arbitrary value chosen there.  The standard Gaussian
+law has density
+\[
+  \pi^{-DS}\exp(-\norm G_{\HS}^2)
+\]
+with respect to Lebesgue measure on the real vector space underlying
+\(\mathcal X\).  A singleton has Lebesgue measure \(0\), hence
+\[
+  \gamma(\{0\})=0.
+\]
+For every \(G\ne0\), \(\Theta(G)=G/\norm G_{\HS}\) has Hilbert--Schmidt norm
+\(1\).  Therefore
+\[
+  \gamma\{G:\Theta(G)\in\Sphere(\mathcal X)\}
+  \ge \gamma(\mathcal X\setminus\{0\})=1.
+\]
+The reverse inequality is automatic, so the direction law has total mass
+\(1\) on the sphere.
+\end{proof}
+
+\begin{lemma}[Gaussian direction invariance]
+For every unitary \(U\in U(\mathcal X)\),
+\[
+  U_*\nu_{\mathrm{dir}}=\nu_{\mathrm{dir}}.
+\]
+\end{lemma}
+
+\begin{proof}
+The standard Gaussian law is unitary-invariant:
+\[
+  U_*\gamma=\gamma.
+\]
+This follows directly from the radial density
+\(\pi^{-DS}\exp(-\norm G_{\HS}^2)\), since unitary maps preserve
+\(\norm G_{\HS}\).
+Moreover, for \(G\ne0\),
+\[
+  \Theta(UG)=\frac{UG}{\norm{UG}}=U\frac G{\norm G}=U\Theta(G).
+\]
+The equality may fail only at \(G=0\), a null set.  Hence
+\[
+  U_*\Theta_*\gamma=\Theta_*U_*\gamma=\Theta_*\gamma.
+\]
+\end{proof}
+
+\begin{theorem}[Gaussian polar law]
+\[
+  \Theta_*\gamma=\sigma_{\mathcal X}.
+\]
+\end{theorem}
+
+\begin{proof}
+Both measures are probability measures on the same sphere.  Both are invariant
+under the same compact transitive unitary action.  The uniqueness theorem for
+invariant probability measures gives equality.
+\end{proof}
+
+\section{Radial slices and independence}
+
+For a Borel set \(A\subset\R_+\), define the radial slice
+\[
+  \gamma_A(B)=\gamma\{G\in B:\ R(G)\in A\},
+\]
+for Borel sets \(B\subset\mathcal X\).
+Its directional pushforward is
+\[
+  \nu_A=\Theta_*\gamma_A.
+\]
+
+\begin{lemma}[Invariant radial slices]
+For every Borel \(A\subset\R_+\), the finite measure \(\nu_A\) on the sphere
+is invariant under \(U(\mathcal X)\).
+\end{lemma}
+
+\begin{proof}
+The set \(\{R\in A\}\) is unitary-invariant because the radius is preserved by
+unitaries.  The Gaussian is unitary-invariant, and \(\Theta\) intertwines the
+action.  Therefore the pushforward slice is invariant.
+\end{proof}
+
+\begin{lemma}[Radial slice is a scalar multiple of surface law]
+For every Borel \(A\subset\R_+\),
+\[
+  \nu_A=\gamma\{R\in A\}\,\sigma_{\mathcal X}.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(\gamma\{R\in A\}=0\), both sides are zero.  Otherwise normalize \(\nu_A\)
+to a probability measure.  It is invariant under the compact transitive
+unitary action, hence equals \(\sigma_{\mathcal X}\).  Undo the normalization.
+\end{proof}
+
+\begin{theorem}[Radius--direction independence]
+The random variables \(R\) and \(\Theta\) are independent.  Equivalently, for
+Borel \(A\subset\R_+\) and \(B\subset\Sphere(\mathcal X)\),
+\[
+  \gamma\{R\in A,\ \Theta\in B\}
+  =
+  \gamma\{R\in A\}\,\sigma_{\mathcal X}(B).
+\]
+\end{theorem}
+
+\begin{proof}
+The left hand side is \(\nu_A(B)\).  Apply the radial-slice scalar-multiple
+lemma.
+\end{proof}
+
+\begin{corollary}[Quadratic radial independence]
+\(R^2\) and \(\Theta\) are independent.
+\end{corollary}
+
+\begin{proof}
+The variable \(R^2\) is a measurable function of \(R\), and independence is
+stable under measurable transformations.
+\end{proof}
+
+\chapter{Expectation Normalization}
+
+\section{Linear radial factor}
+
+\begin{theorem}[Sample operator-norm factorization]
+All expectations below are finite.  One has
+\[
+  \E_\gamma\norm G_{\op}
+  =
+  \E_\gamma R\cdot \E_{\sigma_{\mathcal X}}\norm X_{\op}.
+\]
+\end{theorem}
+
+\begin{proof}
+Pointwise, \(\norm G_{\op}=R(G)\norm{\Theta(G)}_{\op}\).  The two factors are
+independent by radius--direction independence, and the direction law is
+\(\sigma_{\mathcal X}\).
+\end{proof}
+
+\begin{corollary}[Normalized sample expectation]
+If
+\[
+  \E_\gamma\norm G_{\op}\le \E R\cdot \frac{C_1}{d},
+  \qquad \E R>0,
+\]
+then
+\[
+  \E_{\sigma_{\mathcal X}}\norm X_{\op}\le \frac{C_1}{d}.
+\]
+\end{corollary}
+
+\section{Quadratic radial factor}
+
+\begin{theorem}[Partial-transpose operator-norm factorization]
+All expectations below are finite.  One has
+\[
+  \E_\gamma\norm{(GG^*)^\pt}_{\op}
+  =
+  \E_\gamma R^2\cdot
+  \E_{\sigma_{\mathcal X}}\norm{(XX^*)^\pt}_{\op}.
+\]
+\end{theorem}
+
+\begin{proof}
+Use
+\[
+  (GG^*)^\pt=R(G)^2(\Theta(G)\Theta(G)^*)^\pt
+\]
+and independence of \(R^2\) and \(\Theta\).
+\end{proof}
+
+\begin{corollary}[Normalized partial-transpose expectation]
+If
+\[
+  \E_\gamma\norm{(GG^*)^\pt}_{\op}
+  \le \E R^2\cdot \frac{C_2}{d^2},
+  \qquad \E R^2>0,
+\]
+then
+\[
+  \E_{\sigma_{\mathcal X}}\norm{(XX^*)^\pt}_{\op}\le \frac{C_2}{d^2}.
+\]
+\end{corollary}
+
+\chapter{Spherical Levy and Localized Concentration}
+
+\section{Strong global surface Levy}
+
+\begin{theorem}[Strong spherical Levy inequality]
+Let \(K>0\), let \(f:\Sphere(\mathcal X)\to\R\) be \(K\)-Lipschitz, and let
+\(M_f\) be a median.  If \(n\) is the real dimension parameter of the sphere,
+then for every \(t>0\),
+\[
+  \sigma_{\mathcal X}\{|f-M_f|\ge t\}
+  \le
+  2\exp\left(-\frac{n t^2}{4K^2}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+We use the following form of spherical isoperimetry on the normalized
+Euclidean sphere: if \(A\subset\Sphere(\mathcal X)\) is Borel and
+\(\sigma_{\mathcal X}(A)\ge1/2\), then for every \(r>0\),
+\[
+  \sigma_{\mathcal X}\{x:\dist(x,A)>r\}
+  \le
+  \exp\left(-\frac{n r^2}{4}\right).
+\]
+This is the geometric statement called the spherical Levy isoperimetric
+inequality; the present theorem is the direct Lipschitz-function form.
+
+Let
+\[
+  A_-=\{x:f(x)\le M_f\},\qquad A_+=\{x:f(x)\ge M_f\}.
+\]
+Both sets have surface measure at least \(1/2\), by the definition of a
+median.  If \(f(x)>M_f+t\) and \(y\in A_-\), then
+\[
+  t< f(x)-f(y)\le K\dist(x,y),
+\]
+so \(\dist(x,A_-)>t/K\).  Hence
+\[
+  \{f>M_f+t\}\subset \{x:\dist(x,A_-)>t/K\}.
+\]
+The isoperimetric inequality gives
+\[
+  \sigma_{\mathcal X}\{f>M_f+t\}
+  \le
+  \exp\left(-\frac{n t^2}{4K^2}\right).
+\]
+The same argument applied to \(-f\), or equivalently to \(A_+\), gives
+\[
+  \sigma_{\mathcal X}\{f<M_f-t\}
+  \le
+  \exp\left(-\frac{n t^2}{4K^2}\right).
+\]
+The event \(\{|f-M_f|\ge t\}\) is contained in the union of these two one-sided
+events, and the union bound gives
+\[
+  \sigma_{\mathcal X}\{|f-M_f|\ge t\}
+  \le
+  2\exp\left(-\frac{n t^2}{4K^2}\right).
+\]
+\end{proof}
+
+\section{The paper-scale concentration theorem}
+
+Let
+\[
+  f_k(X)=\Tr\left(\left((XX^*)^\pt\right)^k\right),
+  \qquad X\in\Sphere(\mathcal X).
+\]
+Let the good set be
+\[
+  \Omega_{a,b}(d)=
+  \left\{X:
+    \norm X_{\op}\le \frac a d,\quad
+    \norm{(XX^*)^\pt}_{\op}\le \frac b{d^2}
+  \right\}.
+\]
+
+\begin{theorem}[Local Lipschitz concentration for \(f_k\)]
+Fix \(\lambda>0\) and assume \(D=d^2\), \(S=s_d\), and
+\(s_d/d^2\to\lambda\).  Assume also the high-probability good-set bound
+\[
+  \sigma_{\mathcal X}(\Omega_{a,b}(d)^c)\le
+  2e^{-d^2/12},
+\]
+and the deterministic Lipschitz estimate on \(\Omega_{a,b}(d)\)
+\[
+  \Lip(f_k|_{\Omega_{a,b}(d)})\le Ck\,d^{-(2k-2)}.
+\]
+Then there are constants \(C',c'>0\) such that
+\[
+  \Prob_{\sigma_{\mathcal X}}\left\{
+    |f_k-\E f_k|\ge \eps d^{-(2k-2)}
+  \right\}
+  \le
+  C'e^{-d^2/12}
+  +C'\exp\left(-c'\frac{d^4\eps^2}{k^2}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the localized Levy theorem to \(f_k\) on the good set.  The dimension
+parameter is \(n=2d^2s_d\).  Since \(s_d/d^2\to\lambda>0\), this is bounded
+above and below by positive constant multiples of \(d^4\) for all large \(d\).
+The Lipschitz constant is
+\(Ck\,d^{-(2k-2)}\), so the Levy exponent at deviation
+\(\eps d^{-(2k-2)}\) is
+\[
+  \frac{n\eps^2d^{-2(2k-2)}}{C^2k^2d^{-2(2k-2)}}
+  \ge c\frac{d^4\eps^2}{k^2}
+\]
+for a constant \(c>0\) depending only on \(\lambda\) and the Lipschitz
+constant.
+The median-to-mean replacement is handled by the integrated-tail bound.  If
+the integrated mean--median shift is at most half the target deviation, the
+event centered at the mean is contained in the event centered at the median
+at half scale.  Otherwise the target exponent is small enough that the right
+hand side is at least \(1\), and the elementary bound that every probability
+is at most \(1\) closes the branch.  Numerical constants are absorbed into
+\(C'\) and \(c'\).
+\end{proof}
+
+\chapter{Final Assembly}
+
+\begin{theorem}[Fully assembled Appendix B theorem]
+Fix \(\lambda>0\).  In the balanced induced model \(D=d^2\), \(S=s_d\), with
+\(s_d/d^2\to\lambda\), the following hold for all sufficiently large \(d\).
+\begin{enumerate}[label=(\roman*)]
+  \item The normalized sample operator norm satisfies
+  \[
+    \E_{\sigma_{\mathcal X}}\norm X_{\op}\le \frac{C_1}{d}.
+  \]
+  \item The normalized partially transposed density satisfies
+  \[
+    \E_{\sigma_{\mathcal X}}\norm{(XX^*)^\pt}_{\op}\le \frac{C_2}{d^2}.
+  \]
+  \item The two good-set events
+  \[
+    \norm X_{\op}\le a/d,\qquad
+    \norm{(XX^*)^\pt}_{\op}\le b/d^2
+  \]
+  fail with probability at most \(e^{-d^2/12}\), after choosing the explicit
+  constants supplied by the high-probability theorem.
+  \item For each fixed \(k\), the trace-power statistic
+  \[
+    f_k(X)=\Tr\left(\left((XX^*)^\pt\right)^k\right)
+  \]
+  satisfies the localized spherical concentration estimate at the natural
+  scale \(d^{-(2k-2)}\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The expectation bounds are the two radial-normalization corollaries, with the
+Gaussian and Wishart expectation estimates supplied by the diagonal and
+off-diagonal moment pipelines.  The high-probability estimates are the
+concrete net, Bernstein, Wishart, and Gaussian-mass bounds transported through
+the normalization identities.  The concentration estimate is the localized Levy
+theorem applied to the deterministic Lipschitz scale on the intersection of
+the two good sets.  The constants are those fixed in the formal assembly:
+good-set exponent \(1/12\), front constant \(4\), and localized exponent
+constant \(c_{\mathrm{dim}}/(64C^2)\).
+\end{proof}
+
+\appendix
+
+\chapter{Concordance with the Formal Development}
+
+This appendix is the only place where formal filenames are mentioned.  The
+main body above is pure mathematics; this table records the promised
+one-to-one correspondence between mathematical chapters and formal modules.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.38\textwidth}
+                  >{\raggedright\arraybackslash}p{0.54\textwidth}}
+\toprule
+Formal module & Mathematical content translated here\\
+\midrule
+\endhead
+\leanfile{RandomMatrixModel},
+\leanfile{GaussianModel},
+\leanfile{PartialTranspose} &
+Finite index sets, sample matrices, bipartite matrices, Gaussian coordinate
+space, Wishart matrices, density matrices, partial transpose, and basic
+dimension identities.\\
+\leanfile{AppendixBConcreteModel} &
+Concrete specialization \(P=Q=\mathrm{Fin}(d)\), \(\Sigma=\mathrm{Fin}(s)\),
+balanced regime \(s/d^2\to\lambda\), positivity and nonemptiness facts.\\
+\leanfile{ProbabilityTools},
+\leanfile{AppendixB} &
+Local Lipschitz predicates, McShane extension, clipping, medians, localized
+Levy reduction, median-to-mean conversion, tail integration, numerical
+absorption, and final paper-scale concentration wrappers.\\
+\leanfile{ComplexGaussianWick},
+\leanfile{TraceWickExpansion},
+\leanfile{TraceWickProductExpansion} &
+Complex Wick formula, monomial encoding, trace expansion as sums over closed
+walks, and product expansion for partially transposed Wishart entries.\\
+\leanfile{WickCountingCore},
+\leanfile{WickCountingBounds},
+\leanfile{AubrunMomentSpine} &
+Surviving Wick pairings, equivalence relations, class counts, weighted rank,
+defect, permutation fibers, and the exact rewrite of the Wick moment into
+surviving contraction sums.\\
+\leanfile{AppendixBAubrunProposition71},
+\leanfile{AppendixBAubrunCombinatorics},
+\leanfile{AppendixBAubrunGraduate} &
+Aubrun tilde words, lists (3) and (7), matching conditions, nonrepetition,
+innovations, compatibility, Lemma 3.6, Lemma 7.4, Lemma 7.5, the weighted
+profile-count bound, and the polynomial \(P,Q\) bounds used in Propositions
+7.1 and 7.3.\\
+\leanfile{AppendixBAubrunMomentInput} &
+Off-diagonal linear map, Hermitian structure, trace-moment power bounds,
+even-moment operator-norm conversion, and off-diagonal expectation envelope.\\
+\leanfile{AppendixBDiagonalGamma} &
+Diagonal gamma averages, gamma maximum tails, integration of the maximum
+tail, and the diagonal expectation contribution.\\
+\leanfile{AppendixBPipeline},
+\leanfile{AppendixBGaussianIntegrability} &
+Diagonal plus off-diagonal recombination, integrability of all Gaussian
+observables, and the pipeline from moment estimates to the final expectation
+bound.\\
+\leanfile{HighDimensionalProbability},
+\leanfile{HighProbabilityBounds},
+\leanfile{AppendixBWishartBridge} &
+Quadratic-form Bernstein inequalities, nets, net lifting, sample operator
+norm tails, Wishart-Gamma tails, Gaussian mass lower tail, normalized events,
+and paper-scale high-probability bounds.\\
+\leanfile{AppendixBRadialSpherical} &
+Gaussian radius, squared radius, direction, measurability, no-atom facts,
+direction law supported on the sphere, and abstract radial--spherical
+factorization under independence.\\
+\leanfile{AppendixBSurfaceMeasure} &
+Unitary action on the sphere, compactness, transitivity, invariant probability
+measure uniqueness, surface measure, Haar/hausdorff invariance, and the
+surface probability law.\\
+\leanfile{AppendixBLevyPolarBridge},
+\leanfile{AppendixBPolarRadial},
+\leanfile{AppendixBSphericalLevy},
+\leanfile{AppendixBSphericalConcentration} &
+Transport from flattened coordinates to sample matrices, equality of Gaussian
+direction law and surface law, polar law, radial slice factorization,
+radius--direction independence, strong global surface Levy, and localized
+Levy for the exact good set.\\
+\leanfile{AppendixBNormalizedExpectations},
+\leanfile{AppendixBConcreteBridge} &
+Concrete expectation estimates, positivity of radial factors, Gaussian and
+quadratic radial factorization, normalized bounds, and concrete probability
+estimates.\\
+\leanfile{AppendixBFinal} &
+Final no-structure assembly: normalized expectations, high-probability
+events, and localized concentration with explicit constants.\\
+\bottomrule
+\end{longtable}
+
+\chapter{Checklist of Closed Mathematical Inputs}
+
+The following list records the formerly delicate points that are now theorems
+in the mathematical development above.
+
+\begin{enumerate}[label=\textbf{C\arabic*.}]
+  \item The Gaussian direction law is a probability measure on the unit sphere.
+  \item The canonical surface law is invariant under the same compact
+  transitive unitary action.
+  \item The Gaussian direction law is invariant under that action.
+  \item Compact transitive uniqueness identifies the two laws:
+  \(\Theta_*\gamma=\sigma_{\mathcal X}\).
+  \item Radial slices are invariant and hence scalar multiples of the surface
+  law.
+  \item Radius and direction are independent; so are \(R^2\) and direction.
+  \item Gaussian expectation bounds divide by the positive radial mean.
+  \item Quadratic Wishart-Gamma expectation bounds divide by the positive
+  squared radial mean.
+  \item Strong global surface Levy is available for the canonical surface law.
+  \item Localized Levy transfers global concentration to the good set.
+  \item The two operator-norm good sets have paper-scale high probability.
+  \item Aubrun's profile-count estimate gives the polynomial bound for the
+  weighted Wick profiles.
+  \item The off-diagonal moment pipeline gives the required expectation
+  envelope.
+  \item The final Appendix B assembly has no unstated structural assumptions.
+\end{enumerate}
+
+\chapter*{Bibliographic Orientation}
+
+The proofs in the body of this document are written out directly.  The list
+below is included to identify the mathematical sources and historical
+provenance of the tools used: Aubrun's combinatorial organization of the
+partial-transpose moment method, the classical Wick formula, the usual matrix
+norm background, Haar and surface-measure language, Gamma and quadratic-form
+tail inequalities, and high-dimensional net estimates.  None of the proof
+steps above is intended to require opening one of these references.
+
+\begin{thebibliography}{99}
+\bibitem{aubrun}
+G.~Aubrun.
+\newblock Partial transposition of random states and non-centered semicircular
+distributions.
+\newblock \emph{Random Matrices: Theory and Applications}, 1(2), 2012.
+
+\bibitem{aubrun-szarek}
+G.~Aubrun and S.~Szarek.
+\newblock \emph{Alice and Bob Meet Banach}.
+\newblock American Mathematical Society, 2017.
+
+\bibitem{bhatia}
+R.~Bhatia.
+\newblock \emph{Matrix Analysis}.
+\newblock Graduate Texts in Mathematics 169, Springer, 1997.
+
+\bibitem{folland-real}
+G.~B. Folland.
+\newblock \emph{Real Analysis: Modern Techniques and Their Applications}.
+\newblock Second edition, Wiley, 1999.
+
+\bibitem{folland-harmonic}
+G.~B. Folland.
+\newblock \emph{A Course in Abstract Harmonic Analysis}.
+\newblock Second edition, CRC Press, 2016.
+
+\bibitem{hsu-kakade-zhang}
+D.~Hsu, S.~M. Kakade, and T.~Zhang.
+\newblock A tail inequality for quadratic forms of subgaussian random vectors.
+\newblock \emph{Electronic Communications in Probability}, 17, no.~52,
+1--6, 2012.
+
+\bibitem{isserlis}
+L.~Isserlis.
+\newblock On a formula for the product-moment coefficient of any order of a
+normal frequency distribution in any number of variables.
+\newblock \emph{Biometrika}, 12(1/2):134--139, 1918.
+
+\bibitem{laurent-massart}
+B.~Laurent and P.~Massart.
+\newblock Adaptive estimation of a quadratic functional by model selection.
+\newblock \emph{Annals of Statistics}, 28(5):1302--1338, 2000.
+
+\bibitem{mattila}
+P.~Mattila.
+\newblock \emph{Geometry of Sets and Measures in Euclidean Spaces}.
+\newblock Cambridge Studies in Advanced Mathematics 44, Cambridge University
+Press, 1995.
+
+\bibitem{mcshane}
+E.~J. McShane.
+\newblock Extension of range of functions.
+\newblock \emph{Bulletin of the American Mathematical Society},
+40(12):837--842, 1934.
+
+\bibitem{vershynin}
+R.~Vershynin.
+\newblock \emph{High-Dimensional Probability: An Introduction with
+Applications in Data Science}.
+\newblock Cambridge University Press, 2018.
+\end{thebibliography}
+
+\end{document}

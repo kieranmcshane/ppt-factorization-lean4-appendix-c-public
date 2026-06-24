@@ -1,0 +1,45 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{amsfonts,amssymb}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=red,urlcolor=blue]{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Prob}{P}
+\DeclareMathOperator{\diag}{diag}
+
+\begin{document}
+
+\input{AppendixB_rigorous_rewrite.tex}
+
+\begin{thebibliography}{1}
+
+\bibitem{Aubrun12}
+G.~Aubrun.
+\newblock Partial transposition of random states and non-centered semicircular
+distributions.
+\newblock \emph{Random Matrices: Theory Appl.} 1 (2012), 1250001.
+
+\bibitem{AubrunSzarek2017}
+G.~Aubrun and S.~J. Szarek.
+\newblock \emph{Alice and Bob Meet Banach: The Interface of Asymptotic
+Geometric Analysis and Quantum Information Theory}.
+\newblock Mathematical Surveys and Monographs 223, American Mathematical
+Society, 2017.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,14 @@
+# k=6 strict split invariant sanity
+# parity relation: q-p == t mod 2
+section,key,value,count
+parity,diagonal,parity_ok,73
+parity,off_diagonal,parity_ok,260
+target_search,score=2,dp=0;dq_plus=-2;dq_minus=0,5
+target_search,score=2,dp=0;dq_plus=0;dq_minus=-2,3
+target_search,score=2,dp=-2;dq_plus=0;dq_minus=0,3
+target_search,score=6,dp=-6;dq_plus=0;dq_minus=0,1
+target_search,score=3,dp=-1;dq_plus=-1;dq_minus=-1,1
+target_search,score=4,dp=0;dq_plus=-4;dq_minus=0,1
+target_search,score=4,dp=-4;dq_plus=0;dq_minus=0,1
+target_search,score=9,dp=-1;dq_plus=-3;dq_minus=-5,1
+target_search,score=6,dp=-2;dq_plus=-4;dq_minus=0,1

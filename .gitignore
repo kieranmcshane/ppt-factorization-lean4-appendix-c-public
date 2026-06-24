@@ -1,0 +1,28 @@
+/.lake
+/build
+.DS_Store
+*.pdf
+*.app/
+tools/AppendixBProgressWidget
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+__pycache__/
+.env.local
+.env.*.local
+
+# Lean blueprint generated web site and declaration cache.
+blueprint/web/
+blueprint/lean_decls
+blueprint/src/*.paux
+
+# Keep the generated formalization PDFs as shareable artifacts.
+!blueprint/print/print.pdf
+!exposition/*.pdf

@@ -1,0 +1,516 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amsthm}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{graphbox}
+\usepackage{textcomp}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=red]{hyperref}
+\usepackage{array}
+\usepackage{comment}
+\usepackage{appendix}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\N{\mathbb{N}}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Prob}{P}
+\DeclareMathOperator{\diag}{diag}
+
+% Draft provenance colors.
+% Uncolored text is pre-existing draft material.
+% `revderived`: assistant organization/paraphrase of pre-existing draft text.
+% `revverified`: prose translated from verified proof-route evidence.
+% `revnewmath`: genuinely new mathematical exposition added in this pass.
+\definecolor{RevisionDerived}{RGB}{105,105,105}
+\definecolor{RevisionVerified}{RGB}{0,105,120}
+\definecolor{RevisionNewMath}{RGB}{0,45,150}
+\newenvironment{revderived}{\begingroup\color{RevisionDerived}}{\endgroup}
+\newenvironment{revverified}{\begingroup\color{RevisionVerified}}{\endgroup}
+\newenvironment{revnewmath}{\begingroup\color{RevisionNewMath}}{\endgroup}
+% Backwards-compatible aliases used by the included appendix body.
+\newenvironment{revlatest}{\begin{revnewmath}}{\end{revnewmath}}
+\newenvironment{revrecent}{\begin{revverified}}{\end{revverified}}
+\newenvironment{revearlier}{\begin{revderived}}{\end{revderived}}
+
+\title[Sharp upper tails for PPT moments]{Sharp upper tails for partial-transpose moments on the Hilbert--Schmidt sphere}
+\author{}
+\date{}
+
+\begin{document}
+\begin{revverified}
+\begin{abstract}
+We isolate the upper-bound half of a sharp large-deviation principle for the
+\(k\)-th partial-transpose moment of a random induced state in the balanced
+regime \(s(d)\sim \lambda d^2\).  The upper-tail speed is
+\(d^{2+2/k}\), and the rate predicted by the one-column spike mechanism is
+\(\lambda\varepsilon^{1/k}\).  The proof developed here explains why no
+larger upper-tail probability can occur: after removing a background typical
+set, the bad event is forced outside a spherical neighbourhood whose
+isoperimetric cost is exactly
+\(\exp\{-\lambda\varepsilon^{1/k}d^{2+2/k}+o(d^{2+2/k})\}\).
+The article is organized as a conditional proof route; the older
+\(d^2\)-scale concentration appendix is retained as a supplier for the
+typical-set estimate, not as the sharp theorem.
+\end{abstract}
+\end{revverified}
+
+\maketitle
+
+\begin{revnewmath}
+\begin{remark}[Draft provenance colors]
+The colors are provenance labels, not decoration.  Uncolored text is inherited
+from the pre-existing draft.  Gray text is assistant organization or paraphrase
+of that draft.  Teal text is translated from proof-route statements.  Dark blue text is new mathematical exposition added in
+this pass.  The color environments are local and can be redefined to no-ops
+for a submission version.
+\end{remark}
+\end{revnewmath}
+
+\begin{revnewmath}
+\section{Scope and relation with the PPT threshold}
+\label{sec:scope-aubrun}
+
+Aubrun's theorem on partial transposition of random induced states is a
+quantitative threshold result.  In particular, the statement is not merely
+that the balanced PPT threshold is the constant \(4\): the theorem also gives
+high-probability estimates, with explicit inequalities controlling the two
+sides of the threshold.  The present paper should therefore not be read as a
+replacement proof of Aubrun's threshold theorem unless those probability
+bounds are restated and matched in the same normalization.
+
+The target here is narrower.  We study a fixed moment order \(k\ge3\), the
+balanced environment \(s(d)\sim\lambda d^2\), and the logarithmic upper tail
+of the partial-transpose moment at speed
+\[
+  v_{k,d}=d^{2+2/k}.
+\]
+The mechanism is a large-deviation mechanism for a moment functional: a spike
+of spherical radius \(d^{-1+1/k}\) creates a moment excess of order one, and
+the ambient Hilbert--Schmidt sphere charges such a displacement with cost
+\(\exp\{-\lambda a\,d^{2+2/k}+o(d^{2+2/k})\}\).  This is compatible with the
+PPT-threshold picture, but it is a different assertion from Aubrun's
+quantified threshold bounds.
+\end{revnewmath}
+
+\begin{revverified}
+\section{Sharp logarithmic upper tail}
+\label{sec:sharp-log-upper-tail}
+
+Fix an integer \(k\ge3\), a level \(\varepsilon>0\), and a balanced
+environment sequence \(s(d)\) with \(s(d)/d^2\to\lambda>0\).  Let \(X_d\) be
+uniform on the Hilbert--Schmidt unit sphere in \(M_{d^2,s(d)}(\C)\), and let
+\[
+  p_d^\uparrow(\varepsilon)
+  =
+  \Prob\left\{
+    \left|
+      m_{k,d}(X_d)-\E m_{k,d}(X_d)
+    \right|\ge \varepsilon
+  \right\}
+\]
+denote the absolute-deviation upper-tail probability for the normalized
+background moment used in the formal Appendix B development.  The speed and
+candidate rate are
+\[
+  v_{k,d}=d^{2+2/k},
+  \qquad
+  I_k(\varepsilon)=\lambda\varepsilon^{1/k}.
+\]
+
+\begin{theorem}[Formalized sharp upper endpoint]
+\label{thm:sharp-upper-endpoint}
+Assume the following inputs for the concrete spherical matrix model:
+\begin{enumerate}[leftmargin=*]
+\item the full spherical isoperimetric inequality in the ambient real
+  dimension \(2d^2s(d)\);
+\item the dimension identifications between the matrix model and that real
+  sphere;
+\item eventual positive mass of the one-sided favourable upper-tail event;
+\item eventual half-mass of the background typical set, obtained from the
+  moment and operator-norm bad-set estimates;
+\item the deterministic mixed-word expansion bound in the sharp spherical
+  neighbourhood, together with the corresponding scalar term limits.
+\end{enumerate}
+Then for every \(\eta>0\), eventually in \(d\),
+\[
+  \frac{\log p_d^\uparrow(\varepsilon)}{v_{k,d}}
+  \le
+  -I_k(\varepsilon)+\eta .
+\]
+\end{theorem}
+\end{revverified}
+
+\begin{revnewmath}
+\begin{theorem}[Main upper large-deviation bound]
+\label{thm:main-upper-large-deviation}
+Let \(k\ge3\), \(\varepsilon>0\), and \(s(d)/d^2\to\lambda>0\).  Suppose that
+the five input estimates listed in Theorem~\ref{thm:sharp-upper-endpoint}
+hold for the balanced spherical model.  Then
+\[
+  \limsup_{d\to\infty}
+  \frac{1}{d^{2+2/k}}
+  \log
+  \Prob\left\{
+    \left|
+      m_{k,d}(X_d)-\E m_{k,d}(X_d)
+    \right|\ge \varepsilon
+  \right\}
+  \le
+  -\lambda\varepsilon^{1/k}.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:sharp-upper-endpoint} with an arbitrary
+\(\eta>0\), take the \(\limsup\), and then let \(\eta\downarrow0\).  The
+content is therefore the formalized endpoint itself: all dimensional
+normalizations, local expansion estimates, and spherical-isoperimetric
+constants have already been reduced to the concrete model.
+\end{proof}
+
+\begin{proof}[Proof route]
+Choose a slack parameter and set the spherical radius so that its \(k\)-th
+power is just below \(\varepsilon\).  On the background typical set, the local
+expansion of the \(k\)-th moment separates into the pure radial spike term,
+the background term, and mixed words.  The deterministic mixed-word estimate
+and its scalar limits make the mixed contribution smaller than the available
+slack, so every point in the upper-tail event must lie outside the sharp
+spherical neighbourhood of the typical set.
+
+The typical set has probability at least \(1/2\).  Spherical isoperimetry
+therefore bounds the probability of the complement of its radius-\(r_d\)
+neighbourhood by
+\[
+  \exp\left(-\frac{(2d^2s(d)-1)r_d^2}{2}\right).
+\]
+The radius is chosen at the spike scale, and the scalar identities reduce the
+exponent to
+\[
+  -\lambda\,a + o(1)
+\]
+after division by \(d^{2+2/k}\), where \(a^k\) is the admissible moment
+increase.  Letting the slack tend to zero gives \(a\to\varepsilon^{1/k}\),
+which yields the claimed \(-\lambda\varepsilon^{1/k}\) upper rate.
+\end{proof}
+
+\begin{lemma}[Radius-to-rate computation]
+\label{lem:radius-to-rate}
+Let \(N_d=d^2\), let \(s(d)/N_d\to\lambda\), and let
+\(v_{k,d}=d^{2+2/k}\).  For a fixed \(a\ge0\), set
+\[
+  r_d^2=\frac{a\,v_{k,d}}{N_d^2},
+  \qquad
+  n_d=2N_ds(d).
+\]
+Then
+\[
+  \frac{(n_d-1)r_d^2}{2v_{k,d}}\longrightarrow \lambda a .
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(r_d^2=a v_{k,d}/N_d^2\),
+\[
+  \frac{(n_d-1)r_d^2}{2v_{k,d}}
+  =
+  a\left(\frac{s(d)}{N_d}-\frac{1}{2N_d^2}\right).
+\]
+The first term tends to \(\lambda\), and the second tends to \(0\).
+\end{proof}
+
+\begin{theorem}[Sharp exponent, conditional on the matching lower spike]
+\label{thm:sharp-optimal-exponent}
+Assume, in addition to the hypotheses of
+Theorem~\ref{thm:sharp-upper-endpoint}, the one-column lower spike
+construction: for every \(\eta>0\), eventually in \(d\),
+\[
+  -I_k(\varepsilon)-\eta
+  \le
+  \frac{\log p_d^\uparrow(\varepsilon)}{v_{k,d}} .
+\]
+Then
+\[
+  \lim_{d\to\infty}
+  \frac{\log p_d^\uparrow(\varepsilon)}{d^{2+2/k}}
+  =
+  -\lambda\varepsilon^{1/k}.
+\]
+\end{theorem}
+
+\begin{proof}
+The lower spike gives
+\(\liminf_d v_{k,d}^{-1}\log p_d^\uparrow(\varepsilon)
+\ge -I_k(\varepsilon)\).  The sharp upper endpoint gives
+\(\limsup_d v_{k,d}^{-1}\log p_d^\uparrow(\varepsilon)
+\le -I_k(\varepsilon)\).  The two inequalities force the limit and identify
+the optimal exponent.
+\end{proof}
+
+\begin{remark}[What is stronger than the concentration appendix]
+The concentration theorem later in this file controls ordinary fluctuations
+around the mean on an exponential scale supplied by the ambient sphere.  The
+sharp endpoint above is a large-deviation statement at the smaller spike
+speed \(d^{2+2/k}\), and it identifies the exact constant in the exponent.
+Thus the concentration argument is only one supplier for the typical
+background set; it is not the final optimality theorem.
+\end{remark}
+\end{revnewmath}
+
+\begin{revverified}
+\section{Proof bookkeeping}
+\label{sec:proof-bookkeeping}
+
+The proof separates the probabilistic argument into an upper inequality and a
+matching one-column lower construction.  Both sides are normalized at the same
+speed and rate:
+\[
+  v_d=d^{2+2/k},
+  \qquad
+  I(\varepsilon)=\lambda\varepsilon^{1/k}.
+\]
+The bookkeeping point is that the upper argument is an optimal-exponent
+argument, not merely an ordinary concentration estimate: the concentration
+appendix supplies typical background control, while the sharp speed comes from
+the spike displacement and the cap cost on the Hilbert--Schmidt sphere.
+\end{revverified}
+
+\begin{revderived}
+\section{Introduction}
+
+Let \(X\) be uniformly distributed on the Hilbert--Schmidt unit sphere in
+\(M_{d^2,s}(\C)\).  The matrix \(XX^*\) is the normalized induced random
+state obtained from a Gaussian matrix after radial projection, and
+\((XX^*)^\Gamma\) denotes its partial transpose with respect to the tensor
+decomposition \(M_{d^2}(\C)=M_d(\C)\otimes M_d(\C)\).  The quantities studied
+in this article are the moments
+\[
+  f_k(X)=\Tr\left(((XX^*)^\Gamma)^k\right),
+  \qquad k\ge1.
+\]
+
+The balanced regime is \(s\asymp d^2\).  This is the natural threshold scale
+for partial transposition of random induced states: the matrix dimension is
+\(d^2\), the number of environmental columns is comparable to \(d^2\), and the
+real dimension of the Hilbert--Schmidt sphere is
+\[
+  2d^2s-1\asymp d^4.
+\]
+This large ambient dimension is the source of the concentration estimate
+below.
+
+There is, however, a useful obstruction.  The map \(X\mapsto f_k(X)\) is not
+treated as globally Lipschitz at the optimal scale.  A global Lipschitz bound
+would be too crude, because it would have to control rare configurations with
+large operator norm.  Instead, the proof constructs a high-probability set
+\(\Omega\) on which the relevant operator norms are of order \(d^{-2}\).  On
+this set the trace-power perturbation estimate gives the correct local
+Lipschitz constant.  A localized form of Levy's lemma then converts the local
+Lipschitz estimate and the smallness of \(\Omega^c\) into concentration on the
+whole sphere.
+
+\section{Model and main result}
+
+The ambient space is the Hilbert--Schmidt unit sphere
+\[
+  S_{HS}(d^2,s)
+  =
+  \{X\in M_{d^2,s}(\C):\norm X_2=1\},
+\]
+with its uniform surface probability measure.  The observable is
+\[
+  f_k(X)=\Tr\left(((XX^*)^\Gamma)^k\right),
+\]
+where \(\Gamma\) denotes partial transposition on the second tensor factor of
+\(M_d(\C)\otimes M_d(\C)\).
+
+\begin{theorem}[Main concentration estimate]
+\label{thm:main-concentration}
+Fix \(k\ge1\) and \(\lambda>0\).  There are constants \(c,C>0\), depending
+only on \(k\) and \(\lambda\), such that the following holds for all
+sufficiently large \(d\).  If
+\[
+  \frac{\lambda}{2}d^2\le s\le 2\lambda d^2
+\]
+and \(X\) is uniform on \(S_{HS}(d^2,s)\), then for every \(\varepsilon>0\),
+\[
+  \Prob\left\{
+    \left|
+      f_k(X)-\E f_k(X)
+    \right|
+    \ge
+    \varepsilon d^{-(2k-2)}
+  \right\}
+  \le
+  C e^{-c d^2}
+  +
+  C\exp\left(-c\frac{d^4\varepsilon^2}{k^2}\right).
+\]
+\end{theorem}
+
+The first term in the bound is the cost of discarding the bad set where the
+operator-norm controls may fail.  The second term is the spherical
+concentration term.  The exponent \(d^4\) is the real dimension of the sphere,
+while the factor \(k^2\) comes from the local Lipschitz constant of the
+degree-\(k\) trace polynomial.
+
+\begin{remark}
+For fixed \(\varepsilon>0\), the second term is much smaller than
+\(\exp(-c d^2)\).  We keep the two terms separated because the proof naturally
+produces them from different mechanisms: probabilistic construction of the
+good set and spherical concentration on the good set.
+\end{remark}
+
+\section{Proof architecture}
+
+The proof of Theorem~\ref{thm:main-concentration} has four conceptual steps.
+
+\begin{enumerate}[leftmargin=*]
+\item \emph{Localize the concentration inequality.}
+  Levy concentration is applied not directly to \(f_k\), but to a Lipschitz
+  extension of \(f_k\) from a high-probability good set.  This produces a tail
+  estimate with two errors: the spherical Levy tail and the probability of the
+  bad set.
+
+\item \emph{Build the good set.}
+  On the good set, the operator norm of \((XX^*)^\Gamma\) and the relevant
+  diagonal gamma quantities are bounded at the correct \(d^{-2}\) scale.  The
+  complement of this good set is exponentially small.
+
+\item \emph{Prove the deterministic Lipschitz bound on the good set.}
+  The trace-power telescoping identity reduces the variation of \(f_k\) to a
+  trace-norm perturbation bound.  Hilbert--Schmidt ideal inequalities and the
+  operator-norm control on the good set yield the desired local Lipschitz
+  constant.
+
+\item \emph{Replace the median by the expectation.}
+  The localized concentration estimate first gives concentration around a
+  median.  Since \(f_k\) is uniformly bounded, the tail estimate can be
+  integrated to show that the median and the mean differ by a smaller error.
+  This gives the final concentration inequality around \(\E f_k\).
+\end{enumerate}
+
+\subsection{Why the local Lipschitz constant has the right scale}
+
+The deterministic perturbation bound starts from
+\[
+  \abs{\Tr(A^k)-\Tr(B^k)}
+  \le
+  k\max(\norm A_\infty,\norm B_\infty)^{k-1}\norm{A-B}_1.
+\]
+Applied to
+\[
+  A=(XX^*)^\Gamma,\qquad B=(YY^*)^\Gamma,
+\]
+the trace-norm difference is controlled by
+\[
+  \norm{A-B}_1
+  \lesssim
+  d\,\max(\norm X_\infty,\norm Y_\infty)\norm{X-Y}_2.
+\]
+On the good set one has
+\[
+  \norm{(XX^*)^\Gamma}_\infty \lesssim d^{-2},
+  \qquad
+  \norm X_\infty \lesssim d^{-1}.
+\]
+Consequently
+\[
+  \abs{f_k(X)-f_k(Y)}
+  \lesssim
+  k d^{-2(k-1)}\norm{X-Y}_2
+  \qquad (X,Y\in\Omega).
+\]
+Thus the relevant Lipschitz constant is
+\[
+  L_{k,d}\asymp k d^{-2k+2}.
+\]
+Since the sphere has real dimension \(n\asymp d^4\), Levy's lemma gives
+\[
+  \exp\left(-c\,\frac{n t^2}{L_{k,d}^2}\right)
+  =
+  \exp\left(-c\,\frac{d^4\varepsilon^2}{k^2}\right)
+\]
+when \(t=\varepsilon d^{-(2k-2)}\).  This is the scale appearing in
+Theorem~\ref{thm:main-concentration}.
+
+\subsection{The good set}
+
+The good set \(\Omega\) is the intersection of two events.  The first controls
+the operator norm of \(X\), and follows from standard Gaussian operator-norm
+estimates after writing \(X=G/\norm G_2\).  The second controls
+\((XX^*)^\Gamma\).  For this, one decomposes the partially transposed Wishart
+matrix into its diagonal and off-diagonal parts.  The diagonal part is
+controlled by gamma concentration, while the off-diagonal part is controlled
+by Aubrun's moment estimate and Markov's inequality applied to a high even
+moment.
+
+The output is the estimate
+\[
+  \Prob(\Omega^c)\le C e^{-c d^2}.
+\]
+This probability is not negligible compared with the final bound; it is
+exactly the first term in Theorem~\ref{thm:main-concentration}.
+
+\subsection{Median and expectation}
+
+The localized Levy argument first gives concentration around a median.  To
+pass to the expectation, we use the uniform bound \(\abs{f_k(X)}\le1\) for
+\(k\ge2\), while \(f_1(X)=1\).  Integrating the median tail only up to the
+bounded range gives
+\[
+  \abs{\E f_k-M_k}
+  \le
+  C e^{-c d^2}+C_{k,\lambda}k d^{-2k}.
+\]
+This error is smaller than the target scale
+\(\varepsilon d^{-(2k-2)}\) except in the regime where the stated probability
+bound is already trivial after increasing the constant \(C\).  This completes
+the reduction from median concentration to mean concentration.
+
+\subsection{Detailed proof}
+
+The rest of the article gives the detailed estimates in the order just
+described.
+\end{revderived}
+
+\appendix
+\input{AppendixB_article_replacement.tex}
+
+% Standalone-only bibliography for compiling this wrapper outside the article.
+% Do not paste this block into a host article that already uses a bibliography.
+\begin{thebibliography}{2}
+\bibitem{Aubrun12}
+G.~Aubrun,
+\emph{Partial transposition of random states and non-centered semicircular
+distributions},
+Random Matrices: Theory Appl. \textbf{1} (2012), 1250001.
+
+\bibitem{AubrunSzarek2017}
+G.~Aubrun and S.~J. Szarek,
+\emph{Alice and Bob Meet Banach: The Interface of Asymptotic Geometric
+Analysis and Quantum Information Theory},
+Mathematical Surveys and Monographs, vol.~223, American Mathematical
+Society, 2017.
+\end{thebibliography}
+
+\end{document}

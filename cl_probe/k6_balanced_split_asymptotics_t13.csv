@@ -1,0 +1,10 @@
+# k=6 balanced strict split arithmetic asymptotics
+# arithmetic target slots only; not permutation counts
+# leading_strict_row_coeff=7/180
+# leading_strict_slot_coeff=7/4860
+t_min,t_max,balanced_rows,strict_rows,boundary_rows,strict_slots,boundary_slots,strict_rows_over_T2,strict_slots_over_T3,strict_rows_over_leading,strict_slots_over_leading
+13,40,55,12,3,17,4,0.0075,0.000265625,0.192857142857,0.184419642857
+13,80,239,124,21,333,36,0.019375,0.000650390625,0.498214285714,0.451556919643
+13,120,547,360,58,1479,106,0.025,0.000855902777778,0.642857142857,0.594241071429
+13,200,1537,1206,184,8497,350,0.03015,0.001062125,0.775285714286,0.737418214286
+13,400,6191,5500,811,79431,1584,0.034375,0.001241109375,0.883928571429,0.861684508929

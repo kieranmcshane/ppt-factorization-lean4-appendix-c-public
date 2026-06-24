@@ -1,0 +1,705 @@
+\section{A stronger concentration result through local Lipschitz estimates}
+\label{app:second_approach}
+
+This appendix proves a concentration estimate for the normalized induced model.
+We write
+\[
+    S_{HS}(d^2,s)=\{X\in M_{d^2,s}(\C):\norm{X}_2=1\}
+\]
+for the Hilbert--Schmidt unit sphere, viewed as a real Euclidean sphere of
+dimension \(2d^2s\).  For
+\[
+    f_k(X)=\Tr\left(\left((XX^*)^\Gamma\right)^k\right),
+    \qquad X\in S_{HS}(d^2,s),
+\]
+the key point is that \(f_k\) is not globally Lipschitz at the optimal scale,
+but it is Lipschitz at that scale on a subset of overwhelming measure.  A
+localized form of Levy's lemma then exploits the full sphere dimension,
+which is of order \(d^4\) when \(s\sim\lambda d^2\).
+The only non-elementary random-matrix input used below is Aubrun's
+trace-moment estimate for the off-diagonal part of a partially transposed
+Wishart matrix, stated explicitly as Theorem~\ref{lem:aubrun_moment_estimate}.
+
+\begin{lemma}[Localized Levy lemma]
+\label{lem:localized_levy}
+Let \(S^{n-1}\) be the Euclidean unit sphere with its normalized Haar
+measure.  Let \(\Omega\subset S^{n-1}\) be measurable and assume
+\(\Prob(\Omega)\ge 3/4\).  Let \(h:S^{n-1}\to\R\) be measurable and assume
+that \(h_{\mid\Omega}\) is \(L\)-Lipschitz.  If \(M_h\) is a median of \(h\),
+then, for every \(t>0\),
+\[
+    \Prob\{|h-M_h|\ge t\}
+    \le
+    2\Prob(\Omega^c)+4\exp\left(-\frac{nt^2}{16L^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Define the Lipschitz extension
+\[
+    H(x)=\inf_{y\in\Omega}\bigl(h(y)+L\norm{x-y}_2\bigr).
+\]
+Then \(H\) is \(L\)-Lipschitz on the whole sphere and \(H=h\) on \(\Omega\).
+Let \(M_H\) be a median of \(H\).  The spherical isoperimetric inequality says
+that if \(A\) has spherical measure at least \(1/2\), then
+\[
+    \Prob\{\dist(x,A)>r\}\le \exp(-nr^2/4).
+\]
+Apply this to the median sublevel and superlevel sets of \(H\).  Since
+\(|H(x)-H(y)|\le L\norm{x-y}_2\), the events
+\(\{H>M_H+t\}\) and \(\{H<M_H-t\}\) are contained in the complements of the
+\(t/L\)-neighborhoods of those two median sets.  The union of the two
+one-sided bounds gives
+\[
+    \Prob\{|H-M_H|\ge t\}
+    \le 2\exp\left(-\frac{nt^2}{4L^2}\right),
+\]
+with the displayed normalization of constants.  Since \(H=h\) on \(\Omega\),
+\[
+\begin{aligned}
+    \Prob\{|h-M_H|\ge t\}
+    &\le \Prob(\Omega^c)+\Prob\{|H-M_H|\ge t\}  \\
+    &\le \Prob(\Omega^c)+2\exp\left(-\frac{nt^2}{4L^2}\right).
+\end{aligned}
+\]
+This proves the estimate with the central value \(m_h=M_H\), with a slightly
+stronger bad-set coefficient than stated for this auxiliary center.
+
+We now replace \(M_H\) by a median \(M_h\) of \(h\).  We use the elementary
+fact that, for any real number \(a\), any median \(M\) of a real random
+variable \(Z\), and every \(t>0\),
+\[
+    \Prob\{|Z-M|\ge t\}
+    \le 2\Prob\{|Z-a|\ge t/2\}.
+\]
+Indeed, if \(|M-a|<t/2\), then
+\[
+    \{|Z-M|\ge t\}\subset \{|Z-a|\ge t/2\}.
+\]
+If \(|M-a|\ge t/2\), then the median property implies
+\(\Prob\{|Z-a|\ge t/2\}\ge1/2\), and the displayed inequality is trivial.
+Applying this with \(Z=h\), \(M=M_h\), and \(a=M_H\), then using the estimate
+already proved at scale \(t/2\), gives
+\[
+\begin{aligned}
+    \Prob\{|h-M_h|\ge t\}
+    &\le 2\Prob\{|h-M_H|\ge t/2\} \\
+    &\le 2\Prob(\Omega^c)
+       +4\exp\left(-\frac{nt^2}{16L^2}\right).
+\end{aligned}
+\]
+\end{proof}
+
+\begin{theorem}[Aubrun's moment estimate for the off-diagonal part]
+\label{lem:aubrun_moment_estimate}
+Let \(G\in M_{d^2,s}(\C)\) have independent standard complex Gaussian
+entries, set
+\[
+    W=\frac1s GG^*,\qquad Y=W^\Gamma,\qquad Z=Y-\diag(Y).
+\]
+There exists a polynomial \(Q\), independent of \(d\) and \(s\), such that,
+for every integer \(m\ge1\),
+\[
+    \left|\E\Tr(Z^m)\right|
+    \le
+    \left(\frac2s\right)^m
+    (d+Q(m))^{m+2}(\sqrt{s}+Q(m))^m.
+\]
+In the proof below we only use this estimate for even \(m\), where \(Z^m\) is
+positive semidefinite because \(Z\) is Hermitian.
+\end{theorem}
+
+\begin{proof}
+Write a cyclic word in \(\{1,\ldots,d\}^2\) as
+\[
+    w=(i_0,i_1,\ldots,i_m),\qquad i_m=i_0,
+\]
+and write \(i_r=(a_r,b_r)\).  Expanding the trace gives
+\[
+    \Tr(Z^m)=\sum_w\prod_{r=0}^{m-1}Z_{i_r,i_{r+1}}.
+\]
+For an off-diagonal edge \(i_r\ne i_{r+1}\), the partial transpose gives
+\[
+    Z_{i_r,i_{r+1}}
+    =
+    \frac1s\sum_{\alpha_r=1}^s
+    G_{(a_r,b_{r+1}),\alpha_r}\,
+    \overline{G_{(a_{r+1},b_r),\alpha_r}}.
+\]
+For a diagonal edge, the corresponding entry of \(Z=Y-\diag(Y)\) is \(0\).
+Hence
+\[
+\begin{aligned}
+    \E\Tr(Z^m)
+    &=
+    s^{-m}\sum_w\mathbf 1_{\mathrm{off}}(w)
+    \sum_{\alpha_0,\ldots,\alpha_{m-1}=1}^s
+    \E\prod_{r=0}^{m-1}
+    G_{(a_r,b_{r+1}),\alpha_r}\,
+    \overline{G_{(a_{r+1},b_r),\alpha_r}} .
+\end{aligned}
+\]
+The complex Wick formula turns the expectation into a count of permutations
+\(\pi\in\mathfrak S_m\) for which every holomorphic coordinate is matched
+with an equal anti-holomorphic coordinate:
+\[
+    (a_r,b_{r+1},\alpha_r)
+    =
+    (a_{\pi(r)+1},b_{\pi(r)},\alpha_{\pi(r)})
+    \qquad(0\le r<m),
+\]
+with cyclic indices.  Let \(\mathcal F_\pi\) be the set of closed walks and
+sample words satisfying these equalities.  Then
+\[
+    \E\Tr(Z^m)
+    =
+    s^{-m}\sum_{\pi\in\mathfrak S_m}
+    \sum_{(w,\alpha)\in\mathcal F_\pi}\mathbf 1_{\mathrm{off}}(w),
+\]
+and therefore
+\[
+    \left|\E\Tr(Z^m)\right|
+    \le
+    s^{-m}\sum_{\pi\in\mathfrak S_m}\card\mathcal F_\pi.
+\]
+
+For a fixed surviving permutation, the matching equalities generate
+equivalence relations among the left coordinates, right coordinates, and
+sample labels.  If its profile is \((u,v)\), meaning \(u\) free left/right
+classes and \(v\) free sample classes, then one may choose the free
+left/right coordinates in at most \(d^u\) ways and the sample labels in at
+most \(s^v\) ways.  Thus
+\[
+    \card\mathcal F_\pi\le d^u s^v.
+\]
+Regrouping by profiles gives
+\[
+    \sum_{\pi\in\mathfrak S_m}\card\mathcal F_\pi
+    \le
+    \sum_{u,v}N_m(u,v)d^u s^v.
+\]
+The Aubrun relation-counting estimate, proved by the innovation/defect
+argument, states that the last weighted sum is bounded by
+\[
+    2^m(d+Q(m))^{m+2}(\sqrt{s}+Q(m))^m
+\]
+for a polynomial \(Q\) independent of \(d\) and \(s\).  Multiplying by
+\(s^{-m}\) gives the announced estimate.
+\end{proof}
+
+\begin{lemma}[Standard Gaussian and gamma estimates]
+\label{lem:standard_gaussian_gamma_estimates}
+There is a universal constant \(C>0\) such that the following estimates hold.
+\begin{enumerate}
+    \item If \(G\in M_{m,n}(\C)\) has independent standard complex Gaussian
+    entries, then
+    \[
+        \E\norm{G}_\infty\le C(\sqrt m+\sqrt n).
+    \]
+    \item If \(\xi_1,\ldots,\xi_N\) are random variables of the form
+    \[
+        \xi_i=\frac1s\sum_{\ell=1}^s |g_{i\ell}|^2,
+    \]
+    where the \(g_{i\ell}\)'s are independent standard complex Gaussian
+    variables, then
+    \[
+        \E\max_{1\le i\le N}\xi_i
+        \le
+        1+C\sqrt{\frac{\log N}{s}}+C\frac{\log N}{s}.
+    \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For the first estimate, fix \(1/4\)-nets \(N_m\) and \(N_n\) of the unit
+spheres in \(\C^m\) and \(\C^n\), with \(|N_m|\le 9^{2m}\) and
+\(|N_n|\le 9^{2n}\).  The net-lifting estimate gives
+\[
+    \norm G_\infty\le 2\sup_{u\in N_m,\ v\in N_n}|\langle u,Gv\rangle|.
+\]
+For fixed unit \(u,v\), the scalar \(\langle u,Gv\rangle\) is a standard
+complex Gaussian, so
+\[
+    \Prob\{|\langle u,Gv\rangle|\ge r\}\le e^{-cr^2}
+\]
+for a universal \(c>0\).  The union bound over the two nets gives
+\[
+    \Prob\{\norm G_\infty\ge C(\sqrt m+\sqrt n)+t\}\le e^{-ct^2}.
+\]
+Integrating this tail in \(t\) gives
+\[
+    \E\norm G_\infty\le C'(\sqrt m+\sqrt n).
+\]
+
+For the second estimate, the gamma concentration bound
+\[
+    \Prob\left\{\xi_i\ge 1+2\sqrt{\frac u s}+2\frac u s\right\}\le e^{-u}
+\]
+is proved by the elementary Chernoff calculation for the MGF
+\((1-\theta)^{-s}\) of a sum of \(s\) independent mean-one exponentials, with
+\(\theta=\sqrt{u/s}/(1+\sqrt{u/s})\).  A union bound gives the same estimate for the
+maximum with \(u\) replaced by \(u+\log N\).  Integrating this tail bound yields
+the displayed expectation estimate after changing the universal constant.
+\end{proof}
+
+\begin{lemma}[Operator-norm inputs for the normalized model]
+\label{lem:normalized_operator_norm_inputs}
+Fix \(\lambda>0\), and let \(s=s_d\) satisfy \(s/d^2\to\lambda\).  Let \(X\)
+be uniform on \(S_{HS}(d^2,s)\).  There exist constants \(C_1,C_2,c>0\),
+depending only on \(\lambda\), such that, for all sufficiently large \(d\),
+\[
+    \E\norm{X}_\infty\le \frac{C_1}{d},
+    \qquad
+    \E\norm{(XX^*)^\Gamma}_\infty\le \frac{C_2}{d^2}.
+\]
+Furthermore, for suitable constants \(a,b>0\), depending only on \(\lambda\),
+the sets
+\[
+    \Omega_1=\left\{X:\norm{X}_\infty\le \frac{a}{d}\right\},
+    \qquad
+    \Omega_2=\left\{X:\norm{(XX^*)^\Gamma}_\infty\le \frac{b}{d^2}\right\}
+\]
+satisfy
+\[
+    \Prob(\Omega_1^c)\le e^{-cd^2},
+    \qquad
+    \Prob(\Omega_2^c)\le e^{-cd^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(G\in M_{d^2,s}(\C)\) have independent standard complex Gaussian entries.
+Write
+\[
+    R=\norm{G}_2,\qquad X=\frac{G}{R}.
+\]
+Then \(X\) is uniform on \(S_{HS}(d^2,s)\) and is independent of \(R\).  Since
+\(G=RX\), independence gives
+\[
+    \E\norm{G}_\infty=(\E R)(\E\norm{X}_\infty).
+\]
+The standard Gaussian operator-norm estimate
+\[
+    \E\norm{G}_\infty\le C(\sqrt{d^2}+\sqrt{s})
+\]
+from Lemma~\ref{lem:standard_gaussian_gamma_estimates}
+and the elementary bound \(\E R\ge c\,d\sqrt{s}\) imply
+\[
+    \E\norm{X}_\infty
+    \le
+    \frac{C(d+\sqrt{s})}{c\,d\sqrt{s}}
+    \le \frac{C_1}{d},
+\]
+because \(s\sim\lambda d^2\).
+
+We next prove the corresponding expectation bound for the partial transpose.
+Set
+\[
+    W=\frac1s GG^*,\qquad Y=W^\Gamma,
+    \qquad Z=Y-\diag(Y).
+\]
+We apply Theorem~\ref{lem:aubrun_moment_estimate} only for even \(m\).  Since
+\(Z\) is Hermitian,
+\[
+    \norm{Z}_\infty^m\le \Tr(Z^m)
+\]
+for even \(m\), and therefore
+\[
+\begin{aligned}
+    \E\norm{Z}_\infty
+    &\le \left(\E\norm{Z}_\infty^m\right)^{1/m}              \\
+    &\le \left(\E\Tr(Z^m)\right)^{1/m}                       \\
+    &\le
+    \frac2s (d+Q(m))^{1+2/m}(\sqrt{s}+Q(m)).
+\end{aligned}
+\]
+Choose an even integer \(m=m(d)\) such that
+\[
+    Q(m)=o(d),\qquad \log d=o(m).
+\]
+This is possible because \(Q\) is a fixed polynomial, for instance by taking
+\(m=(\log d)^A\) with \(A\) large enough.  This is the same growth condition
+used immediately after Aubrun's Proposition 7.1.  Since \(s\sim\lambda d^2\),
+for large \(d\),
+\[
+\begin{aligned}
+    \frac2s (d+Q(m))^{1+2/m}(\sqrt{s}+Q(m))
+    &\le
+    C_\lambda\, d^{2/m}                                      \\
+    &=
+    C_\lambda\, \exp\!\left(\frac{2\log d}{m}\right)
+    \le 2C_\lambda.
+\end{aligned}
+\]
+After changing the constant, this gives
+\[
+    \E\norm{Z}_\infty\le C_\lambda
+\]
+for all sufficiently large \(d\).
+
+For the diagonal part, partial transposition preserves diagonal entries, so
+\[
+    Y_{ii}=W_{ii}=\frac1s\sum_{\ell=1}^{s}|G_{i\ell}|^2,
+    \qquad 1\le i\le d^2.
+\]
+The variables \(Y_{ii}\) are of the form covered by
+Lemma~\ref{lem:standard_gaussian_gamma_estimates}, with \(N=d^2\).  Hence
+\[
+    \E\max_{1\le i\le d^2}Y_{ii}
+    \le
+    1+C\sqrt{\frac{\log d}{s}}+C\frac{\log d}{s}
+    \le C_\lambda.
+\]
+Consequently
+\[
+    \E\norm{Y}_\infty
+    \le
+    \E\norm{Z}_\infty+\E\norm{\diag(Y)}_\infty
+    \le C_\lambda.
+\]
+
+Returning to the unnormalized Gaussian matrix, note that no concentration
+estimate for the radial variable is needed at this point.  We have the exact
+identity
+\[
+    (GG^*)^\Gamma=sY=R^2(XX^*)^\Gamma.
+\]
+Since \(R\) is independent of \(X\), and since \(\E R^2=d^2s\),
+\[
+    s\,\E\norm{Y}_\infty
+    =
+    \E\norm{(GG^*)^\Gamma}_\infty
+    =
+    (\E R^2)\,\E\norm{(XX^*)^\Gamma}_\infty
+    =
+    d^2s\,\E\norm{(XX^*)^\Gamma}_\infty.
+\]
+Thus
+\[
+    \E\norm{(XX^*)^\Gamma}_\infty
+    =
+    \frac{\E\norm{Y}_\infty}{d^2}
+    \le \frac{C_2}{d^2}.
+\]
+
+We now pass from expectations to high-probability good sets.  The map
+\[
+    X\longmapsto \norm{X}_\infty
+\]
+is \(1\)-Lipschitz on the Hilbert--Schmidt sphere.  If \(M_1\) is a median of
+\(\norm{X}_\infty\), then \(M_1\le 2\E\norm{X}_\infty\le 2C_1/d\).
+Choosing \(a>2C_1+1\), Levy's lemma gives
+\[
+    \Prob(\Omega_1^c)\le e^{-cd^2}
+\]
+for large \(d\), since the sphere dimension is \(2d^2s\asymp d^4\) and the
+deviation from the median is at least \(d^{-1}\).
+
+It remains to control \(\Omega_2\).  Let
+\[
+    g(X)=\norm{(XX^*)^\Gamma}_\infty.
+\]
+For \(X,Y\in S_{HS}(d^2,s)\),
+\[
+\begin{aligned}
+    |g(X)-g(Y)|
+    &\le
+    \norm{(XX^*)^\Gamma-(YY^*)^\Gamma}_\infty  \\
+    &\le
+    \norm{(XX^*)^\Gamma-(YY^*)^\Gamma}_2       \\
+    &=
+    \norm{XX^*-YY^*}_2                         \\
+    &\le
+    (\norm{X}_\infty+\norm{Y}_\infty)\norm{X-Y}_2.
+\end{aligned}
+\]
+The last step follows from
+\[
+    XX^*-YY^*=(X-Y)X^*+Y(X-Y)^*
+\]
+and the Hilbert--Schmidt ideal inequalities.
+Therefore \(g_{\mid\Omega_1}\) is \(2a/d\)-Lipschitz.  For large \(d\),
+\(\Prob(\Omega_1)\ge3/4\).  Let \(M_g\) be a median of \(g\).  Since \(g\ge0\),
+\[
+    M_g\le 2\E g\le \frac{2C_2}{d^2}.
+\]
+Choose \(b>2C_2+1\).  Then
+\[
+    \{g>b/d^2\}
+    \subset
+    \{|g-M_g|>(b-2C_2)d^{-2}\}.
+\]
+Applying the localized Levy lemma to \(g\) on \(\Omega_1\), with
+\[
+    L=\frac{2a}{d},
+    \qquad
+    t=(b-2C_2)d^{-2},
+    \qquad
+    n=2d^2s\asymp d^4,
+\]
+gives
+\[
+    \Prob(\Omega_2^c)
+    \le
+    2\Prob(\Omega_1^c)
+    +4\exp\left(-c d^2\right)
+    \le e^{-c'd^2},
+\]
+after decreasing \(c'\) and changing constants.
+\end{proof}
+
+\begin{theorem}[Local Lipschitz concentration for partial transpose moments]
+\label{thm:local_lipschitz_concentration}
+Fix \(k\ge1\) and \(\lambda>0\), and let \((s_d)_{d\ge1}\) be an integer
+sequence such that \(s_d/d^2\to\lambda\).  Let \(X\) be uniformly distributed
+on
+\[
+    S_{HS}(d^2,s_d)=\{X\in M_{d^2,s_d}(\C):\norm{X}_2=1\}.
+\]
+Set
+\[
+    f_k(X)=\Tr\left(\left((XX^*)^\Gamma\right)^k\right).
+\]
+There exist constants \(c,C>0\), depending only on \(k\) and \(\lambda\), such
+that, for all sufficiently large \(d\) and every \(\epsilon>0\),
+\begin{equation}
+\label{eq:local_lipschitz_concentration_theorem}
+    \Prob\left(\abs{f_k(X)-\E f_k(X)}
+    \geq \frac{\epsilon}{d^{2k-2}}\right)
+    \leq C e^{-c d^2}
+    +C\exp\left(-c\,\frac{d^4\epsilon^2}{k^2}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write \(s=s_d\).  Since \(s/d^2\to\lambda\), all constants below are uniform
+for sufficiently large \(d\), with dependence allowed on \(k\) and
+\(\lambda\).  The real dimension of the ambient Hilbert--Schmidt sphere is
+\[
+    n=2d^2s\asymp d^4.
+\]
+
+\paragraph{1. Deterministic local Lipschitz estimate.}
+Let
+\[
+    A=(XX^*)^\Gamma,\qquad B=(YY^*)^\Gamma.
+\]
+The telescoping identity
+\[
+    A^k-B^k=\sum_{j=0}^{k-1}A^j(A-B)B^{k-1-j}
+\]
+together with
+\[
+    |\Tr Z|\le\norm{Z}_1,
+    \qquad
+    \norm{UVW}_1\le\norm{U}_\infty\norm{V}_1\norm{W}_\infty
+\]
+gives
+\[
+    |\Tr(A^k)-\Tr(B^k)|
+    \le
+    k\max(\norm{A}_\infty,\norm{B}_\infty)^{k-1}\norm{A-B}_1.
+\]
+Since \(A-B=(XX^*-YY^*)^\Gamma\), partial transposition is an isometry for the
+Hilbert--Schmidt norm, and \(\norm{M}_1\le d\norm{M}_2\) for matrices in
+\(M_{d^2}(\C)\), we have
+\[
+    \norm{A-B}_1
+    \le d\norm{A-B}_2
+    =
+    d\norm{XX^*-YY^*}_2.
+\]
+Moreover,
+\[
+    XX^*-YY^*=(X-Y)X^*+Y(X-Y)^*,
+\]
+and the Hilbert--Schmidt ideal inequality gives
+\[
+    \norm{XX^*-YY^*}_2
+    \le
+    (\norm{X}_\infty+\norm{Y}_\infty)\norm{X-Y}_2.
+\]
+Therefore, for all \(X,Y\in S_{HS}(d^2,s)\),
+\begin{equation}
+\label{eq:lipschitz_f_final_appendix_full_rigorous}
+    |f_k(X)-f_k(Y)|
+    \le
+    dk\max\left(
+      \norm{(XX^*)^\Gamma}_\infty,
+      \norm{(YY^*)^\Gamma}_\infty
+    \right)^{k-1}
+    (\norm{X}_\infty+\norm{Y}_\infty)\norm{X-Y}_2.
+\end{equation}
+
+\paragraph{2. The good set.}
+Let \(\Omega_1,\Omega_2\) be the sets from
+Lemma~\ref{lem:normalized_operator_norm_inputs}, and set
+\[
+    \Omega=\Omega_1\cap\Omega_2.
+\]
+Then
+\[
+    \Prob(\Omega^c)
+    \le \Prob(\Omega_1^c)+\Prob(\Omega_2^c)
+    \le 2e^{-cd^2}.
+\]
+On \(\Omega\), estimate
+\eqref{eq:lipschitz_f_final_appendix_full_rigorous} gives
+\[
+\begin{aligned}
+    |f_k(X)-f_k(Y)|
+    &\le
+    dk\left(\frac{b}{d^2}\right)^{k-1}
+    \frac{2a}{d}\norm{X-Y}_2  \\
+    &\le
+    \frac{C_k}{d^{2k-2}}\norm{X-Y}_2.
+\end{aligned}
+\]
+Thus \(f_k\) is \(L_k\)-Lipschitz on \(\Omega\), with
+\[
+    L_k=\frac{C_k}{d^{2k-2}}.
+\]
+Equivalently, after enlarging \(C_k\), we may write
+\[
+    L_k=\frac{C(k,\lambda)\,k}{d^{2k-2}}.
+\]
+
+\paragraph{3. Median concentration.}
+Apply Lemma~\ref{lem:localized_levy} to \(f_k\) on \(\Omega\).  For a median
+\(M_k\) of \(f_k\), and after absorbing numerical constants into \(c\) and
+\(C\), we get
+\[
+    \Prob\left\{
+      \abs{f_k(X)-M_k}\ge \frac{u}{d^{2k-2}}
+    \right\}
+    \le
+    4e^{-cd^2}
+    +2\exp\left(
+      -c\,\frac{d^4u^2}{k^2}
+    \right).
+\]
+Indeed,
+\[
+    \frac{n(u/d^{2k-2})^2}{4L_k^2}
+    \asymp
+    \frac{d^4u^2}{k^2}.
+\]
+
+\paragraph{4. Replacing the median by the mean.}
+We first record a deterministic bound on the range of \(f_k\).  Since partial
+transposition preserves the Hilbert--Schmidt norm,
+\[
+    \norm{(XX^*)^\Gamma}_2=\norm{XX^*}_2\le \norm{XX^*}_1=\norm{X}_2^2=1.
+\]
+If \(k=1\), then
+\[
+    f_1(X)=\Tr((XX^*)^\Gamma)=\Tr(XX^*)=1.
+\]
+If \(k\ge2\), writing the eigenvalues of \((XX^*)^\Gamma\) as
+\((\alpha_i)_i\), we have
+\[
+    |f_k(X)|
+    =
+    \left|\sum_i \alpha_i^k\right|
+    \le
+    \sum_i |\alpha_i|^k
+    \le
+    \left(\sum_i |\alpha_i|^2\right)^{k/2}
+    \le 1.
+\]
+Thus \(|f_k|\le1\) for every \(k\ge1\).
+
+Using the layer-cake identity and the preceding median concentration estimate,
+\[
+\begin{aligned}
+    |\E f_k-M_k|
+    &\le
+    \E|f_k-M_k| \\
+    &=
+    \int_0^{2}\Prob\{|f_k-M_k|\ge t\}\,dt.
+\end{aligned}
+\]
+Changing variables \(t=u/d^{2k-2}\) and using the displayed tail bound gives
+\[
+    |\E f_k-M_k|
+    \le
+    C e^{-cd^2}
+    +C\frac{k}{d^{2k}},
+\]
+where the Gaussian integral contributes \(Ck/d^{2k}\), since the sphere
+dimension is of order \(d^4\).
+
+Let
+\[
+    \delta_\epsilon=\frac{\epsilon}{d^{2k-2}}.
+\]
+If
+\[
+    |\E f_k-M_k|\le \frac{\delta_\epsilon}{2},
+\]
+then
+\[
+    \{|f_k-\E f_k|\ge\delta_\epsilon\}
+    \subset
+    \{|f_k-M_k|\ge\delta_\epsilon/2\}.
+\]
+The median concentration estimate at half scale therefore gives
+\[
+    \Prob\{|f_k-\E f_k|\ge\delta_\epsilon\}
+    \le
+    C e^{-cd^2}
+    +C\exp\left(-c\frac{d^4\epsilon^2}{k^2}\right).
+\]
+
+It remains only to cover the complementary case
+\[
+    |\E f_k-M_k|> \frac{\delta_\epsilon}{2}.
+\]
+By the estimate just proved for the mean--median gap, this can occur only if
+\[
+    \epsilon
+    \le
+    C\left(kd^{-2}+d^{2k-2}e^{-cd^2}\right).
+\]
+For all sufficiently large \(d\), this implies \(\epsilon\le C'k d^{-2}\).
+Consequently
+\[
+    \exp\left(-c\frac{d^4\epsilon^2}{k^2}\right)
+    \ge e^{-C''}.
+\]
+After enlarging the constant \(C\) in
+\eqref{eq:local_lipschitz_concentration_theorem}, the right-hand side of
+\eqref{eq:local_lipschitz_concentration_theorem} is then at least \(1\).
+The trivial bound
+\[
+    \Prob\{|f_k-\E f_k|\ge\delta_\epsilon\}\le1
+\]
+closes this small-deviation branch.
+\end{proof}
+
+\begin{remark}[Why the normalized estimate is stronger]
+The threshold proof in the main text only needs concentration of finitely many
+moments at a scale large enough to identify the sign of the limiting Hankel
+determinants.  The Gaussian polynomial concentration used there is well
+suited for that purpose, but it gives a stretched-exponential tail of the form
+\(\exp(-c d^{1/k})\) for relative deviations of the unnormalized Wishart
+moments.  The estimate above is sharper in
+the normalized induced model \(\rho=XX^*\), where
+\[
+    \Tr((\rho^\Gamma)^k)=f_k(X)
+    \quad\text{is typically of order}\quad d^{-(2k-2)}.
+\]
+At this natural scale, the local Lipschitz argument gives
+\[
+    \Prob\left(
+      |f_k(X)-\E f_k(X)|\ge \epsilon d^{-(2k-2)}
+    \right)
+    \le
+    C e^{-c d^2}
+    +C\exp\left(-c\,\frac{d^4\epsilon^2}{k^2}\right).
+\]
+Thus the typical part of the concentration reflects the full real dimension
+of the Hilbert--Schmidt sphere, \(2d^2s\simeq 2\lambda d^4\); the only price
+paid is the exceptional set, of probability \(e^{-cd^2}\), on which the
+operator norms are not controlled.
+\end{remark}

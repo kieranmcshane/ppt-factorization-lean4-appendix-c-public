@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\setlength{\emergencystretch}{3em}
+
+\title{The Evolution of the Lean Formalization of Appendix B}
+\author{Working draft}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note records the evolution of the Lean formalization of Appendix~B in the
+\texttt{PptFactorization} development.  Its purpose is not to reproduce hidden
+proof search, but to present a publishable mathematical narrative reconstructed
+from visible Lean artifacts: theorem statements, supplier lemmas, frontier
+changes, build checks, and axiom audits.  The central theme is that the Lean
+development did not progress by a single monolithic proof, but by a sequence of
+closure layers that steadily replaced broad conditional interfaces with sharper
+and more theorem-facing endpoints.
+\end{abstract}
+
+\section{Introduction}
+
+Appendix~B studies concentration and large-deviation bounds for normalized
+matrix moments on the Hilbert--Schmidt sphere.  In the paper, the proof mixes
+geometric concentration on high-dimensional spheres, deterministic local
+expansion estimates, and random-matrix control of background and spike terms.
+In Lean, the main challenge is not merely to translate the final estimate into
+type-correct syntax.  One must decide how to decompose the argument into
+suppliers that are mathematically meaningful, auditable, and stable under
+later refinements.
+
+The present draft documents that decomposition.  It is meant to evolve with the
+formalization itself: whenever a visible hypothesis disappears from a sharp
+endpoint, or is replaced by a smaller and more concrete family of suppliers,
+this note should explain what changed mathematically and what Lean now certifies.
+
+\section{Mathematical Target}
+
+The Appendix~B upper-bound argument can be summarized as follows.  Let
+\[
+  X \in S_{HS}(d^2,s)
+\]
+be drawn from the uniform spherical law on the Hilbert--Schmidt sphere of
+complex matrices, with real ambient dimension
+\[
+  m = 2 d^2 s.
+\]
+For a fixed moment order \(k\) and a deviation parameter \(\varepsilon>0\), one
+seeks an upper large-deviation estimate for the event that the normalized
+background moment deviates above its deterministic center by at least
+\(\varepsilon\), at the correct exponential speed.
+
+At a high level, the proof has four ingredients:
+\begin{enumerate}[leftmargin=*]
+  \item positivity of a concrete witness event contained in the desired upper
+  tail;
+  \item spherical concentration at the real dimension \(2 d^2 s\);
+  \item high-probability control of the background typical set;
+  \item deterministic control of mixed local-expansion terms near the sharp
+  perturbative radius.
+\end{enumerate}
+
+The formalization mirrors this structure, but it does so through successive
+interfaces rather than a single theorem.  The live Lean frontier therefore has
+to be described theorem by theorem.
+
+\section{Formalization Strategy}
+
+The proof audit separates three layers.
+
+First, there is a \emph{conditional geometric pipeline}.  This is the cleanest
+abstract interface: given a spherical isoperimetric input, a measurable
+background typical set of half mass, a mixed-remainder bound, and the relevant
+scalar limits, the endpoint returns the eventual upper limsup bound.
+
+Second, there is a \emph{concrete theorem-facing layer}.  Here the abstract
+sequences \(N_d\), \(s_d\), \(\tau_d\), and the spherical law are instantiated
+to the actual matrix model.  This is where concrete target probabilities and
+dimension transport enter.  The word ``transport'' is important: a pointwise
+statement at size \(d\) may use the varying types \(\mathrm{Fin}(d)\) and
+\(\mathrm{Fin}(s(d))\), whereas a fixed-type theorem cannot honestly prove
+that a fixed finite dimension is eventually equal to \(d^2\).
+
+Third, there is a \emph{frontier-refinement layer}.  This is the most dynamic
+part of the project.  Broad assumptions such as a packaged target witness or a
+single mixed-word estimate are replaced by smaller suppliers that match the
+mathematics more closely: one-sided positivity of the actual upper event,
+branchwise mixed-word bounds, and grouped scalar defect limits.
+
+\section{Evolution of the Upper-Bound Frontier}
+
+\subsection{From abstract closure to concrete endpoints}
+
+The first major milestone was to isolate a stable upper-bound closure file with
+project-axiom-free wrapper theorems.  Those wrappers did not prove the hard
+random-matrix upper large deviation statement on their own, but they exposed
+its genuine inputs cleanly.  In particular, the upper pipeline kept visible the
+geometric input, the target-event witness data, the background half-mass
+estimate, and the mixed local-expansion control.
+
+This phase matters because it fixed the shape of the proof.  Once the abstract
+pipeline was stable, later work could close leaves one by one without changing
+the final theorem every round.
+
+\subsection{Casewise mixed-word control}
+
+The next step was to replace broad mixed-remainder assumptions by explicit
+branchwise estimates.  Instead of a single black-box statement saying that all
+mixed words are small, the Lean file now works with three mathematical cases:
+\begin{enumerate}[leftmargin=*]
+  \item words with exactly one linear defect;
+  \item words with exactly one quadratic defect;
+  \item all remaining mixed words with multiple defects.
+\end{enumerate}
+
+Lean packages these estimates in two different ways.  One package is
+theorem-facing and close to the underlying proof: it keeps the three cases
+separate.  Another package is endpoint-facing and convenient for the curated
+upper theorem: it folds the three cases into a single mixed-word envelope bound.
+The point of the refactor is not cosmetic.  It makes the remaining analytic
+obligations explicit in the same form in which a mathematician would naturally
+prove them.
+
+\subsection{One-sided positivity of the actual upper event}
+
+Another important refinement was to stop treating the upper target event
+through an arbitrary witness set alone.  The development now includes a
+one-sided positivity supplier for the actual upper-tail event.  This supplier
+can be built either from an eventual positive lower bound on the one-sided
+upper tail itself, or from the positive mass of a concrete one-column
+favourable event together with a deterministic inclusion theorem.
+
+This is conceptually cleaner.  The formal upper endpoint can now say that its
+positivity input is the actual one-sided event from the paper, rather than an
+auxiliary witness chosen for convenience.
+
+\subsection{The audit wrapper and the corrected frontier}
+
+The most recent closure layer introduces an audit-facing endpoint in which five
+older visible leaves are no longer exposed separately:
+\[
+  hTarget,\quad hWordBound,\quad hOneLinear,\quad hOneQuadratic,\quad hMulti.
+\]
+They are replaced, in that wrapper, by the smaller grouped inputs
+\[
+  hOneSided,\quad hWordCases,\quad hDefectLimits,
+\]
+together with geometric and moment supplier packets.  This is a regrouping of
+the wrapper interface, not a proof that all underlying analytic estimates have
+disappeared.
+
+Mathematically, this does not mean that the random-matrix analysis has
+disappeared.  It means that the theorem interface now reflects the structure of
+the proof more faithfully: actual upper-event positivity, grouped branchwise
+mixed-word control, and grouped scalar defect limits.
+
+The latest signature audit also corrected an important possible
+misinterpretation.  The theorem
+\begin{quote}\small\ttfamily
+\detokenize{upper_eventual_from_concrete_sequences_of_fullIso_activeTicketSuppliers}
+\end{quote}
+is an audit wrapper, not the primitive mathematical frontier.  Its hypotheses
+\[
+  hOneSided,\quad hMoment,\quad hWordCases,\quad hDefectLimits
+\]
+are wrapper-level packets: they collect several more elementary supplier
+statements into compact arguments.  They should not be counted as four new
+independent analytic abysses.  The sharper theorem-facing endpoint is
+\begin{quote}\small\ttfamily
+\detokenize{upper_eventual_from_concrete_sequences_of_fullIso}\\
+\detokenize{_positiveDeviationWitnessData_localExpansionMomentWordEnvelope}\\
+\detokenize{_caseMixedWordBounds_caseMixedTermLimits}
+\end{quote}
+That endpoint exposes the real proof shape: witness positivity for the target
+event, half-mass of the background typical set, word-envelope bounds and their
+term limits, scalar budget/envelope inequalities, and the three mixed-word plus
+three mixed-term branches.
+
+The same audit clarified the dimension hypotheses.  The file contains the
+pointwise concrete bridge
+\[
+\texttt{upperConcreteRealDim\_eq\_concreteModel\_realDim},
+\]
+which identifies the real dimension of the actual size-\(d\) model with
+\[
+2\,\mathrm{bipartiteDimension}(\mathrm{Fin}(d),\mathrm{Fin}(d))\,
+  \mathrm{sampleDimension}(\mathrm{Fin}(s(d))).
+\]
+It also proves the no-go statement
+\[
+\texttt{not\_eventually\_fixed\_bipartiteDimension\_eq\_dimensionSquared}.
+\]
+Thus a hypothesis asserting that a fixed finite matrix type has bipartite
+dimension \(d^2\) eventually is not a hard theorem waiting for analysis; it is
+a sign that the endpoint is being read through a fixed-type compatibility
+wrapper rather than through the pointwise concrete model.
+
+\section{What Lean Currently Certifies}
+
+At the time of writing, the Lean development contains two especially important
+upper endpoints.
+
+The first is a sharp theorem-facing endpoint in which the moment-side mixed
+remainder has itself been reduced to word-envelope bounds and term limits.
+This endpoint is mathematically close to the deterministic proof and therefore
+useful for understanding what remains to be established analytically.
+
+The second is the current audit-wrapper endpoint.  It is more compact and
+better suited for readback, but it should not be mistaken for the primitive
+frontier.  Its visible inputs include one-sided upper-event positivity, the
+full spherical isoperimetric supplier, two fixed-type dimension compatibility
+bridges, the concrete moment package, and grouped mixed-word and scalar-defect
+packages.  The fixed-type bridges are bookkeeping/routing artefacts; the
+pointwise concrete dimension bridge is already present in Lean, while the
+fixed-type eventual version is explicitly shown not to be closable as stated.
+
+The targeted upper module build
+\[
+\texttt{lake build PptFactorization.AppendixBUpperBoundClosure}
+\]
+passes for this state of the development.
+
+For the public theorems added on this route, the axiom audit reports only the
+standard Lean and mathlib foundations:
+\[
+  \texttt{propext},\qquad
+  \texttt{Classical.choice},\qquad
+  \texttt{Quot.sound}.
+\]
+Thus these closure layers are fully formalized in Lean/mathlib with no
+project-specific axioms.
+
+\section{Remaining Frontier}
+
+The remaining work splits into two different categories.
+
+The first category is routing and import work.  If the full spherical
+isoperimetric theorem has already been formalized elsewhere and audited from
+mathlib foundations, the task is to import or adapt that supplier, not to
+reprove spherical isoperimetry.  Similarly, the fixed-type dimension hypotheses
+should be avoided or discharged by moving through the pointwise concrete model
+where the dimensions are definitionally the right ones.
+
+The second category is theorem-strength work.  On the upper side, the remaining
+analytic suppliers are the concrete positivity route for the target event when
+not supplied by the favourable-event construction, the high-probability
+half-mass estimate for the background typical set, and the deterministic
+word-envelope and scalar term-limit estimates that feed the mixed local
+expansion bound.
+
+This is exactly the kind of frontier one wants after a successful structural
+formalization.  The Lean file no longer hides those obligations behind vague
+interfaces.  It displays them in theorem signatures that correspond to
+recognizable mathematical statements.
+
+\section{Methodological Lesson}
+
+The main methodological lesson is that large analytic formalizations benefit
+from a layered endpoint strategy.  A broad conditional theorem is useful early,
+because it isolates the architecture of the proof.  Later, however, progress
+should be measured by visible frontier changes: which assumptions disappeared,
+which ones were replaced by smaller suppliers, and which ones remain genuinely
+hard mathematics.
+
+That is the sense in which this article is meant to ``follow'' the proof.  It
+does not attempt to reproduce hidden proof search.  Instead, it records the
+public mathematical evolution of the Lean development, one auditable closure
+step at a time.
+
+\end{document}
