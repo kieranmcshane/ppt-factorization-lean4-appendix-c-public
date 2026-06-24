@@ -1,17 +1,27 @@
 # Appendix C Lean Reproducibility
 
-This branch contains a standalone Lean module for the main Appendix C result:
+This branch contains a standalone Lean module for the checked Appendix C
+reductions and scaling endpoints:
 
 ```text
 PptFactorization/AppendixCMainResult.lean
 ```
 
-The module consolidates the already-proved Lean routes:
+The module consolidates the already-proved Lean routes, with the following
+scope distinctions:
 
-- the exact algebraic Appendix C endpoint, proving both `g ∣ f₁ - f₀'` and the first-order coefficient `-1`;
-- the canonical tridiagonal/Chebyshev route proving the universal `-1/d1` displacement;
-- the self-contained tridiagonal scaling route from `UniversalScalingLawProof`;
-- the concrete physical determinant checks for `m = 1, 2, 3`.
+- `appendixC_main_algebraic_universality`: checked conditional algebraic
+  reduction proving both `g | f1 - f0'` and the first-order coefficient `-1`
+  from explicit rootwise trace/kernel/coprimality hypotheses;
+- `appendixC_canonical_universal_scaling_law`: checked all-`m` canonical
+  engineered branch, not the all-`m` physical determinant theorem;
+- `appendixC_self_contained_tridiagonal_scaling_law`: checked
+  tridiagonal/Chebyshev route from `UniversalScalingLawProof`;
+- `appendixC_physical_scaling_law_m1/m2/m3`: checked concrete physical
+  determinant cases.
+
+The all-`m` identification of the actual physical determinant with the
+canonical Appendix C branch is not formalized in this module.
 
 ## Check
 

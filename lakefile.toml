@@ -5,7 +5,7 @@ defaultTargets = ["ppt_factorization"]
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-version = "git#master"
+version = "git#145f3f493e7ffbb45994424a5d1e3a84a7f57a38"
 
 
 [[require]]

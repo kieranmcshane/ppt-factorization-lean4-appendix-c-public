@@ -5,7 +5,7 @@ import PptFactorization.UniversalScalingLaw
 import PptFactorization.UniversalScalingLawProof
 
 /-!
-# Appendix C main result, consolidated
+# Appendix C reductions and scaling endpoints, consolidated
 
 This file is a standalone consolidation of the Lean material behind Appendix C.
 It intentionally does not reprove every imported lemma inline.  Instead, it
@@ -28,8 +28,8 @@ There are three layers.
   tridiagonal/Chebyshev endpoint: for every `m > 0` there is a smooth local
   threshold branch with first derivative `-1`, hence the physical-scale
   estimate with correction `-1/d₁`.  This is the route through the
-  tridiagonal determinant, Chebyshev evaluation, and Christoffel--Darboux
-  normalization.
+  canonical engineered ambient function, not a proof that the actual physical
+  finite-`d₁` determinant follows this branch for all `m`.
 
 The concrete physical determinant is recovered in the already-proved small
   cases `m = 1,2,3`, exposed below as separate endpoints.  For all `m`, the
@@ -105,7 +105,7 @@ theorem appendixC_congruence_mod_threshold_polynomial
     m roots g f₀ f₁ Sigma htrace hg_f₀ hg_prod hSigma_roots hcop
 
 /--
-The paper-facing algebraic main theorem of Appendix C.
+The paper-facing algebraic reduction at the heart of Appendix C.
 
 It packages the two actual conclusions of the algebraic proof:
 
@@ -113,10 +113,11 @@ It packages the two actual conclusions of the algebraic proof:
   factor `g`;
 * the selected first-order threshold coefficient is `-1`.
 
-The hypotheses are the concrete rootwise data produced by the Appendix C
-argument: trace identity, balanced-root divisibility, explicit root factor,
-rank-one convolution trace formula, Hankel-kernel equations, coprimality with
-`X`, and the linearized root equation.
+This theorem is conditional on the rootwise data that the paper must produce:
+trace identity, balanced-root divisibility, explicit root factor, rank-one
+convolution trace formula, Hankel-kernel equations, coprimality with `X`, and
+the linearized root equation.  It is not a no-input all-`m` physical determinant
+theorem.
 -/
 theorem appendixC_main_algebraic_universality
     (m : ℕ) (roots : Finset K) (g f₀ f₁ Sigma : K[X]) (α coeff : K)
@@ -184,6 +185,10 @@ The no-input canonical Appendix C scaling endpoint.
 For every `m > 0`, there exists a smooth local branch `ψ` with
 `ψ(0)=α_m`, `ψ'(0)=-1`, and
 `ψ(1/d₁²)d₁ = α_m d₁ - 1/d₁ + O(d₁^{-3})`.
+
+This is the canonical engineered branch from `PhysicalScalingLaw`; it is not the
+all-`m` physical determinant statement for `detB_m`.  The actual physical
+determinant is exposed below only in the checked small cases `m = 1,2,3`.
 -/
 theorem appendixC_canonical_universal_scaling_law :
     ∀ m : ℕ, 0 < m →
