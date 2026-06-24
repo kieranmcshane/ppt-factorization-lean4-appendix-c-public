@@ -4,8 +4,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 
 \newtheorem*{problem}{Problem}
-\newtheorem*{theorem}{Theorem to prove}
-\newtheorem*{remark}{Remark}
+\newtheorem*{theoremC}{Theorem C.2}
 
 \DeclareMathOperator{\adj}{adj}
 \DeclareMathOperator{\Tr}{Tr}
@@ -15,132 +14,70 @@
 \begin{document}
 
 \begin{center}
-{\Large A self-contained problem for the Appendix C universality theorem}
+{\Large A self-contained formulation of Theorem C.2}
 \end{center}
 
 \begin{problem}
-This is a finite algebraic-combinatorial problem.  There are no random matrices
-in the statement.  The goal is to prove the universal first-order threshold
-theorem from the moment and Hankel data below, not merely to finish the last
-divisibility step after the hard identities have already been supplied.
-
-Work over the polynomial ring \(\mathbb Q[\lambda]\).  Let
-\[
-  \Cat(r)=\frac{1}{r+1}\binom{2r}{r}
-\]
-be the Catalan number.  Define the balanced moment polynomials
+For \(n\ge0\), define
 \[
   M_n(\lambda)
   =
   \sum_{r=0}^{\lfloor n/2\rfloor}
     \binom{n}{2r}\Cat(r)\lambda^{\,n-r},
-  \qquad n\ge0.
+  \qquad
+  \Cat(r)=\frac{1}{r+1}\binom{2r}{r}.
 \]
-Equivalently, the generating series \(C(z)=\sum_{n\ge0}M_n(\lambda)z^n\)
-is characterized by
-\[
-  C(z)-1=\lambda z C(z)\bigl(1+zC(z)\bigr).
-\]
-
-Define the first-defect moment polynomials \(M_n^{(1)}(\lambda)\) by
+Define \(M_n^{(1)}(\lambda)\) by
 \[
 \begin{aligned}
-M_n^{(1)}
+M_n^{(1)}(\lambda)
 &=
 \lambda
 \sum_{\substack{a,b,c\ge0\\a+b+c+3=n}}
-  (a+1)M_aM_bM_c  \\
+  (a+1)M_a(\lambda)M_b(\lambda)M_c(\lambda) \\
 &\quad+
 \lambda
 \sum_{\substack{a,b,c,d\ge0\\a+b+c+d+4=n}}
-  (a+1)M_aM_bM_cM_d .
+  (a+1)M_a(\lambda)M_b(\lambda)M_c(\lambda)M_d(\lambda).
 \end{aligned}
 \]
-The two sums are understood as \(0\) if their indexing sets are empty.
-This definition is the rooted first-defect correction: exactly one exceptional
-block has size \(3\) or \(4\), and all remaining pieces are balanced.
-
-For \(m\ge0\), form the \((m+1)\times(m+1)\) Hankel matrices
+For \(m\ge0\), set
 \[
   H_m(\lambda)=\bigl(M_{i+j+1}(\lambda)\bigr)_{0\le i,j\le m},
   \qquad
-  H_m^{(1)}(\lambda)=
-    \bigl(M_{i+j+1}^{(1)}(\lambda)\bigr)_{0\le i,j\le m}.
+  H_m^{(1)}(\lambda)
+  =
+  \bigl(M_{i+j+1}^{(1)}(\lambda)\bigr)_{0\le i,j\le m},
 \]
-Set
+and
 \[
   f_{0,m}(\lambda)=\det H_m(\lambda),
   \qquad
-  f_{1,m}(\lambda)=\Tr\!\bigl(\adj(H_m(\lambda))H_m^{(1)}(\lambda)\bigr).
+  f_{1,m}(\lambda)
+  =
+  \Tr\!\bigl(\adj(H_m(\lambda))H_m^{(1)}(\lambda)\bigr).
 \]
-Thus \(f_{1,m}\) is the coefficient of \(\varepsilon\) in
+Finally define \(d_r(\lambda)\) by
 \[
-  \det\bigl(H_m(\lambda)+\varepsilon H_m^{(1)}(\lambda)\bigr).
+  d_0(\lambda)=1,\qquad
+  d_1(\lambda)=\lambda,\qquad
+  d_{r+2}(\lambda)=\lambda d_{r+1}(\lambda)-\lambda d_r(\lambda),
 \]
-
-Finally define polynomials \(d_r(\lambda)\) by
-\[
-  d_0=1,\qquad d_1=\lambda,\qquad
-  d_{r+2}=\lambda d_{r+1}-\lambda d_r\quad(r\ge0),
-\]
-and define \(g_m(\lambda)\) by removing the zero-root power from \(d_{m+1}\):
+and define \(g_m(\lambda)\) by
 \[
   d_{m+1}(\lambda)=
   \lambda^{\lceil (m+1)/2\rceil}g_m(\lambda),
   \qquad g_m(0)\ne0.
 \]
 
-\begin{theorem}
-For every \(m\ge0\), prove the following.
-
-\[
-  f_{0,m}(\lambda)
-  =
-  \lambda^{m(m+1)/2}d_{m+1}(\lambda).
-  \tag{A}
-\]
-
+\begin{theoremC}
+For every \(m\ge0\),
 \[
   g_m(\lambda)\mid
-  \bigl(f_{1,m}(\lambda)-f_{0,m}'(\lambda)\bigr).
-  \tag{B}
+  \bigl(f_{1,m}(\lambda)-f_{0,m}'(\lambda)\bigr)
+  \qquad\text{in }\mathbb Q[\lambda].
 \]
-
-Consequently, if \(\alpha\ne0\) is a simple root of \(g_m\), then
-\[
-  f_{1,m}(\alpha)=f_{0,m}'(\alpha).
-  \tag{C}
-\]
-Hence any scalar \(\kappa\) satisfying the first-order threshold equation
-\[
-  \kappa f_{0,m}'(\alpha)+f_{1,m}(\alpha)=0
-  \tag{D}
-\]
-must be
-\[
-  \kappa=-1.
-  \tag{E}
-\]
-\end{theorem}
-
-The exercise is intentionally open-ended.  A solution may use determinants,
-orthogonal polynomials, generating functions, non-crossing partitions,
-continued fractions, linear algebra, resultants, explicit kernel vectors, or
-any other purely algebraic method.  The choice of proof strategy is part of
-the exercise.
-
-The following shortcuts are not allowed as assumptions: the congruence
-\((B)\), the equality \((C)\), a prepackaged trace identity for
-\(f_{1,m}-f_{0,m}'\), or a prepackaged vanishing statement at the roots of
-\(g_m\).  Such statements may of course be proved inside a solution.
+\end{theoremC}
 \end{problem}
-
-\begin{remark}
-This is the pure-math core of Appendix C.  In the paper, the conclusion
-\((B)\) says that the first finite-size correction has the same values as the
-\(\lambda\)-derivative of the leading Hankel determinant at every leading
-threshold.  Equation \((D)\) is the formal first-order root equation; once
-\((C)\) is known, the universal coefficient \(-1\) follows immediately.
-\end{remark}
 
 \end{document}
