@@ -6,16 +6,50 @@
 \newtheorem*{problem}{Problem}
 \newtheorem*{theoremC}{Theorem C.2}
 
+\DeclareMathOperator{\NC}{NC}
+
 \begin{document}
 
 \begin{center}
-{\Large Theorem C.2 as a problem}
+{\Large Theorem C.2 as a self-contained problem}
 \end{center}
 
 \begin{problem}
-Use the notation of Appendix C.  Thus \(f_{0,m}\) denotes the balanced
-Hankel determinant, \(f_{1,m}\) denotes the first finite-size correction
-polynomial, and \(g_m\) denotes the non-zero threshold factor defined by
+For \(n\ge0\), let \(\NC(n)\) be the set of noncrossing partitions of
+\(\{1,\ldots,n\}\), i.e. partitions with no \(a<b<c<d\) such that
+\(a,c\) lie in one block and \(b,d\) lie in another.  For a block \(B\), put
+\[
+  \delta(B)=2\left\lfloor\frac{|B|-1}{2}\right\rfloor,
+  \qquad
+  \delta(\pi)=\sum_{B\in\pi}\delta(B).
+\]
+For indeterminates \(\lambda,t\), define
+\[
+  M_n(\lambda,t)
+  =
+  \sum_{\pi\in\NC(n)}
+    \lambda^{|\pi|}t^{\delta(\pi)/2}
+  \in \mathbb Q[\lambda,t].
+\]
+For \(m\ge0\), set
+\[
+  H_m(\lambda,t)
+  =
+  \bigl(M_{i+j+1}(\lambda,t)\bigr)_{0\le i,j\le m}.
+\]
+Define \(f_{0,m},f_{1,m}\in\mathbb Q[\lambda]\) by
+\[
+  f_{0,m}(\lambda)=[t^0]\det H_m(\lambda,t),
+  \qquad
+  f_{1,m}(\lambda)=[t^1]\det H_m(\lambda,t).
+\]
+Finally define \(d_r(\lambda)\) by
+\[
+  d_0(\lambda)=1,\qquad
+  d_1(\lambda)=\lambda,\qquad
+  d_{r+2}(\lambda)=\lambda d_{r+1}(\lambda)-\lambda d_r(\lambda),
+\]
+and define \(g_m(\lambda)\in\mathbb Q[\lambda]\) by
 \[
   d_{m+1}(\lambda)
   =
