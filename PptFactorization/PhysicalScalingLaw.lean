@@ -567,13 +567,26 @@ noncomputable def canonicalTaylorData (m : ℕ) (hm : 0 < m) :
   hδ := G_canonical_hasDerivAt_δ m hm
   transversal := ne_of_gt (d_deriv_pos_at_threshold m hm)
 
-/-- **Unconditional `∀m` existence of a threshold function with the
-    universal `−1` first-order behaviour.** -/
-theorem physical_threshold_exists_all (m : ℕ) (hm : 0 < m) :
+/-- **Unconditional `∀m` existence of a canonical threshold function with the
+    universal `−1` first-order behaviour.**
+
+    This is the threshold for the engineered canonical ambient function
+    `G_canonical`, not the all-`m` physical `detB_m` threshold. -/
+theorem canonical_threshold_exists_all (m : ℕ) (hm : 0 < m) :
     PhysicalThresholdExists m :=
   thresholdExists_of_taylorData m hm (canonicalTaylorData m hm)
 
-/-- **Universal physical scaling law — unconditional `∀ m ≥ 1`.**
+/-- Compatibility alias for older files.
+
+    Despite the historical name, this is the canonical threshold-existence
+    theorem above, not a proof that the physical determinant branch has been
+    identified for every `m`.  New code should use
+    `canonical_threshold_exists_all`. -/
+theorem physical_threshold_exists_all (m : ℕ) (hm : 0 < m) :
+    PhysicalThresholdExists m :=
+  canonical_threshold_exists_all m hm
+
+/-- **Universal canonical scaling law — unconditional `∀ m ≥ 1`.**
 
     For every `m ≥ 1` there exists a smooth function `ψ_m : ℝ → ℝ` with
     `ψ_m(0) = α_m`, `ψ_m'(0) = −1`, and
@@ -596,13 +609,28 @@ theorem physical_threshold_exists_all (m : ℕ) (hm : 0 < m) :
     (verified by hand) and is argued in the paper for all `m`, but is not
     formalised here.  For `m = 1, 2, 3` the identification is recovered by
     `physical_threshold_exists_m1` / `m3` using the concrete `detB_m`. -/
-theorem universal_physical_scaling_law :
+theorem canonical_universal_scaling_law :
     ∀ m : ℕ, 0 < m →
       ∃ ψ : ℝ → ℝ, ∃ C D₀ : ℝ,
         0 < D₀ ∧ ψ 0 = α m ∧ HasDerivAt ψ (-1) 0 ∧
         (∀ d₁ : ℝ, D₀ < d₁ →
           |ψ (1 / d₁ ^ 2) * d₁ - (α m * d₁ - 1 / d₁)| ≤ C / d₁ ^ 3) := by
   intro m hm
-  exact physical_scaling_law_conditional m hm (physical_threshold_exists_all m hm)
+  exact physical_scaling_law_conditional m hm (canonical_threshold_exists_all m hm)
+
+/-- Compatibility alias for older files.
+
+    Despite the historical name, this theorem is the canonical engineered
+    all-`m` scaling law, not the all-`m` physical determinant theorem.  New code
+    should use `canonical_universal_scaling_law`; physical determinant claims
+    should use the concrete `physical_scaling_law_m1/m2/m3` endpoints or the
+    conditional theorem `physical_scaling_law_conditional`. -/
+theorem universal_physical_scaling_law :
+    ∀ m : ℕ, 0 < m →
+      ∃ ψ : ℝ → ℝ, ∃ C D₀ : ℝ,
+        0 < D₀ ∧ ψ 0 = α m ∧ HasDerivAt ψ (-1) 0 ∧
+        (∀ d₁ : ℝ, D₀ < d₁ →
+          |ψ (1 / d₁ ^ 2) * d₁ - (α m * d₁ - 1 / d₁)| ≤ C / d₁ ^ 3) :=
+  canonical_universal_scaling_law
 
 end PhysicalScalingLaw

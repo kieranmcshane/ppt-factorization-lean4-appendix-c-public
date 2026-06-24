@@ -149,6 +149,36 @@ theorem appendixC_main_algebraic_universality
       m roots g f₀ f₁ Sigma α coeff q c v hcoeff htrace hg_f₀ hg_prod
       hSigma hkernel hcop hroot hf₀'
 
+/--
+Accurately named alias for `appendixC_main_algebraic_universality`.
+
+This endpoint is an algebraic spine theorem: it consumes explicit supplier
+hypotheses and returns the determinant congruence plus coefficient `-1`.  It is
+not a no-input physical all-`m` determinant theorem.
+-/
+theorem appendixC_algebraic_spine_universality
+    (m : ℕ) (roots : Finset K) (g f₀ f₁ Sigma : K[X]) (α coeff : K)
+    (q : K → K) (c v : K → ℕ → K)
+    (hcoeff : coeff * eval α (derivative f₀) + eval α f₁ = 0)
+    (htrace : AppendixCUniversality.TraceIdentity m f₀ f₁ Sigma)
+    (hg_f₀ : g ∣ f₀)
+    (hg_prod : g = ∏ a ∈ roots, (X - C a : K[X]))
+    (hSigma : ∀ a, a ∈ roots →
+      eval a Sigma =
+        q a * (∑ i ∈ Finset.range (m + 1), ∑ j ∈ Finset.range (m + 1),
+          v a i * v a j *
+            (∑ b ∈ Finset.range (i + j + 2),
+              c a b * c a (i + j + 1 - b))))
+    (hkernel : ∀ a, a ∈ roots → ∀ i, i ≤ m →
+      (∑ j ∈ Finset.range (m + 1), v a j * c a (i + j + 1)) = 0)
+    (hcop : IsCoprime g X)
+    (hroot : eval α g = 0)
+    (hf₀' : eval α (derivative f₀) ≠ 0) :
+    (g ∣ f₁ - derivative f₀) ∧ coeff = -1 :=
+  appendixC_main_algebraic_universality
+    m roots g f₀ f₁ Sigma α coeff q c v hcoeff htrace hg_f₀ hg_prod
+    hSigma hkernel hcop hroot hf₀'
+
 end AlgebraicAppendixC
 
 section ChebyshevTridiagonalSpine
@@ -197,7 +227,7 @@ theorem appendixC_canonical_universal_scaling_law :
         (∀ d₁ : ℝ, D₀ < d₁ →
           |ψ (1 / d₁ ^ 2) * d₁ - (SelfContainedProof.α m * d₁ - 1 / d₁)|
             ≤ C / d₁ ^ 3) :=
-  PhysicalScalingLaw.universal_physical_scaling_law
+  PhysicalScalingLaw.canonical_universal_scaling_law
 
 /--
 Self-contained tridiagonal scaling theorem from `UniversalScalingLawProof`.

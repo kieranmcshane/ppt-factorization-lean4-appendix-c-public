@@ -10,7 +10,8 @@ PptFactorization/AppendixCMainResult.lean
 The module consolidates the already-proved Lean routes, with the following
 scope distinctions:
 
-- `appendixC_main_algebraic_universality`: checked conditional algebraic
+- `appendixC_algebraic_spine_universality` /
+  `appendixC_main_algebraic_universality`: checked conditional algebraic
   reduction proving both `g | f1 - f0'` and the first-order coefficient `-1`
   from explicit rootwise trace/kernel/coprimality hypotheses;
 - `appendixC_canonical_universal_scaling_law`: checked all-`m` canonical
@@ -35,6 +36,7 @@ The public endpoints audited in this branch are:
 
 ```text
 AppendixCMainResult.appendixC_main_algebraic_universality
+AppendixCMainResult.appendixC_algebraic_spine_universality
 AppendixCMainResult.appendixC_rootwise_coefficient_eq_neg_one
 AppendixCMainResult.appendixC_congruence_mod_threshold_polynomial
 AppendixCMainResult.appendixC_chebyshev_tridiagonal_spine

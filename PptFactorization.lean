@@ -4,7 +4,7 @@
 import PptFactorization.Poly
 import PptFactorization.Verify
 import PptFactorization.Jones
--- import PptFactorization.Recurrence   -- Superseded by ClosedFormDet; 3 sorries, non-blocking
+-- import PptFactorization.Recurrence   -- Superseded by ClosedFormDet; not part of the public build
 import PptFactorization.ClosedFormDet   -- Closed-form det via orthogonal polys + Chebyshev U
 import PptFactorization.Threshold       -- Cor 3.1 : seuil = 4cos²(π/(m+2))
 import PptFactorization.AubrunAlternative -- Moment-Hankel adapters for Aubrun threshold route
@@ -14,15 +14,16 @@ import PptFactorization.General         -- General p_{2m+1} thresholds, m=2, sca
 import PptFactorization.Step6LeadingOrder -- Step 6: detB_m(α·d₁, d₁) closed forms for m=1,2
 import PptFactorization.MomentCumulant   -- Moment–cumulant scaffold: c₁..c₇ from κ_n (NC deferred)
 import PptFactorization.NCPartition       -- Non-crossing partitions of {0,…,n−1}: definition layer
-import PptFactorization.ScalingLaw      -- Universal scaling law: λ* = αₘd₁ − 1/d₁ + O(1/d₁³)
+import PptFactorization.ScalingLaw      -- Small-case/asymmetric scaling statements
 import PptFactorization.TemperleyLieb   -- TL algebras, Gram–Hankel bridge, Markov trace
 import PptFactorization.SubfactorBridge -- Jones index axiom, PPT ↔ subfactor dictionary
 import PptFactorization.GJSCircle       -- GJS circle: PPT ⟺ Gram positivity ⟺ Jones index
 import PptFactorization.ChristoffelDarboux -- CD identity for Chebyshev U, trace normalisation
 import PptFactorization.SpectralGeometric -- Spectral-geometric proof: −1/d₁ from principal graph
 import PptFactorization.Realignment       -- Realignment (CCNR) moments, Jacobi, Hankel thresholds
-import PptFactorization.UniversalScalingLaw -- Universal scaling law: ε = −1 for all m (complete proof)
+import PptFactorization.UniversalScalingLaw -- Balanced/canonical scaling infrastructure
 import PptFactorization.AppendixCMainResult -- Appendix C consolidated theorem endpoints
+import PptFactorization.FormalizationStatus -- Reviewer-facing theorem status index
 import PptFactorization.AppendixB          -- Appendix B: local Lipschitz concentration skeleton
 import PptFactorization.AppendixBSpikeLowerBound -- Conservative spike lower-bound skeleton
 import PptFactorization.AppendixBLowerBoundClosure -- Stable lower-bound closure aliases
@@ -48,8 +49,8 @@ import PptFactorization.AppendixBNormalizedExpectations -- Normalized expectatio
 import PptFactorization.AppendixBPolarRadial -- No-input Gaussian radial estimates for Appendix B
 import PptFactorization.AppendixBAubrunMomentInput -- Appendix-facing Aubrun off-diagonal moment interface
 import PptFactorization.AppendixBAubrunProposition71 -- Proposition 7.1-facing trace-moment closure
-import PptFactorization.AppendixBFinal -- Final Appendix B assembly without structure-valued inputs
-import PptFactorization.AppendixBPipeline -- Canonical moments-to-final Appendix B wiring
+import PptFactorization.AppendixBFinal -- Conditional Appendix B assembly without structure-valued inputs
+import PptFactorization.AppendixBPipeline -- Canonical moments-to-assembly Appendix B wiring
 import PptFactorization.AppendixBDiagonalGamma -- Exact diagonal Gamma-max bridge
 import PptFactorization.AppendixBGaussianIntegrability -- Closed Gaussian integrability inputs for the pipeline
 import PptFactorization.AppendixBAubrunCombinatorics -- Real Wick/counting bound hooks for Aubrun

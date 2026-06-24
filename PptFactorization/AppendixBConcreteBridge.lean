@@ -44,8 +44,8 @@ noncomputable def concreteRhoGammaOpNormThreshold : ℝ :=
   let pkg := concreteHighProbabilityBounds (p := p) (q := q) (σ := σ)
   pkg.gammaWishartConstant * sampleDimension σ / pkg.massConstant
 
-/-- The probability-side Appendix B inputs that are already fully concrete in
-the repo.
+/-- The probability-side Appendix B inputs that are already concrete in the
+repo.
 
 This package records the two normalized good-set thresholds and the two
 corresponding tails, already rewritten in the Appendix B scale
@@ -254,13 +254,22 @@ noncomputable def concreteRemainingExpectationInputs_of_factor_bounds
     hGammaFactor := hGammaFactor
     hGammaBound := hGammaBound }
 
-/-- Canonical no-input scalar package for the expectation side of the concrete
-bridge.
+/-- Canonical scalar normalization package for the expectation side of the
+concrete bridge.
 
 The actual Gaussian/Wishart means, spherical means, and concrete radial factors
 are used.  The factorization fields are discharged from the proved
 radius-direction independence theorem, so this package no longer carries a
-separate independence input. -/
+separate independence input.
+
+Important scope note: the constants
+`sampleConstant := d * sphericalSampleOpNormMean` and
+`gammaConstant := d^2 * sphericalGammaOpNormMean` are normalization constants
+chosen from the quantities being bounded.  This is useful for algebraic
+cancellation and interface wiring, but it is not a paper-strength proof of
+independent universal constants.  Use
+`concreteRemainingExpectationInputs_of_factor_bounds` when independent bounds
+`C1`, `C2` are available. -/
 noncomputable def concreteRemainingExpectationInputs
     {d : ℝ}
     (hd : 0 < d)

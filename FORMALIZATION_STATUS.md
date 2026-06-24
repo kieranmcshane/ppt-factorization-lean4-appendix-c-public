@@ -7,7 +7,7 @@ not a proof script; it is a map for reviewers.
 
 | Item | Formal status | Notes |
 | --- | --- | --- |
-| Algebraic congruence and coefficient extraction | Checked conditional reduction | `AppendixCMainResult.appendixC_main_algebraic_universality` proves `g | f1 - f0'` and `coeff = -1` from explicit Appendix C supplier hypotheses. |
+| Algebraic congruence and coefficient extraction | Checked conditional reduction | `AppendixCMainResult.appendixC_algebraic_spine_universality` / `appendixC_main_algebraic_universality` prove `g | f1 - f0'` and `coeff = -1` from explicit Appendix C supplier hypotheses. |
 | Rootwise coefficient endpoint | Checked conditional reduction | `appendixC_rootwise_coefficient_eq_neg_one` exposes only `coeff = -1`. |
 | Congruence-only endpoint | Checked conditional reduction | `appendixC_congruence_mod_threshold_polynomial` proves `g | f1 - f0'` from rootwise vanishing and trace data. |
 | Canonical all-`m` scaling branch | Checked, canonical only | `appendixC_canonical_universal_scaling_law` uses the engineered canonical ambient function.  It is not the all-`m` physical determinant theorem. |
@@ -39,10 +39,11 @@ factorization for `m = 0,1,2`.  The cases `m = 3..8` are recorded there as
 runtime `#eval` evidence/commented local checks, not as public theorem
 certificates in this snapshot.
 
-The helper `PPT.phiStar` in `PptFactorization.Poly` is a finite table for the
-currently tested cyclotomic factors.  It returns `1` outside the table, so it
-should be treated as a finite-range computational helper unless accompanied by a
-separate proof that all queried divisors lie in the supported range.
+`PptFactorization.Poly` exposes safe finite-table functions `PPT.phiStar?`,
+`PPT.rhs?`, and `PPT.verifyDetFactorization?`.  These return `none` outside
+the supported cyclotomic table.  The legacy wrappers `PPT.phiStar` and
+`PPT.rhs` still exist for older demos, but they are documented as unsafe for
+public verification because they map unsupported factors to `1`.
 
 ## Dependency note
 

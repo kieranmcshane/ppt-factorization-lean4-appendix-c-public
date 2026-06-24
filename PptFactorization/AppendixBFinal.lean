@@ -2,12 +2,19 @@ import PptFactorization.AppendixBConcreteBridge
 import PptFactorization.AppendixBSphericalLevy
 
 /-!
-# Final Appendix B assembly
+# Appendix B conditional assembly
 
 This downstream file assembles the Appendix B-facing conclusions without
 carrying theorem-core assumptions inside input structures.  The remaining
 analytic assumptions are stated directly in the theorem interface, while the
 constants used in the final paper-style tail are explicit.
+
+The word "assembly" is important: this file does not prove the global Levy
+inequality, local Lipschitz estimate, good-set/bad-set mass estimate,
+median/range/integrability hypotheses, radial/spherical expectation inputs, or
+localized tail-smallness estimate from first principles.  When these appear as
+hypotheses below, they are still theorem-level obligations for the concrete
+spherical model.
 -/
 
 open MeasureTheory ProbabilityTheory Matrix
@@ -24,7 +31,7 @@ variable {p q σ : Type*}
 variable [Fintype p] [Fintype q] [Fintype σ]
 variable [DecidableEq p] [DecidableEq q]
 
-/-- Final Appendix B assembly with no structure-valued theorem-core inputs.
+/-- Appendix B assembly with no structure-valued theorem-core inputs.
 
 The theorem simultaneously exposes the normalized operator-norm expectation
 inputs, the already-proved Gaussian/Wishart probability inputs, and the final
@@ -36,8 +43,16 @@ are fixed explicitly as
 * localized exponent constant `cDim / (64 * C ^ 2)`.
 
 The hypotheses that are still analytic are deliberately direct hypotheses:
-radial/spherical expectation factorization and the global spherical Levy
-inequality for the exact concrete spherical law. -/
+
+* radial/spherical expectation factorizations and expectation bounds;
+* median, range, and integrability data for the observable;
+* local Lipschitz control on the good set;
+* localized tail-smallness;
+* the global spherical Levy inequality for the exact concrete spherical law;
+* the bad-set mass estimate for the good set.
+
+Thus this theorem is a checked reduction/assembly endpoint, not a closed proof
+that all Appendix B analytic estimates hold for the concrete model. -/
 theorem final_appendixB_assembly_no_structure_inputs
     {f : SampleMatrix p q σ → ℝ}
     {gaussianMean radialMean sphericalMean

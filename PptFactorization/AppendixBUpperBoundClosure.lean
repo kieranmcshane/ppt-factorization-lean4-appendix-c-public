@@ -2026,7 +2026,7 @@ dimension `d`:
 * the ambient spherical law is the actual spherical model law in that
   dimension.
 
-This definition is the paper-facing target for the fully concrete upper model
+This definition is the paper-facing target for the dimension-varying concrete upper model
 and avoids the fixed-type bridge artefacts `hIsoRealDim` and `hOperatorDim`. -/
 noncomputable def upperConcreteModelTargetProb
     (R : PptFactorization.AppendixB.ConcreteModel.BalancedRegime)

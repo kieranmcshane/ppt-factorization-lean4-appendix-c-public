@@ -43,22 +43,34 @@ def showJonesConnection : IO Unit := do
   IO.println "  NB : Ce lien n'apparait dans aucune reference anterieure"
   IO.println "       (ni Aubrun 2012, ni Banica-Nechita 2012)"
 
-#eval showJonesConnection
+-- Manual demo only:
+--   #eval showJonesConnection
+
+def phiStarEvalString (d : Nat) (x : Int) : String :=
+  match phiStar? d with
+  | some p => s!"{eval p x}"
+  | none => s!"unsupported d={d}"
+
+def phiStarPolyString (d : Nat) : String :=
+  match phiStar? d with
+  | some p => toString p
+  | none => s!"unsupported d={d}"
 
 def showPhiAtThreshold : IO Unit := do
   IO.println "\n======================================================="
   IO.println "  Verification : Phi_n*(lambda*) = 0  (seuil exact)"
   IO.println "======================================================="
   -- Cas rationnels exacts
-  IO.println s!"  Phi_3*(1) = {eval (phiStar 3) 1}    (lambda*=1, cas k=3)"
-  IO.println s!"  Phi_4*(2) = {eval (phiStar 4) 2}    (lambda*=2, cas k=5)"
-  IO.println s!"  Phi_6*(3) = {eval (phiStar 6) 3}    (lambda*=3, cas k=9)"
+  IO.println s!"  Phi_3*(1) = {phiStarEvalString 3 1}    (lambda*=1, cas k=3)"
+  IO.println s!"  Phi_4*(2) = {phiStarEvalString 4 2}    (lambda*=2, cas k=5)"
+  IO.println s!"  Phi_6*(3) = {phiStarEvalString 6 3}    (lambda*=3, cas k=9)"
   -- Discriminants
-  IO.println s!"  Phi_5*(X) = {toString (phiStar 5)}, disc = 9-4 = 5 => lambda*=(3+sqrt5)/2"
-  IO.println s!"  Phi_8*(X) = {toString (phiStar 8)}, disc = 16-8 = 8 => lambda*=2+sqrt2"
-  IO.println s!"  Phi_10*(X)= {toString (phiStar 10)}, disc = 25-20 = 5 => lambda*=(5+sqrt5)/2"
+  IO.println s!"  Phi_5*(X) = {phiStarPolyString 5}, disc = 9-4 = 5 => lambda*=(3+sqrt5)/2"
+  IO.println s!"  Phi_8*(X) = {phiStarPolyString 8}, disc = 16-8 = 8 => lambda*=2+sqrt2"
+  IO.println s!"  Phi_10*(X)= {phiStarPolyString 10}, disc = 25-20 = 5 => lambda*=(5+sqrt5)/2"
 
-#eval showPhiAtThreshold
+-- Manual demo only:
+--   #eval showPhiAtThreshold
 
 structure AsymThresh where
   d1 : Nat
@@ -84,6 +96,7 @@ def showAsymmetric : IO Unit := do
   IO.println "  lambda_PPT(d1) = 2(d1 + sqrt(d1^2-1)) approx 4*d1"
   IO.println "  Rapport lambda*(d1)/lambda_PPT -> 1/4"
 
-#eval showAsymmetric
+-- Manual demo only:
+--   #eval showAsymmetric
 
 end PPT

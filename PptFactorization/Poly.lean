@@ -301,20 +301,38 @@ def checkMomentRec (n : Nat) : Bool :=
       (mul (monome 1) (momentConv n))
 
 -- ─────────────────────────────────────────────────────────────────────────────
--- Polynômes Φ_d*(λ) = minimal polynomial de 4cos²(π/d) sur ℚ
--- Obtenus via le calcul Python vérifié (verify_proof_v2.py)
+-- Polynômes Φ_d*(λ) = minimal polynomial de 4cos²(π/d) sur ℚ.
+-- This is a finite table, not a general cyclotomic implementation.
 -- ─────────────────────────────────────────────────────────────────────────────
 
+/-- Supported values of the finite `Φ_d*` table below. -/
+def supportedPhiStarDs : List Nat := [3, 4, 5, 6, 7, 8, 9, 10]
+
+/-- Safe finite table for `Φ_d*(λ)`.
+
+Returns `none` outside the supported range instead of silently replacing the
+missing factor by `1`.  Public finite determinant checks should use this API. -/
+def phiStar? : Nat → Option Poly
+  | 3  => some #[(-1 : Int), 1]            -- λ - 1
+  | 4  => some #[(-2 : Int), 1]            -- λ - 2
+  | 5  => some #[(1 : Int), (-3), 1]       -- λ² - 3λ + 1
+  | 6  => some #[(-3 : Int), 1]            -- λ - 3
+  | 7  => some #[(-1 : Int), 6, (-5), 1]   -- λ³ - 5λ² + 6λ - 1
+  | 8  => some #[(2 : Int), (-4), 1]       -- λ² - 4λ + 2
+  | 9  => some #[(-1 : Int), 9, (-6), 1]   -- λ³ - 6λ² + 9λ - 1
+  | 10 => some #[(5 : Int), (-5), 1]       -- λ² - 5λ + 5
+  | _  => none
+
+/-- Legacy compatibility wrapper for old demos.
+
+Do not use this in theorem statements or public verification: unsupported
+values are mapped to `1`, which can silently drop cyclotomic factors.  Use
+`phiStar?` instead. -/
 def phiStar : Nat → Poly
-  | 3  => #[(-1 : Int), 1]            -- λ - 1
-  | 4  => #[(-2 : Int), 1]            -- λ - 2
-  | 5  => #[(1 : Int), (-3), 1]       -- λ² - 3λ + 1
-  | 6  => #[(-3 : Int), 1]            -- λ - 3
-  | 7  => #[(-1 : Int), 6, (-5), 1]   -- λ³ - 5λ² + 6λ - 1
-  | 8  => #[(2 : Int), (-4), 1]       -- λ² - 4λ + 2
-  | 9  => #[(-1 : Int), 9, (-6), 1]   -- λ³ - 6λ² + 9λ - 1
-  | 10 => #[(5 : Int), (-5), 1]       -- λ² - 5λ + 5
-  | _  => #[(1 : Int)]                -- trivial
+  | d =>
+    match phiStar? d with
+    | some p => p
+    | none => #[(1 : Int)]
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Diviseurs ≥ 3 d'un entier n
@@ -326,12 +344,42 @@ def divisorsGe3 (n : Nat) : List Nat :=
 /-- N_m = ⌈(m+1)²/2⌉. -/
 def Nm (m : Nat) : Nat := ((m+1)^2 + 1) / 2
 
-/-- Côté droit : λ^{N_m} * ∏_{d|m+2, d≥3} Φ_d*(λ). -/
+/-- Safe product of finite-table `Φ_d*` factors. -/
+def phiStarProduct? : List Nat → Option Poly
+  | [] => some (const 1)
+  | d :: ds =>
+    match phiStar? d, phiStarProduct? ds with
+    | some p, some q => some (mul p q)
+    | _, _ => none
+
+/-- Safe right-hand side:
+`λ^{N_m} * ∏_{d|m+2, d≥3} Φ_d*(λ)`.
+
+Returns `none` if the requested cyclotomic factor is outside the finite table. -/
+def rhs? (m : Nat) : Option Poly :=
+  let nm := Nm m
+  let divs := divisorsGe3 (m + 2)
+  match phiStarProduct? divs with
+  | some prodPhi => some (mul (monome nm) prodPhi)
+  | none => none
+
+/-- Legacy compatibility wrapper for old demos.
+
+Do not use this as evidence for unsupported `m`: if some divisor requires a
+missing finite-table factor, this returns `1` for the missing factor through the
+legacy `phiStar` wrapper.  Public checks should use `rhs?`. -/
 def rhs (m : Nat) : Poly :=
   let nm := Nm m
   let divs := divisorsGe3 (m + 2)
   let prodPhi := divs.foldl (fun acc d => mul acc (phiStar d)) (const 1)
   mul (monome nm) prodPhi
+
+/-- Safe one-case determinant factorization check.  `none` means the finite
+`Φ_d*` table does not support this `m`. -/
+def verifyDetFactorization? (m : Nat) : Option Bool :=
+  match rhs? m with
+  | some r => some (beq (detB m) r)
+  | none => none
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Verification: catalan values, moment recurrence, and cofactor expansion

@@ -8,7 +8,7 @@ This file is deliberately a wiring file.  It records the clean downstream
 composition
 
 `moments → off-diagonal expectation → diagonal gamma → spherical normalization
-→ localized Levy → final theorem`.
+→ localized Levy → conditional assembly endpoint`.
 
 It does not manufacture the still-missing analytic cores.  The Aubrun moment
 extraction/counting estimate, the diagonal gamma expectation estimate, and the
